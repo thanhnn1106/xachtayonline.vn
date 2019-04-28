@@ -672,8 +672,8 @@ class AdsController extends Controller
         $personal_ads_count = $personal_ads_count->count();
 
         $title = trans('app.post_an_ad');
-        $categories = Category::where('category_id', 0)->get();
-        $countries = Country::all();
+        $categories = Category::where('category_id', 0)->whereIsActive(1)->get();
+        $countries = Country::whereIn('country_code', ['US', 'JP', 'KOR', 'MY', 'SG', 'HK', 'PH', 'TL', 'ID', 'VN'])->get();
 
         $selected_categories = Category::find($request->category);
         $selected_sub_categories = Category::find($request->sub_category);

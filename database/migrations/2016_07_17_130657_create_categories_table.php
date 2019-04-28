@@ -21,6 +21,7 @@ class CreateCategoriesTable extends Migration
             $table->string('fa_icon');
             $table->string('color_class');
             $table->string('description');
+            $table->boolean('is_active');
 
             $table->integer('product_count');
             $table->timestamps();

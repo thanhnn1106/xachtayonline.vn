@@ -59,7 +59,7 @@
                                     <select class="form-control select2" name="sub_category">
                                         <option value="">@lang('app.select_a_category')</option>
                                         @foreach($top_categories as $category)
-                                            @if($category->sub_categories->count() > 0)
+                                           @if($category->sub_categories->count() > 0)
                                                 <optgroup label="{{ $category->category_name }}">
                                                     @foreach($category->sub_categories as $sub_category)
                                                         <option value="{{ $sub_category->id }}" {{ old('category') == $sub_category->id ? 'selected': '' }}>{{ $sub_category->category_name }}</option>
@@ -110,31 +110,30 @@
                         <div class="modern-home-cat-with-sub-wrap">
 
                             @foreach($top_categories as $category)
-                                <div class="modern-cat-list-with-sub-wrap">
-                                    <div class="modern-home-cat-top-item">
-                                        <a href="{{ route('listing') }}?category={{$category->id}}">
-                                            <i class="fa {{ $category->fa_icon }}"></i>
-                                            <span class="category-name"><strong>{{ $category->category_name }}</strong> </span>
-                                        </a>
-                                    </div>
-
-                                    <div class="modern-home-cat-sub-item">
-                                        @if($category->sub_categories->count())
-                                            <ul class="list-unstyled">
-
-                                                @foreach($category->sub_categories as $s_cat)
-
-                                                    <li><a href="{{ route('listing') }}?category={{$category->id}}&sub_category={{$s_cat->id}}">
-                                                            <i class="fa fa-arrow-right"></i> {{ $s_cat->category_name }}
-                                                        </a></li>
-                                                @endforeach
-                                            </ul>
-
-                                        @endif
-                                    </div>
-                                    <div class="clearfix"></div>
+                            <div class="modern-cat-list-with-sub-wrap">
+                                <div class="modern-home-cat-top-item">
+                                    <a href="{{ route('listing') }}?category={{$category->id}}">
+                                        <i class="fa {{ $category->fa_icon }}"></i>
+                                        <span class="category-name"><strong>{{ $category->category_name }}</strong> </span>
+                                    </a>
                                 </div>
 
+                                <div class="modern-home-cat-sub-item">
+                                    @if($category->sub_categories->count())
+                                        <ul class="list-unstyled">
+
+                                            @foreach($category->sub_categories as $s_cat)
+
+                                                <li><a href="{{ route('listing') }}?category={{$category->id}}&sub_category={{$s_cat->id}}">
+                                                        <i class="fa fa-arrow-right"></i> {{ $s_cat->category_name }}
+                                                    </a></li>
+                                            @endforeach
+                                        </ul>
+
+                                    @endif
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
                             @endforeach
 
                         </div>
@@ -170,6 +169,7 @@
                     <hr />
                     <div class="themeqx_new_regular_ads_wrap themeqx-carousel-ads">
                         @foreach($urgent_ads as $ad)
+                            @if ($ad->category->is_active == 1)
                             <div>
                                 <div itemscope itemtype="http://schema.org/Product" class="ads-item-thumbnail ad-box-{{$ad->price_plan}}">
                                     <div class="ads-thumbnail">
@@ -205,6 +205,7 @@
                                     @endif
                                 </div>
                             </div>
+                            @endif
                         @endforeach
                     </div> <!-- themeqx_new_premium_ads_wrap -->
                 </div>
@@ -226,6 +227,7 @@
                     <hr />
                     <div class="themeqx_new_regular_ads_wrap themeqx-carousel-ads">
                         @foreach($premium_ads as $ad)
+                            @if ($ad->category->is_active == 1)
                             <div>
                                 <div itemscope itemtype="http://schema.org/Product" class="ads-item-thumbnail ad-box-{{$ad->price_plan}}">
                                     <div class="ads-thumbnail">
@@ -259,10 +261,9 @@
                                     @if($ad->mark_ad_urgent == '1')
                                         <div class="ribbon-wrapper-red"><div class="ribbon-red">@lang('app.urgent')</div></div>
                                     @endif
-
-
                                 </div>
                             </div>
+                            @endif
                         @endforeach
                     </div> <!-- themeqx_new_premium_ads_wrap -->
                 </div>
@@ -300,6 +301,7 @@
 
                     <div class="themeqx_new_premium_ads_wrap themeqx-carousel-ads">
                         @foreach($regular_ads as $ad)
+                            @if ($ad->category->is_active == 1)
                             <div>
                                 <div itemscope itemtype="http://schema.org/Product" class="ads-item-thumbnail ad-box-{{$ad->price_plan}}">
                                     <div class="ads-thumbnail">
@@ -335,6 +337,7 @@
                                     @endif
                                 </div>
                             </div>
+                        @endif
                         @endforeach
                     </div> <!-- themeqx_new_premium_ads_wrap -->
                 </div>
