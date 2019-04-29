@@ -500,4 +500,8 @@ return [
     'default_style'             => 'Default Style',
     'default_style_help_text'             => 'Set a default color scheme',
 
+    //29/04/2019
+    'status' => 'Trạng thái',
+    'active' => 'Hiển thị',
+    'inactive' => 'Không hiển thị',
 ];

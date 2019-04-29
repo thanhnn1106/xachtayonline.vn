@@ -18,9 +18,8 @@ class BrandsController extends Controller
     public function index()
     {
         $title = trans('app.brands');
-        $brands = Brand::all();
-        $categories = Category::where('category_id', 0)->get();
-
+        $brands = Brand::orderBy('category_id')->get();
+        $categories = Category::where('category_id', 0)->whereIsActive(1)->get();
 
         return view('admin.brands', compact('title', 'brands', 'categories'));
     }
@@ -81,7 +80,7 @@ class BrandsController extends Controller
         $title = trans('app.edit_brand');
         $edit_brand = Brand::find($id);
 
-        $categories = Category::where('category_id', 0)->get();
+        $categories = Category::where('category_id', 0)->whereIsActive(1)->get();
 
         if ( ! $edit_brand)
             return redirect(route('parent_categories'))->with('error', trans('app.request_url_not_found'));

@@ -93,9 +93,19 @@
                             </div>
                         </div>
 
-
-
-
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">@lang('app.status')</label>
+                            <div class="col-sm-8">
+                                <div class="i-checks">
+                                    <input id="status_1" type="radio" value="1" @if ($edit_category->is_active == 1) checked="checked" @endif name="is_active" class="form-control-custom radio-custom">
+                                    <label for="status_1">@lang('app.active')</label>
+                                </div>
+                                <div class="i-checks">
+                                    <input id="status_0" type="radio" value="0" @if ($edit_category->is_active != 1) checked="checked" @endif name="is_active" class="form-control-custom radio-custom">
+                                    <label for="status_0">@lang('app.inactive')</label>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="form-group">
                             <div class="col-sm-offset-4 col-sm-8">

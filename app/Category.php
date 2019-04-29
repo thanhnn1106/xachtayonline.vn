@@ -9,7 +9,10 @@ class Category extends Model
     protected $guarded = [];
     
     public function sub_categories(){
-        return $this->hasMany('App\Sub_Category');
+        if (strpos(url()->current(), 'dashboard')) {
+            return $this->hasMany('App\Sub_Category');
+        }
+        return $this->hasMany('App\Sub_Category')->whereIsActive(1);
     }
 
     public function brands(){

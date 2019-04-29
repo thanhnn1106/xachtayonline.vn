@@ -6,7 +6,7 @@
 
                 <div class="col-sm-4 col-xs-12">
                     <div class="footer-widget">
-                        <h4>About Us</h4>
+                        <h4>Về chúng tôi</h4>
                         <p>{{ get_option('footer_about_us') }}</p>
                         <p>{!! get_option('footer_about_us_read_more_text') !!}</p>
                     </div>

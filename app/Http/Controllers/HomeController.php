@@ -21,7 +21,7 @@ class HomeController extends Controller
         $limit_urgent_ads = get_option('number_of_urgent_ads_in_home');
 
         $sliders = Slider::all();
-        $countries = Country::whereIn('country_code', ['US', 'JP', 'KOR', 'MY', 'SG', 'HK', 'PH', 'TL', 'ID', 'VN'])->get();
+        $countries = Country::whereIn('country_code', ['US', 'JP', 'KR', 'MY', 'SG', 'HK', 'PH', 'TL', 'ID', 'VN'])->get();
         $top_categories = Category::whereCategoryId(0)
             ->orderBy('category_name', 'asc')
             ->whereIsActive(1)

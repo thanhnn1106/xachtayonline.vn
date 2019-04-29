@@ -25,6 +25,21 @@ class CategoriesController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     *
+     * parent categories
+     */
+    public function index_admin()
+    {
+        $title = trans('app.categories');
+        $categories = Category::where('category_id', 0)->get();
+
+        return view('admin.categories', compact('title', 'categories'));
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -60,6 +75,7 @@ class CategoriesController extends Controller
             'fa_icon'       => $request->fa_icon,
             'color_class'   => $request->color_class,
             'description'   => $request->description,
+            'is_active'     => $request->is_active,
         ];
 
         Category::create($data);
@@ -125,6 +141,7 @@ class CategoriesController extends Controller
             'fa_icon'       => $request->fa_icon,
             'color_class'   => $request->color_class,
             'description'   => $request->description,
+            'is_active'     => $request->is_active,
         ];
         Category::where('id', $id)->update($data);
 

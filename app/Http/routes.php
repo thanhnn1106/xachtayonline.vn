@@ -108,7 +108,7 @@ Route::group(['prefix'=>'dashboard', 'middleware' => 'dashboard'], function(){
         });
 
         Route::group(['prefix'=>'categories'], function(){
-            Route::get('/', ['as'=>'parent_categories', 'uses' => 'CategoriesController@index']);
+            Route::get('/', ['as'=>'parent_categories', 'uses' => 'CategoriesController@index_admin']);
             Route::post('/', ['uses' => 'CategoriesController@store']);
 
             Route::get('edit/{id}', ['as'=>'edit_categories', 'uses' => 'CategoriesController@edit']);

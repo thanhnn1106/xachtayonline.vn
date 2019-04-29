@@ -36,23 +36,29 @@ class Ad extends Model
     }
 
     public function scopeActivePremium($query){
-        return $query->whereStatus(1)->wherePricePlan('premium');
+        return $query->whereStatus(1)->wherePricePlan('premium')
+            ->whereIn('country_id', ['98', '102', '109', '116', '132', '173', '196', '217', '231', '238']);
     }
 
     public function scopeActiveRegular($query){
-        return $query->whereStatus(1)->wherePricePlan('regular');
+        return $query->whereStatus(1)->wherePricePlan('regular')
+            ->whereIn('country_id', ['98', '102', '109', '116', '132', '173', '196', '217', '231', '238']);
     }
     public function scopeActiveUrgent($query){
-        return $query->whereStatus(1)->whereMarkAdUrgent(1);
+        return $query->whereStatus(1)->whereMarkAdUrgent(1)
+            ->whereIn('country_id', ['98', '102', '109', '116', '132', '173', '196', '217', '231', '238']);
     }
     public function scopeActive($query){
-        return $query->whereStatus(1);
+        return $query->whereStatus(1)
+            ->whereIn('country_id', ['98', '102', '109', '116', '132', '173', '196', '217', '231', '238']);
     }
     public function scopeBusiness($query){
-        return $query->whereType('business');
+        return $query->whereType('business')
+            ->whereIn('country_id', ['98', '102', '109', '116', '132', '173', '196', '217', '231', '238']);
     }
     public function scopePersonal($query){
-        return $query->whereType('personal');
+        return $query->whereType('personal')
+            ->whereIn('country_id', ['98', '102', '109', '116', '132', '173', '196', '217', '231', '238']);
     }
     public function feature_img(){
         $feature_img = $this->hasOne(Media::class)->whereIsFeature(1);

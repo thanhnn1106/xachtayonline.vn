@@ -179,17 +179,17 @@
                 @endif
                 <li><a href="{{ route('contact_us_page') }}"> <i class="fa fa-mail-forward"></i>@lang('app.contact_us')</a></li>
 
-                    @if(get_option('enable_language_switcher') == 1)
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Language <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{{ route('switch_language', 'en') }}">English</a></li>
-                                @foreach(get_languages() as $lang)
-                                    <li><a href="{{ route('switch_language', $lang->language_code) }}">{{ $lang->language_name }}</a></li>
-                                @endforeach
-                            </ul>
-                        </li>
-                    @endif
+                    {{--@if(get_option('enable_language_switcher') == 1)--}}
+                        {{--<li class="dropdown">--}}
+                            {{--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Language <span class="caret"></span></a>--}}
+                            {{--<ul class="dropdown-menu">--}}
+                                {{--<li><a href="{{ route('switch_language', 'vn') }}">English</a></li>--}}
+                                {{--@foreach(get_languages() as $lang)--}}
+                                    {{--<li><a href="{{ route('switch_language', $lang->language_code) }}">{{ $lang->language_name }}</a></li>--}}
+                                {{--@endforeach--}}
+                            {{--</ul>--}}
+                        {{--</li>--}}
+                    {{--@endif--}}
             </ul>
 
 
