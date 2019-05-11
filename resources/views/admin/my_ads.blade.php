@@ -27,18 +27,24 @@
                                 @foreach($ads as $ad)
                                     <tr>
                                         <td width="100">
-                                            <img src="{{ media_url($ad->feature_img) }}" class="thumb-listing-table" alt="">
+                                            <img src="{{ media_url($ad->feature_img) }}" class="thumb-listing-table"
+                                                 alt="">
                                         </td>
                                         <td>
-                                            <h5><a href="{{ route('single_ad', $ad->slug) }}" target="_blank">{{ $ad->title }}</a> ({!! $ad->status_context() !!})</h5>
+                                            <h5><a href="{{ route('single_ad', $ad->slug) }}"
+                                                   target="_blank">{{ $ad->title }}</a> ({!! $ad->status_context() !!})
+                                            </h5>
                                             <p class="text-muted">
-                                                <i class="fa fa-map-marker"></i> {!! $ad->full_address() !!} <br />  <i class="fa fa-clock-o"></i> {{ $ad->posting_datetime()  }}
+                                                <i class="fa fa-map-marker"></i> {!! $ad->full_address() !!} <br/> <i
+                                                        class="fa fa-clock-o"></i> {{ $ad->posting_datetime()  }}
                                             </p>
                                         </td>
 
                                         <td>
-                                            <a href="{{ route('edit_ad', $ad->id) }}" class="btn btn-primary"><i class="fa fa-edit"></i> </a>
-                                            <a href="javascript:;" class="btn btn-danger deleteAds" data-slug="{{ $ad->slug }}"><i class="fa fa-trash"></i> </a>
+                                            <a href="{{ route('edit_ad', $ad->id) }}" class="btn btn-primary"><i
+                                                        class="fa fa-edit"></i> </a>
+                                            <a href="javascript:;" class="btn btn-danger deleteAds"
+                                               data-slug="{{ $ad->slug }}"><i class="fa fa-trash"></i> </a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -62,7 +68,7 @@
 @section('page-js')
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('.deleteAds').on('click', function () {
                 if (!confirm('{{ trans('app.are_you_sure') }}')) {
                     return '';
@@ -86,10 +92,10 @@
 
     <script>
         @if(session('success'))
-            toastr.success('{{ session('success') }}', '{{ trans('app.success') }}', toastr_options);
+        toastr.success('{{ session('success') }}', '{{ trans('app.success') }}', toastr_options);
         @endif
         @if(session('error'))
-            toastr.error('{{ session('error') }}', '{{ trans('app.success') }}', toastr_options);
+        toastr.error('{{ session('error') }}', '{{ trans('app.success') }}', toastr_options);
         @endif
     </script>
 

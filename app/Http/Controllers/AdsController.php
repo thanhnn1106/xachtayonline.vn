@@ -89,7 +89,7 @@ class AdsController extends Controller
         $user_id = Auth::user()->id;
         $title = trans('app.post_an_ad');
         $categories = Category::where('category_id', 0)->get();
-        $countries = Country::all();
+        $countries = Country::whereIn('country_code', ['US', 'JP', 'KR', 'MY', 'SG', 'HK', 'PH', 'TL', 'ID', 'VN'])->get();
         $ads_images = Media::whereUserId($user_id)->whereAdId(0)->whereRef('ad')->get();
         
         $previous_brands = Brand::where('category_id', old('category'))->get();
@@ -263,7 +263,7 @@ class AdsController extends Controller
         }
         
         $categories = Category::where('category_id', 0)->get();
-        $countries = Country::all();
+        $countries = Country::whereIn('country_code', ['US', 'JP', 'KR', 'MY', 'SG', 'HK', 'PH', 'TL', 'ID', 'VN'])->get();
         $ads_images = Media::whereUserId($user_id)->whereAdId(0)->whereRef('ad')->get();
 
         $previous_brands = Brand::where('category_id', $ad->sub_category_id)->get();

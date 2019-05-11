@@ -25,7 +25,7 @@ class LocationController extends Controller
 
     public function stateList(){
         $title = trans('app.states');
-        $countries = Country::all();
+        $countries = Country::whereIn('country_code', ['US', 'JP', 'KR', 'MY', 'SG', 'HK', 'PH', 'TL', 'ID', 'VN'])->get();
         return view('admin.states', compact('title', 'countries'));
     }
 
@@ -67,7 +67,7 @@ class LocationController extends Controller
     public function stateEdit($id){
         $state = State::find($id);
         $title = trans('app.edit_state');
-        $countries = Country::all();
+        $countries = Country::whereIn('country_code', ['US', 'JP', 'KR', 'MY', 'SG', 'HK', 'PH', 'TL', 'ID', 'VN'])->get();
         return view('admin.state_edit', compact('title', 'countries', 'state'));
     }
     
@@ -104,7 +104,7 @@ class LocationController extends Controller
 
     public function cityList(){
         $title = trans('app.cities');
-        $countries = Country::all();
+        $countries = Country::whereIn('country_code', ['US', 'JP', 'KR', 'MY', 'SG', 'HK', 'PH', 'TL', 'ID', 'VN'])->get();
         return view('admin.cities', compact('title', 'countries'));
     }
 
@@ -150,7 +150,7 @@ class LocationController extends Controller
             return view('admin.error.error_404');
 
         $title = trans('app.edit_city');
-        $countries = Country::all();
+        $countries = Country::whereIn('country_code', ['US', 'JP', 'KR', 'MY', 'SG', 'HK', 'PH', 'TL', 'ID', 'VN'])->get();
         
         $states = null;
         if ($city->state) 

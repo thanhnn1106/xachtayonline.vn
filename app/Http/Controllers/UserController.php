@@ -65,7 +65,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $countries = Country::all();
+        $countries = Country::whereIn('country_code', ['US', 'JP', 'KR', 'MY', 'SG', 'HK', 'PH', 'TL', 'ID', 'VN'])->get();
         return view('theme.user_create', compact('countries'));
     }
 
@@ -164,7 +164,7 @@ class UserController extends Controller
     public function profileEdit(){
         $title = trans('app.profile_edit');
         $user = Auth::user();
-        $countries = Country::all();
+        $countries = Country::whereIn('country_code', ['US', 'JP', 'KR', 'MY', 'SG', 'HK', 'PH', 'TL', 'ID', 'VN'])->get();
 
         return view('admin.profile_edit', compact('title', 'user', 'countries'));
     }
@@ -226,7 +226,7 @@ class UserController extends Controller
 
     public function addAdministrator(){
         $title = trans('app.add_administrator');
-        $countries = Country::all();
+        $countries = Country::whereIn('country_code', ['US', 'JP', 'KR', 'MY', 'SG', 'HK', 'PH', 'TL', 'ID', 'VN'])->get();
 
         return view('admin.add_administrator', compact('title', 'countries'));
     }
