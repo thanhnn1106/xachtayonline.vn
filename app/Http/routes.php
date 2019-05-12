@@ -31,6 +31,8 @@ Route::post('save-ad-as-favorite', ['as' => 'save_ad_as_favorite', 'uses'=>'User
 Route::post('report-post', ['as' => 'report_ads_pos', 'uses'=>'AdsController@reportAds']);
 Route::post('reply-by-email', ['as' => 'reply_by_email_post', 'uses'=>'UserController@replyByEmailPost']);
 
+Route::get('verify/{email}/{activation_code}', ['as' => 'verify_email', 'uses'=>'UserController@verifyEmail']);
+
 // Password reset routes...
 Route::post('send-password-reset-link', ['as' => 'send_reset_link', 'uses'=>'Auth\PasswordController@postEmail']);
 Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');

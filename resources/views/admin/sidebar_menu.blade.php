@@ -2,6 +2,7 @@
 <div class="navbar-default sidebar" role="navigation">
     <div class="sidebar-nav navbar-collapse">
         <ul class="nav" id="side-menu">
+            @if($lUser->is_admin())
             <li>
                 <a href="{{ route('dashboard') }}"><i class="fa fa-dashboard fa-fw"></i> @lang('app.dashboard')</a>
             </li>
@@ -15,9 +16,6 @@
                     <li>  <a href="{{ route('favorite_ads') }}">@lang('app.favourite_ads')</a> </li>
                 </ul>
             </li>
-
-            @if($lUser->is_admin())
-
             <li> <a href="{{ route('parent_categories') }}"><i class="fa fa-list"></i> @lang('app.categories')</a>  </li>
             <li> <a href="{{ route('admin_brands') }}"><i class="fa fa-adjust"></i> @lang('app.brands')</a>  </li>
             <li>

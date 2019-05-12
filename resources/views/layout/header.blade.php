@@ -74,7 +74,7 @@
                     <ul class="nav nav-pills">
                         @if(get_option('site_phone_number'))
                             <li>
-                                <a href="callto://+{{get_option('site_phone_number')}}">
+                                <a href="tel:{{get_option('site_phone_number')}}">
                                     <i class="fa fa-phone"></i>
                                     +{{ get_option('site_phone_number') }}
                                 </a>
@@ -103,11 +103,13 @@
                                     <i class="fa fa-user"></i>
                                     @lang('app.hi'), {{ $logged_user->name }} </a>
                             </li>
+                            @if($lUser->is_admin())
                             <li>
                                 <a href="{{ route('dashboard') }}">
                                     <i class="fa fa-dashboard"></i>
                                     Dashboard </a>
                             </li>
+                            @endif
                             <li>
                                 <a href="{{ route('logout') }}">
                                     <i class="fa fa-sign-out"></i>
@@ -121,12 +123,12 @@
 
                     {{ Form::open(['route'=>'login','class'=> 'navbar-form navbar-right', 'role'=> 'form']) }}
                     <div class="form-group">
-                        <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="email address">
+                        <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="{{ trans('app.email_address') }}">
                     </div>
                     <div class="form-group">
-                        <input  type="password" class="form-control" name="password" placeholder="Password">
+                        <input  type="password" class="form-control" name="password" placeholder="{{ trans('app.password') }}">
                     </div>
-                    <button type="submit" class="btn btn-success">@lang('app.sign_in')</button>
+                    <button type="submit" class="btn btn-success">@lang('app.login')</button>
                     {{ Form::close() }}
                 @endif
 
@@ -172,8 +174,9 @@
                     <li><a href="{{ route('login') }}"> <i class="fa fa-lock"></i>  {{ trans('app.login') }}  </a>  </li>
                     <li><a href="{{ route('user.create') }}"> <i class="fa fa-save"></i>  {{ trans('app.register') }}</a></li>
                 @endif
-
-                <li><a href="{{ route('create_ad') }}"> <i class="fa fa-tag"></i> @lang('app.post_an_ad')</a></li>
+                @if(Auth::check() && $lUser->is_admin())
+                    <li><a href="{{ route('create_ad') }}"> <i class="fa fa-tag"></i> @lang('app.post_an_ad')</a></li>
+                @endif
                 @if(get_option('show_blog_in_header'))
                     <li><a href="{{ route('blog') }}"> <i class="fa fa-rss"></i> @lang('app.blog')</a></li>
                 @endif
