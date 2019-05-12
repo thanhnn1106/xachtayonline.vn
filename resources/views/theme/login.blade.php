@@ -2,13 +2,12 @@
 @section('title') Log-In | @parent @endsection
 
 @section('main')
-
     <div class="container">
         <div class="row">
             <div class="col-sm-6 col-sm-offset-3 col-xs-12">
 
                 <div class="login">
-                    <h3 class="authTitle">Login or <a href="{{ route('user.create') }}">Sign up</a></h3>
+                    <h3 class="authTitle">Đăng nhập hoặc <a href="{{ route('user.create') }}">Đăng ký</a></h3>
 
                     @if(get_option('enable_social_login') == 1)
 
@@ -123,6 +122,9 @@
         var options = {closeButton : true};
         @if(session('error'))
             toastr.error('{{ session('error') }}', 'Error!', options)
+        @endif
+        @if(session('success'))
+            toastr.success('{{ session('success') }}', 'Success!', options)
         @endif
     </script>
 @endsection
