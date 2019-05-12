@@ -30,7 +30,7 @@ class CreateUsersTable extends Migration
             $table->string('photo');
             $table->enum('photo_storage', ['s3', 'public'])->default(null);
 
-            $table->enum('user_type', ['user', 'admin']);
+            $table->enum('user_type', ['user', 'admin', 'shipper']);
             //active_status 0:pending, 1:active, 2:block;
             $table->enum('active_status', [0,1,2]);
             //is_email_verified 0:unverified, 1:verified
