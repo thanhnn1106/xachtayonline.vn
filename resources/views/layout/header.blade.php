@@ -123,12 +123,12 @@
 
                     {{ Form::open(['route'=>'login','class'=> 'navbar-form navbar-right', 'role'=> 'form']) }}
                     <div class="form-group">
-                        <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="email address">
+                        <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="{{ trans('app.email_address') }}">
                     </div>
                     <div class="form-group">
-                        <input  type="password" class="form-control" name="password" placeholder="Password">
+                        <input  type="password" class="form-control" name="password" placeholder="{{ trans('app.password') }}">
                     </div>
-                    <button type="submit" class="btn btn-success">@lang('app.sign_in')</button>
+                    <button type="submit" class="btn btn-success">@lang('app.login')</button>
                     {{ Form::close() }}
                 @endif
 

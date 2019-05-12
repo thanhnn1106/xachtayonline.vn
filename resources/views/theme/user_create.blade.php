@@ -129,7 +129,7 @@
                         </div>
 
                         <div class="col-sm-12">
-                            {!! $errors->has('password')? '<p class="help-block">You must agree with terms and condition</p>':'' !!}
+                            {!! $errors->has('password') ? '<p class="help-block">' . trans("app.you_must_agree_with_term_and_condition") . '</p>':'' !!}
                         </div>
                     </div>
 

@@ -7,7 +7,7 @@
             <div class="col-sm-6 col-sm-offset-3 col-xs-12">
 
                 <div class="login">
-                    <h3 class="authTitle">Đăng nhập hoặc <a href="{{ route('user.create') }}">Đăng ký</a></h3>
+                    <h3 class="authTitle">{{ trans('app.login') }} {{ trans('app.or') }} <a href="{{ route('user.create') }}">{{ trans('app.register') }}</a></h3>
 
                     @if(get_option('enable_social_login') == 1)
 
@@ -37,7 +37,7 @@
                         <div class="row row-sm-offset-3 loginOr">
                             <div class="col-xs-12">
                                 <hr class="hrOr">
-                                <span class="spanOr">or</span>
+                                <span class="spanOr">{{ trans('app.or') }}</span>
                             </div>
                         </div>
 
@@ -49,7 +49,7 @@
 
                             <div class="input-group {{ $errors->has('email')? 'has-error':'' }}">
                                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="email address">
+                                <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="{{ trans('app.email_address') }}">
 
                             </div>
                             {!! $errors->has('email')? '<p class="help-block">'.$errors->first('email').'</p>':'' !!}
@@ -57,12 +57,12 @@
 
                             <div class="input-group {{ $errors->has('password')? 'has-error':'' }}">
                                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                <input  type="password" class="form-control" name="password" placeholder="Password">
+                                <input  type="password" class="form-control" name="password" placeholder="{{ trans('app.password') }}">
                             </div>
                             {!! $errors->has('password')? '<p class="help-block">'.$errors->first('password').'</p>':'' !!}
 
                             <span class="help-block"></span>
-                            <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+                            <button class="btn btn-lg btn-primary btn-block" type="submit">{{ trans('app.login') }}</button>
                             {{ Form::close() }}
                         </div>
                     </div>
@@ -70,7 +70,7 @@
                         <div class="col-xs-12">
                             <div class="col-xs-12 col-sm-6">
                                 <label class="checkbox">
-                                    <input type="checkbox" value="remember-me">Remember Me
+                                    <input type="checkbox" value="remember-me">{{ trans('app.remember_me') }}
                                 </label>
                             </div>
                             <div class="col-xs-12 col-sm-6">

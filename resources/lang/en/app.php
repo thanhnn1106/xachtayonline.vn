@@ -3,6 +3,8 @@
 return [
     'login'                 => 'Login',
     'register'              => 'Register',
+    'or'                    => 'or',
+    'remember_me'           => 'Remember me',
     'action'                => 'Action',
     'error_msg'             => 'Something went wrong, please try again',
     'registration_success'  => 'Registration Success',
@@ -402,7 +404,7 @@ return [
     'post_has_been_updated' => 'Post has been updated',
     'update_page'           => 'Update Page',
     'operation_success'     => 'Operation Success',
-    'blog'                  => 'Blog',
+    'blog'                  => 'Tin tức',
     'posts'                 => 'Posts',
     'create_new_post'       => 'Create New Post',
     'edit_post'             => 'Edit Post',
@@ -500,4 +502,12 @@ return [
     'default_style'             => 'Default Style',
     'default_style_help_text'             => 'Set a default color scheme',
 
+    //29/04/2019
+    'status' => 'Status',
+    'active' => 'Active',
+    'inactive' => 'Inactive',
+
+    //13/05/2019
+    'search_product' => 'Search product',
+    'you_must_agree_with_term_and_condition' => 'You must agree with terms and condition'
 ];
