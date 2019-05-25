@@ -92,8 +92,15 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'quantity' => [
+            'required' => 'Không được bỏ trống số lượng',
+            'min' => 'Số lượng không được nhỏ hơn :min.',
+        ],
+        'total_amount' => [
+            'required' => 'Không được bỏ trống số lượng',
+        ],
+        'bank_reciept' => [
+            'required' => 'Không được bỏ trống hoá đơn thanh toán',
         ],
     ],
 

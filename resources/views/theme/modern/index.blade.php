@@ -193,7 +193,7 @@
                                             <a class="location text-muted" href="{{ route('listing', ['city' => $ad->city->id]) }}"> <i class="fa fa-location-arrow"></i> {{ $ad->city->city_name }} </a>
                                         @endif
                                         <p class="date-posted text-muted"> <i class="fa fa-clock-o"></i> {{ $ad->created_at->diffForHumans() }}</p>
-                                        <p class="price"> <span itemprop="price" content="{{$ad->price}}"> {{ themeqx_price_ng($ad->price, $ad->is_negotiable) }} </span></p>
+                                        <p class="price"> <span itemprop="price" content="{{$ad->price}}"> {{ themeqx_price_ng(number_format($ad->price), $ad->is_negotiable) }} </span></p>
                                         <link itemprop="availability" href="http://schema.org/InStock" />
                                     </div>
 
@@ -513,6 +513,14 @@
                 $('#loaderListingIcon').hide('slow');
             }
         }
+
+        var options = {closeButton: true};
+        @if(session('error'))
+            toastr.error('{{ session('error') }}', 'Error!', options)
+        @endif
+        @if(session('success'))
+            toastr.success('{{ session('success') }}', 'Success!', options)
+        @endif
 
         $(document).ready(function(){
             $('[name="country"]').change(function(){

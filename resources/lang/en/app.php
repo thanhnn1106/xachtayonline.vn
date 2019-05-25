@@ -509,5 +509,6 @@ return [
 
     //13/05/2019
     'search_product' => 'Search product',
-    'you_must_agree_with_term_and_condition' => 'You must agree with terms and condition'
+    'you_must_agree_with_term_and_condition' => 'You must agree with terms and condition',
+    'order' => 'Order'
 ];

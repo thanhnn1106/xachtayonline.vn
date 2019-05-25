@@ -1,20 +1,6 @@
 @extends('layout.main')
 @section('title') @if( ! empty($title)) {{ $title }} | @endif @parent @endsection
 
-@section('social-meta')
-    <meta property="og:title" content="{{ $ad->title }}">
-    <meta property="og:description" content="{{ substr(trim(preg_replace('/\s\s+/', ' ',strip_tags($ad->description) )),0,160) }}">
-    @if($ad->media_img->first())
-        <meta property="og:image" content="{{ media_url($ad->media_img->first(), true) }}">
-    @else
-        <meta property="og:image" content="{{ asset('uploads/placeholder.png') }}">
-    @endif
-    <meta property="og:url" content="{{ route('single_ad', $ad->slug) }}">
-    <meta name="twitter:card" content="summary_large_image">
-    <!--  Non-Essential, But Recommended -->
-    <meta name="og:site_name" content="{{ get_option('site_name') }}">
-@endsection
-
 @section('page-css')
     <link rel="stylesheet" href="{{ asset('assets/plugins/fotorama-4.6.4/fotorama.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/owl.carousel/assets/owl.carousel.css') }}">
@@ -30,7 +16,9 @@
                     <div class="modern-single-ad-breadcrumb">
                         <ol class="breadcrumb">
                             <li><a href="{{ route('home') }}">@lang('app.home')</a></li>
-                            <li><a href="{{ route('listing', ['category' => $ad->category->id]) }}">  {{ $ad->category->category_name }} </a> </li>
+                            <li>
+                                <a href="{{ route('listing', ['category' => $ad->category->id]) }}">  {{ $ad->category->category_name }} </a>
+                            </li>
                             <li>{{ $ad->title }}</li>
                         </ol><!-- breadcrumb -->
                         <h2 class="modern-single-ad-top-title">{{ $ad->title }}</h2>
@@ -45,39 +33,42 @@
 
                     <div class="col-sm-7 col-xs-12">
                         @if ( ! $ad->is_published())
-                            <div class="alert alert-warning"> <i class="fa fa-warning"></i> @lang('app.ad_not_published_warning')</div>
+                            <div class="alert alert-warning">
+                                <i class="fa fa-warning"></i> @lang('app.ad_not_published_warning')</div>
                         @endif
 
 
-                            @if( ! empty($ad->video_url))
-                                <?php
-                                $video_url = $ad->video_url;
-                                if (strpos($video_url, 'youtube') > 0) {
-                                    preg_match("/^(?:http(?:s)?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user)\/))([^\?&\"'>]+)/", $video_url, $matches);
-                                    if ( ! empty($matches[1])){
-                                        echo '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/'.$matches[1].'" frameborder="0" allowfullscreen></iframe></div>';
-                                    }
+                        @if( ! empty($ad->video_url))
+                            <?php
+                            $video_url = $ad->video_url;
+                            if (strpos($video_url, 'youtube') > 0) {
+                                preg_match("/^(?:http(?:s)?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user)\/))([^\?&\"'>]+)/",
+                                    $video_url, $matches);
+                                if (!empty($matches[1])) {
+                                    echo '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/' . $matches[1] . '" frameborder="0" allowfullscreen></iframe></div>';
+                                }
 
-                                } elseif (strpos($video_url, 'vimeo') > 0) {
-                                    if (preg_match('%^https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)(?:[?]?.*)$%im', $video_url, $regs)) {
-                                       if (!empty($regs[3])){
-                                           echo '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://player.vimeo.com/video/'.$regs[3].'" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>';
-                                       }
+                            } elseif (strpos($video_url, 'vimeo') > 0) {
+                                if (preg_match('%^https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)(?:[?]?.*)$%im',
+                                    $video_url, $regs)) {
+                                    if (!empty($regs[3])) {
+                                        echo '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://player.vimeo.com/video/' . $regs[3] . '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>';
                                     }
                                 }
-                                ?>
+                            }
+                            ?>
 
-                            @else
+                        @else
 
-                                <div class="ads-gallery">
-                                    <div class="fotorama"  data-nav="thumbs" data-allowfullscreen="true" data-width="100%">
-                                        @foreach($ad->media_img as $img)
-                                            <img src="{{ media_url($img, true) }}" alt="{{ $ad->title }}">
-                                        @endforeach
-                                    </div>
+                            <div class="ads-gallery">
+                                <div class="fotorama" data-nav="thumbs" data-allowfullscreen="true" data-width="100%">
+                                    @foreach($ad->media_img as $img)
+                                        <img src="{{ media_url($img, true) }}" alt="{{ $ad->title }}">
+                                    @endforeach
                                 </div>
+                            </div>
 
-                            @endif
+                        @endif
 
                         @if($enable_monetize)
                             {!! get_option('monetize_code_below_ad_image') !!}
@@ -85,13 +76,17 @@
                     </div>
 
                     <div class="col-sm-5 col-xs-12">
-                        <h2 class="ad-title"><a href="{{ route('single_ad', $ad->slug) }}">{{ $ad->title }}</a>  </h2>
+                        <h2 class="ad-title"><a href="{{ route('single_ad', $ad->slug) }}">{{ $ad->title }}</a></h2>
                         <div class="ads-detail-meta">
                             <p class="text-muted">
-                                <i class="fa fa-folder-o"></i><a href="{{ route('listing', ['category' => $ad->category->id]) }}">  {{ $ad->category->category_name }} </a> |
+                                <i class="fa fa-folder-o"></i><a
+                                        href="{{ route('listing', ['category' => $ad->category->id]) }}">  {{ $ad->category->category_name }} </a>
+                                |
 
                                 @if($ad->brand)
-                                    <i class="fa fa-industry"></i><a href="{{ route('listing', ['brand' => $ad->brand->id]) }}">  {{ $ad->brand->brand_name }} </a> |
+                                    <i class="fa fa-industry"></i><a
+                                            href="{{ route('listing', ['brand' => $ad->brand->id]) }}">  {{ $ad->brand->brand_name }} </a>
+                                    |
                                 @endif
                             </p>
                         </div>
@@ -107,27 +102,42 @@
                             {!! get_option('monetize_code_above_general_info') !!}
                         @endif
 
-                        {{--<h3>@lang('app.general_info')</h3>--}}
-                        {{--<p><strong><i class="fa fa-money"></i> @lang('app.price')</strong> {{ themeqx_price_ng($ad->price) }} </p>--}}
-                        {{--<p><strong><i class="fa fa-map-marker"></i>  @lang('app.location') </strong> {!! $ad->full_address() !!} </p>--}}
-                        {{--<p><strong><i class="fa fa-check-circle-o"></i> @lang('app.condition')</strong> {{ $ad->ad_condition }} </p>--}}
-
                         @if($enable_monetize)
                             {!! get_option('monetize_code_below_general_info') !!}
                         @endif
 
                         <div class="modern-social-share-btn-group">
-                            <h4>@lang('app.share_this_ad')</h4>
-                            <a href="#" class="btn btn-default share s_facebook"><i class="fa fa-facebook"></i> </a>
-                            <a href="#" class="btn btn-default share s_plus"><i class="fa fa-google-plus"></i> </a>
-                            <a href="#" class="btn btn-default share s_twitter"><i class="fa fa-twitter"></i> </a>
-                            <a href="#" class="btn btn-default share s_linkedin"><i class="fa fa-linkedin"></i> </a>
-                        </div>
-                        <br>
-                        <div class="row t-5">
-                            <div class="t-5 col-sm-8 col-xs-12">
-                                <a type="button" href="{{ route('order', [$ad->id]) }}" class="btn btn-info btn-lg">{{ trans('app.order') }}</a>
-                            </div>
+                            {{ Form::open(['route'=>'submit_order','class' => '', 'files' => true]) }}
+
+                                <input type="hidden" value="{{ $ad->id }}" id="ad_id" name="ad_id">
+                                <input type="hidden" value="{{ $ad->price }}" id="ad_price" name="ad_price">
+                                <input type="hidden" value="{{ $ad->user_id }}" id="seller_id" name="seller_id">
+                                <div class="form-group {{ $errors->has('quantity')? 'has-error':'' }} ">
+                                    <label for="quantity" class="control-label">Số lượng:</label>
+                                    <input type="number" class="form-control" name="quantity" id="quantity" value="{{ old('quantity') }}" />
+                                    <div id="quantity_info"></div>
+                                    {!! $errors->has('quantity')? '<p class="help-block">'.$errors->first('quantity').'</p>':'' !!}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="total_amount" class="control-label">Tổng tiền:</label>
+                                    <input disabled="disabled" type="text" class="form-control" name="total_amount" id="total_amount" value="{{ old('total_amount') }}" />
+                                    <div id="total_amount_info"></div>
+                                </div>
+
+                                <div class="form-group {{ $errors->has('bank_reciept')? 'has-error':'' }} ">
+                                    <label for="bank_reciept" class="control-label">Hoá đơn chuyển khoản:</label>
+                                    <input type="file" class="form-control" id="bank_reciept" name="bank_reciept" />
+                                    <div id="bank_reciept_info"></div>
+                                    {!! $errors->has('bank_reciept')? '<p class="help-block">'.$errors->first('bank_reciept').'</p>':'' !!}
+                                </div>
+
+                                <div class="row t-5">
+                                    <div class="t-5 col-sm-8 col-xs-12">
+                                        <button type="submit" class="btn btn-info btn-lg">{{ trans('app.order') }}</button>
+                                    </div>
+                                </div>
+                            {{ Form::close() }}
                         </div>
                     </div>
                     <div class="clearfix"></div>
@@ -142,8 +152,13 @@
         <div class="row">
             <div class="col-sm-8 col-xs-12">
                 <div class="ads-detail bg-white">
-                    <h4 class="ads-detail-title">@lang('app.description')</h4>
-                    <p> {!! nl2br($ad->description) !!} </p>
+                    <h4 class="ads-detail-title">Thông tin chuyển khoản</h4>
+                    <div class="col-sm-3 col-xs-12">
+                        <img src="{{ asset('uploads/logo/dongabank.jpeg') }}" class="img-circle img-responsive">
+                    </div>
+                    <p> Chủ tài khoản: NGUYỄN NGỌC THANH </p>
+                    <p> Số tài khoản: 0108419464 </p>
+                    <p> Ngân hàng: Đông Á </p>
 
                     @if($enable_monetize)
                         {!! get_option('monetize_code_below_ad_description') !!}
@@ -161,7 +176,7 @@
                     <div class="sidebar-user-info">
                         <div class="row">
                             <div class="col-xs-3">
-                                <img src="{{ $ad->user->get_gravatar() }}" class="img-circle img-responsive" />
+                                <img src="{{ $ad->user->get_gravatar() }}" class="img-circle img-responsive"/>
                             </div>
                             <div class="col-xs-9">
                                 <h5>{{ $ad->user->name }}</h5>
@@ -172,18 +187,13 @@
 
                     <div class="sidebar-user-link">
                         <button class="btn btn-block" id="onClickShowPhone">
-                            <strong> <span id="ShowPhoneWrap"></span> </strong> <br />
+                            <strong> <span id="ShowPhoneWrap"></span> </strong> <br/>
                             <span class="text-muted">@lang('app.click_to_show_phone_number')</span>
                         </button>
 
-                        @if($ad->user->email)
-                            <button class="btn btn-block" data-toggle="modal" data-target="#replyByEmail">
-                                <i class="fa fa-envelope-o"> @lang('app.reply_by_email')</i>
-                            </button>
-                        @endif
-
                         <ul class="ad-action-list">
-                            <li><a href="{{ route('listing', ['user_id'=>$ad->user_id]) }}"><i class="fa fa-user"></i> @lang('app.more_ads_by_this_seller')</a></li>
+                            <li><a href="{{ route('listing', ['user_id'=>$ad->user_id]) }}"><i
+                                            class="fa fa-user"></i> @lang('app.more_ads_by_this_seller')</a></li>
                             <li><a href="javascript:;" id="save_as_favorite" data-slug="{{ $ad->slug }}">
                                     @if( ! $ad->is_my_favorite())
                                         <i class="fa fa-star-o"></i> @lang('app.save_ad_as_favorite')
@@ -191,7 +201,8 @@
                                         <i class="fa fa-star"></i> @lang('app.remove_from_favorite')
                                     @endif
                                 </a></li>
-                            <li><a href="#" data-toggle="modal" data-target="#reportAdModal"><i class="fa fa-ban"></i> @lang('app.report_this_ad')</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#reportAdModal"><i
+                                            class="fa fa-ban"></i> @lang('app.report_this_ad')</a></li>
                         </ul>
 
                     </div>
@@ -205,65 +216,6 @@
             </div>
         </div>
     </div>
-
-
-
-    @if($related_ads->count() > 0 && get_option('enable_related_ads') == 1)
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="carousel-header">
-                        <h4><a href="{{ route('listing') }}">
-                                @lang('app.new_premium_ads')
-                            </a>
-                        </h4>
-                    </div>
-                    <hr />
-                    <div class="themeqx_new_regular_ads_wrap themeqx-carousel-ads">
-                        @foreach($related_ads as $rad)
-                            <div>
-                                <div itemscope itemtype="http://schema.org/Product" class="ads-item-thumbnail ad-box-{{$rad->price_plan}}">
-                                    <div class="ads-thumbnail">
-                                        <a href="{{ route('single_ad', $rad->slug) }}">
-                                            <img itemprop="image"  src="{{ media_url($rad->feature_img) }}" class="img-responsive" alt="{{ $rad->title }}">
-                                             <span class="modern-img-indicator">
-                                                @if(! empty($rad->video_url))
-                                                     <i class="fa fa-file-video-o"></i>
-                                                 @else
-                                                     <i class="fa fa-file-image-o"> {{ $rad->media_img->count() }}</i>
-                                                 @endif
-                                            </span>
-                                        </a>
-                                    </div>
-                                    <div class="caption">
-                                        <h4><a href="{{ route('single_ad', $rad->slug) }}" title="{{ $rad->title }}"><span itemprop="name">{{ str_limit($rad->title, 40) }} </span></a></h4>
-                                        <a class="price text-muted" href="{{ route('listing', ['category' => $rad->category->id]) }}"> <i class="fa fa-folder-o"></i> {{ $rad->category->category_name }} </a>
-
-                                        @if($rad->city)
-                                            <a class="location text-muted" href="{{ route('listing', ['city' => $rad->city->id]) }}"> <i class="fa fa-location-arrow"></i> {{ $rad->city->city_name }} </a>
-                                        @endif
-                                        <p class="date-posted text-muted"> <i class="fa fa-clock-o"></i> {{ $rad->created_at->diffForHumans() }}</p>
-                                        <p class="price"> <span itemprop="price" content="{{$rad->price}}"> {{ themeqx_price_ng($rad->price, $rad->is_negotiable) }} </span></p>
-                                        <link itemprop="availability" href="http://schema.org/InStock" />
-                                    </div>
-
-                                    @if($rad->price_plan == 'premium')
-                                        <div class="ribbon-wrapper-green"><div class="ribbon-green">{{ ucfirst($rad->price_plan) }}</div></div>
-                                    @endif
-                                    @if($rad->mark_ad_urgent == '1')
-                                        <div class="ribbon-wrapper-red"><div class="ribbon-red">@lang('app.urgent')</div></div>
-                                    @endif
-
-
-                                </div>
-                            </div>
-                        @endforeach
-                    </div> <!-- themeqx_new_premium_ads_wrap -->
-                </div>
-
-            </div>
-        </div>
-    @endif
 
     <div class="modern-post-ad-call-to-cation">
         <div class="container">
@@ -281,7 +233,8 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">@lang('app.report_ad_title')</h4>
                 </div>
                 <div class="modal-body">
@@ -331,7 +284,8 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title"></h4>
                 </div>
 
@@ -359,9 +313,10 @@
 
                 </div>
                 <div class="modal-footer">
-                    <input type="hidden" name="ad_id" value="{{ $ad->id }}" />
+                    <input type="hidden" name="ad_id" value="{{ $ad->id }}"/>
                     <button type="button" class="btn btn-default" data-dismiss="modal">@lang('app.close')</button>
-                    <button type="submit" class="btn btn-primary" id="reply_by_email_btn">@lang('app.send_email')</button>
+                    <button type="submit" class="btn btn-primary"
+                            id="reply_by_email_btn">@lang('app.send_email')</button>
                 </div>
                 </form>
             </div>
@@ -399,97 +354,103 @@
         $.validate();
     </script>
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             $(".themeqx_new_regular_ads_wrap").owlCarousel({
-                loop:true,
-                margin:10,
-                responsiveClass:true,
-                responsive:{
-                    0:{
-                        items:1,
-                        nav:true
+                loop: true,
+                margin: 10,
+                responsiveClass: true,
+                responsive: {
+                    0: {
+                        items: 1,
+                        nav: true
                     },
-                    600:{
-                        items:3,
-                        nav:false
+                    600: {
+                        items: 3,
+                        nav: false
                     },
-                    1000:{
-                        items:4,
-                        nav:true,
-                        loop:false
+                    1000: {
+                        items: 4,
+                        nav: true,
+                        loop: false
                     }
                 },
-                navText : ['<i class="fa fa-arrow-circle-o-left"></i>','<i class="fa fa-arrow-circle-o-right"></i>']
+                navText: ['<i class="fa fa-arrow-circle-o-left"></i>', '<i class="fa fa-arrow-circle-o-right"></i>']
             });
         });
     </script>
     <script>
-        $(function(){
-            $('#onClickShowPhone').click(function(){
+        $(function () {
+            $('#onClickShowPhone').click(function () {
                 $('#ShowPhoneWrap').html('<i class="fa fa-phone"></i> {{ $ad->seller_phone }}');
             });
 
-            $('#save_as_favorite').click(function(){
+            $('#save_as_favorite').click(function () {
                 var selector = $(this);
                 var slug = selector.data('slug');
 
                 $.ajax({
-                    type : 'POST',
-                    url : '{{ route('save_ad_as_favorite') }}',
-                    data : { slug : slug, action: 'add',  _token : '{{ csrf_token() }}' },
-                    success : function (data) {
-                        if (data.status == 1){
+                    type: 'POST',
+                    url: '{{ route('save_ad_as_favorite') }}',
+                    data: {slug: slug, action: 'add', _token: '{{ csrf_token() }}'},
+                    success: function (data) {
+                        if (data.status == 1) {
                             selector.html(data.msg);
-                        }else {
-                            if (data.redirect_url){
-                                location.href= data.redirect_url;
+                        } else {
+                            if (data.redirect_url) {
+                                location.href = data.redirect_url;
                             }
                         }
                     }
                 });
             });
 
-            $('button#report_ad').click(function(){
+            $('button#report_ad').click(function () {
                 var reason = $('[name="reason"]').val();
                 var email = $('[name="email"]').val();
                 var message = $('[name="message"]').val();
                 var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 
                 var error = 0;
-                if(reason.length < 1){
+                if (reason.length < 1) {
                     $('#reason_info').html('<p class="text-danger">Reason required</p>');
                     error++;
-                }else {
+                } else {
                     $('#reason_info').html('');
                 }
-                if(email.length < 1){
+                if (email.length < 1) {
                     $('#email_info').html('<p class="text-danger">Email required</p>');
                     error++;
-                }else {
-                    if ( ! regex.test(email)){
+                } else {
+                    if (!regex.test(email)) {
                         $('#email_info').html('<p class="text-danger">Valid email required</p>');
                         error++;
-                    }else {
+                    } else {
                         $('#email_info').html('');
                     }
                 }
-                if(message.length < 1){
+                if (message.length < 1) {
                     $('#message_info').html('<p class="text-danger">Message required</p>');
                     error++;
-                }else {
+                } else {
                     $('#message_info').html('');
                 }
 
-                if (error < 1){
+                if (error < 1) {
                     $('#loadingOverlay').show();
                     $.ajax({
-                        type : 'POST',
-                        url : '{{ route('report_ads_pos') }}',
-                        data : { reason : reason, email: email,message:message, slug:'{{ $ad->slug }}',  _token : '{{ csrf_token() }}' },
-                        success : function (data) {
-                            if (data.status == 1){
+                        type: 'POST',
+                        url: '{{ route('report_ads_pos') }}',
+                        data: {
+                            reason: reason,
+                            email: email,
+                            message: message,
+                            slug: '{{ $ad->slug }}',
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function (data) {
+                            if (data.status == 1) {
                                 toastr.success(data.msg, '@lang('app.success')', toastr_options);
-                            }else {
+                            } else {
                                 toastr.error(data.msg, '@lang('app.error')', toastr_options);
                             }
                             $('#reportAdModal').modal('hide');
@@ -499,19 +460,19 @@
                 }
             });
 
-            $('#replyByEmailForm').submit(function(e){
+            $('#replyByEmailForm').submit(function (e) {
                 e.preventDefault();
                 var reply_email_form_data = $(this).serialize();
 
                 $('#loadingOverlay').show();
                 $.ajax({
-                    type : 'POST',
-                    url : '{{ route('reply_by_email_post') }}',
-                    data : reply_email_form_data,
-                    success : function (data) {
-                        if (data.status == 1){
+                    type: 'POST',
+                    url: '{{ route('reply_by_email_post') }}',
+                    data: reply_email_form_data,
+                    success: function (data) {
+                        if (data.status == 1) {
                             toastr.success(data.msg, '@lang('app.success')', toastr_options);
-                        }else {
+                        } else {
                             toastr.error(data.msg, '@lang('app.error')', toastr_options);
                         }
                         $('#replyByEmail').modal('hide');
@@ -520,6 +481,34 @@
                 });
             });
 
+            $('#quantity').change(function () {
+                var ad_price = $('#ad_price').val();
+                var quantity = $('#quantity').val();
+                if (quantity < 0) {
+                    quantity = 0;
+                    $('#quantity').val(quantity);
+                }
+                if (quantity > 100) {
+                    quantity = 100;
+                    $('#quantity').val(quantity);
+                }
+
+                $('#total_amount').val((ad_price * quantity).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' VND');
+            })
+            $('#quantity').keyup(function () {
+                var ad_price = $('#ad_price').val();
+                var quantity = $('#quantity').val();
+                if (quantity < 0) {
+                    quantity = 0;
+                    $('#quantity').val(quantity);
+                }
+                if (quantity > 100) {
+                    quantity = 100;
+                    $('#quantity').val(quantity);
+                }
+
+                $('#total_amount').val((ad_price * quantity).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' VND');
+            })
         });
     </script>
 

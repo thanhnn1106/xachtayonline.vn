@@ -229,10 +229,10 @@ return [
     'order_by_premium_ads_in_listing_help_text'     => 'Order by premium ads in listing top page',
     'random'                    => 'Random',
     'personal'                  => 'Personal',
-    'more_ads_by_this_seller'   => 'More ads by this seller',
-    'save_ad_as_favorite'       => 'Save ad as favorite',
-    'remove_from_favorite'      => 'Remove from favorite',
-    'report_this_ad'            => 'Report this ad',
+    'more_ads_by_this_seller'   => 'Tất cả sản phẩm của người này',
+    'save_ad_as_favorite'       => 'Lưu sản phẩm yêu thích',
+    'remove_from_favorite'      => 'Xoá khỏi danh sách yêu thích',
+    'report_this_ad'            => 'Báo cáo sản phẩm',
 
     'slider'                    => 'Slider',
     'sliders'                   => 'Sliders',
@@ -422,7 +422,7 @@ return [
     'disqus_shortname_help_text'    => 'Your unique disqus shortname, ex: shortname.disqus.com',
     'latest_post_from_blog'         => 'Bài viết tin tức mới nhất',
     'click_to_show_phone_number'    => 'Click to show phone number',
-    'reply_by_email'                => 'Reply by email',
+    'reply_by_email'                => 'Trả lời qua mail',
     'show_latest_blog_in_homepage'  => 'Show latest blog in Homepage',
     'blog_post_amount_in_homepage'  => 'Amount of blog post show in Homepage',
     'continue_reading'              => 'Xem tiếp',
@@ -493,7 +493,7 @@ return [
     'number_of_urgent_ads_in_home_help_text'             => 'It will show exact this amount of urgent ads in home page',
     'mark_as_urgent'             => 'Mark as urgent',
     'new_urgent_ads'             => 'Quảng cáo mới HOT',
-    'share_this_ad'             => 'Share this ad',
+    'share_this_ad'             => 'Chia sẻ sản phẩm này',
     'want_something_sell_quickly'             => 'Muốn bán gì đó nhanh chóng?',
     'post_your_ad_quicly'             => 'Hãy đăng sản phẩm của bạn nhanh lên, thông tin cá nhân của bạn sẽ được chúng tôi bảo mật.',
     'video_url'             => 'Video URL',
@@ -509,5 +509,6 @@ return [
 
     //13/05/2019
     'search_product' => 'Tìm kiếm sản phẩm',
-    'you_must_agree_with_term_and_condition' => 'Bạn phải đồng ý với điều kiện và điều khoản.'
+    'you_must_agree_with_term_and_condition' => 'Bạn phải đồng ý với điều kiện và điều khoản.',
+    'order' => 'Đặt hàng'
 ];

@@ -25,7 +25,7 @@ Route::get('blog/author/{id}', ['as' => 'author_blog_posts', 'uses'=>'PostContro
 
 
 Route::get('listing', ['as' => 'listing', 'uses'=>'AdsController@listing']);
-Route::get('ad/{slug}', ['as' => 'single_ad', 'uses'=>'AdsController@singleAd']);
+Route::get('san-pham/{slug}', ['as' => 'single_ad', 'uses'=>'AdsController@singleAd']);
 
 Route::post('save-ad-as-favorite', ['as' => 'save_ad_as_favorite', 'uses'=>'UserController@saveAdAsFavorite']);
 Route::post('report-post', ['as' => 'report_ads_pos', 'uses'=>'AdsController@reportAds']);
@@ -44,6 +44,11 @@ Route::post('get-category-info', ['as'=>'get_category_info', 'uses' => 'AdsContr
 Route::post('get-state-by-country', ['as'=>'get_state_by_country', 'uses' => 'AdsController@getStateByCountry']);
 Route::post('get-city-by-state', ['as'=>'get_city_by_state', 'uses' => 'AdsController@getCityByState']);
 Route::post('switch/product-view', ['as'=>'switch_grid_list_view', 'uses' => 'AdsController@switchGridListView']);
+
+
+// Order
+Route::get('dat-hang/{ad_id}', ['as' => 'order', 'uses'=>'OrderController@order']);
+Route::post('dat-hang/luu', ['as' => 'submit_order', 'uses'=>'OrderController@submitOrder']);
 
 
 

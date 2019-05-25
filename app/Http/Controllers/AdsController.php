@@ -693,11 +693,11 @@ class AdsController extends Controller
         $limit_regular_ads = get_option('number_of_free_ads_in_home');
         $ad = Ad::whereSlug($slug)->first();
 
-        if (! $ad){
+        if (!$ad){
             return view('theme.error_404');
         }
         
-        if ( ! $ad->is_published()){
+        if (!$ad->is_published()){
             if (Auth::check()){
                 $user_id = Auth::user()->id;
                 if ($user_id != $ad->user_id){
