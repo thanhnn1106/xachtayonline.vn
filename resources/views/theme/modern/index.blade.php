@@ -514,6 +514,14 @@
             }
         }
 
+        var options = {closeButton: true};
+        @if(session('error'))
+            toastr.error('{{ session('error') }}', 'Error!', options)
+        @endif
+        @if(session('success'))
+            toastr.success('{{ session('success') }}', 'Success!', options)
+        @endif
+
         $(document).ready(function(){
             $('[name="country"]').change(function(){
                 var country_id = $(this).val();

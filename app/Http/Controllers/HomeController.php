@@ -26,9 +26,21 @@ class HomeController extends Controller
             ->orderBy('category_name', 'asc')
             ->whereIsActive(1)
             ->get();
-        $premium_ads = Ad::activePremium()->with('category', 'city')->limit($limit_premium_ads)->orderBy('id', 'desc')->get();
-        $regular_ads = Ad::activeRegular()->with('category', 'city')->limit($limit_regular_ads)->orderBy('id', 'desc')->get();
-        $urgent_ads = Ad::activeUrgent()->with('category', 'city')->limit($limit_urgent_ads)->orderBy('id', 'desc')->get();
+        $premium_ads = Ad::activePremium()
+            ->with('category', 'city')
+            ->limit($limit_premium_ads)
+            ->orderBy('id', 'desc')
+            ->get();
+        $regular_ads = Ad::activeRegular()
+            ->with('category', 'city')
+            ->limit($limit_regular_ads)
+            ->orderBy('id', 'desc')
+            ->get();
+        $urgent_ads = Ad::activeUrgent()
+            ->with('category', 'city')
+            ->limit($limit_urgent_ads)
+            ->orderBy('id', 'desc')
+            ->get();
 
         $posts = Post::whereType('post')->whereStatus(1)->limit(get_option('blog_post_amount_in_homepage'))->get();
 

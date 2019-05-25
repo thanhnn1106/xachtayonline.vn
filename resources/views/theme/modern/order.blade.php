@@ -109,8 +109,9 @@
                         <div class="modern-social-share-btn-group">
                             {{ Form::open(['route'=>'submit_order','class' => '', 'files' => true]) }}
 
-                                <input type="hidden" value="{{ $ad->id }}" name="ad_id">
-                                <input type="hidden" value="{{ $ad->price }}" id="ad_price" name="ad_id">
+                                <input type="hidden" value="{{ $ad->id }}" id="ad_id" name="ad_id">
+                                <input type="hidden" value="{{ $ad->price }}" id="ad_price" name="ad_price">
+                                <input type="hidden" value="{{ $ad->user_id }}" id="seller_id" name="seller_id">
                                 <div class="form-group {{ $errors->has('quantity')? 'has-error':'' }} ">
                                     <label for="quantity" class="control-label">Số lượng:</label>
                                     <input type="number" class="form-control" name="quantity" id="quantity" value="{{ old('quantity') }}" />
@@ -483,12 +484,12 @@
             $('#quantity').change(function () {
                 var ad_price = $('#ad_price').val();
                 var quantity = $('#quantity').val();
-                $('#total_amount').val((ad_price * quantity).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                $('#total_amount').val((ad_price * quantity).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' VND');
             })
             $('#quantity').keyup(function () {
                 var ad_price = $('#ad_price').val();
                 var quantity = $('#quantity').val();
-                $('#total_amount').val((ad_price * quantity).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                $('#total_amount').val((ad_price * quantity).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' VND');
             })
         });
     </script>

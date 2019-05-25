@@ -23,10 +23,10 @@ class AppServiceProvider extends ServiceProvider
             'filesystems.disks.s3' =>
                 [
                     'driver' => 's3',
-                    'key' => get_option('amazon_key'),
-                    'secret' => get_option('amazon_secret'),
-                    'region' => get_option('amazon_region'),
-                    'bucket' => get_option('bucket'),
+                    'key' => getenv('AWS_ACCESS_KEY_ID'),
+                    'secret' => getenv('AWS_SECRET_ACCESS_KEY'),
+                    'region' => getenv('AWS_DEFAULT_REGION'),
+                    'bucket' => getenv('AWS_BUCKET'),
                 ]
         ];
         $facebookConfig = [
