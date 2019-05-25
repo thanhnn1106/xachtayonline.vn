@@ -99,7 +99,7 @@ return [
         'total_amount' => [
             'required' => 'Không được bỏ trống số lượng',
         ],
-        'bill_payment' => [
+        'bank_reciept' => [
             'required' => 'Không được bỏ trống hoá đơn thanh toán',
         ],
     ],

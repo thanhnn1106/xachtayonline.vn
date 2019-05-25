@@ -484,11 +484,29 @@
             $('#quantity').change(function () {
                 var ad_price = $('#ad_price').val();
                 var quantity = $('#quantity').val();
+                if (quantity < 0) {
+                    quantity = 0;
+                    $('#quantity').val(quantity);
+                }
+                if (quantity > 100) {
+                    quantity = 100;
+                    $('#quantity').val(quantity);
+                }
+
                 $('#total_amount').val((ad_price * quantity).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' VND');
             })
             $('#quantity').keyup(function () {
                 var ad_price = $('#ad_price').val();
                 var quantity = $('#quantity').val();
+                if (quantity < 0) {
+                    quantity = 0;
+                    $('#quantity').val(quantity);
+                }
+                if (quantity > 100) {
+                    quantity = 100;
+                    $('#quantity').val(quantity);
+                }
+
                 $('#total_amount').val((ad_price * quantity).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' VND');
             })
         });
