@@ -55,14 +55,21 @@ return [
             'visibility' => 'public',
         ],
 
-    /*    's3' => [
-            'driver' => 's3',
-            'key' => get_option('amazon_key'),
-            'secret' => get_option('amazon_secret'),
-            'region' => get_option('amazon_region'),
-            'bucket' => get_option('bucket'),
-        ],*/
+//        's3' => [
+//            'driver' => 's3',
+//            'key' => env('AWS_ACCESS_KEY_ID' ,''),
+//            'secret' => env('AWS_SECRET_ACCESS_KEY',''),
+//            'region' => env('AWS_DEFAULT_REGION', ''),
+//            'bucket' => env('AWS_BUCKET', ''),
+//        ],
 
+        's3' => [
+            'driver' => 's3',
+            'key' => 'AKIA5R2ARZUE522N7VIU',
+            'secret' => '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',
+            'region' => 'us-west-2',
+            'bucket' => 'xachtayonline-test',
+        ],
     ],
 
 ];

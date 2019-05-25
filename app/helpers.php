@@ -278,7 +278,13 @@ function themeqx_price_ng($price = 0, $negotiable = 0){
     $ng = $negotiable ? ' ('.trans('app.negotiable').') ' : '';
     $show_price = '';
     if ($price > 0){
-        $show_price = get_option('currency_sign').' '.$price;
+        $countryCurrSign = get_option('currency_sign');
+        if ($countryCurrSign === 'VND')
+        {
+            $show_price = $price . ' ' . get_option('currency_sign');
+        } else {
+            $show_price = get_option('currency_sign').' '.$price;
+        }
     }
     return $show_price.$ng;
 }

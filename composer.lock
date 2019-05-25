@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b7203ae3802353e0748fc0678a28e27b",
+    "content-hash": "8a773c56e172860de57402b8c2b0fa53",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -3900,6 +3900,7 @@
                 "mock",
                 "xunit"
             ],
+            "abandoned": true,
             "time": "2015-10-02T06:51:40+00:00"
         },
         {
