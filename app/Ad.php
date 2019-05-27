@@ -36,16 +36,18 @@ class Ad extends Model
     }
 
     public function scopeActivePremium($query){
-        return $query->where('status', '1')->where('price_plan', 'premium')
+        return $query->where('status', '1')
+            ->where('price_plan', 'premium')
             ->whereIn('country_id', ['98', '102', '109', '116', '132', '173', '196', '217', '231', '238']);
     }
 
     public function scopeActiveRegular($query){
-        return $query->where('status', '1')->where('price_plan', 'regular')
+        return $query->where('status', '1')
+            ->where('price_plan', 'regular')
             ->whereIn('country_id', ['98', '102', '109', '116', '132', '173', '196', '217', '231', '238']);
     }
     public function scopeActiveUrgent($query){
-        return $query->where('status', '1')->whereMarkAdUrgent(1)
+        return $query->where('status', '1')
             ->whereIn('country_id', ['98', '102', '109', '116', '132', '173', '196', '217', '231', '238']);
     }
     public function scopeActive($query){
@@ -76,7 +78,7 @@ class Ad extends Model
      */
     
     public function is_published(){
-        if ($this->status == 1)
+        if ($this->status === '1')
             return true;
         return false;
     }

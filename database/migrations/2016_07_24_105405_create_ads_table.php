@@ -25,6 +25,7 @@ class CreateAdsTable extends Migration
             $table->enum('ad_condition', ['new', 'used']);
             $table->string('model');
             $table->decimal('price', 12,2);
+            $table->decimal('discount_price', 12,2);
             $table->enum('is_negotiable', [0,1]);
 
             $table->string('seller_name');

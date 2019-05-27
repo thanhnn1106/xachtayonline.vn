@@ -20,7 +20,10 @@ class CreateOrdersTable extends Migration
             $table->double('price');
             $table->integer('quantity');
             $table->double('total_amount');
-            $table->integer('bank_reciept');
+            $table->string('bank_reciept', 255);
+            $table->text('note')->nullable();
+            $table->text('shipping_address');
+            $table->string('phone');
             $table->enum('status', [0,1,2])->default(0);
             $table->timestamps();
         });

@@ -203,40 +203,7 @@
                                             @foreach($premium_ads as $ad)
                                                 {{-- */ session('grid_list_view') ? (session('grid_list_view') == 'grid'? $ad->increase_impression() :'none') : $ad->increase_impression(); /*--}}
 
-                                                <div class="col-md-4 col-sm-6 col-xs-12">
-                                                    <div itemscope itemtype="http://schema.org/Product" class="ads-item-thumbnail ad-box-{{$ad->price_plan}}">
-                                                        <div class="ads-thumbnail">
-                                                            <a href="{{ route('single_ad', $ad->slug) }}">
-                                                                <img itemprop="image"  src="{{ media_url($ad->feature_img) }}" class="img-responsive" alt="{{ $ad->title }}">
-                                                                 <span class="modern-img-indicator">
-                                                                     @if(! empty($ad->video_url))
-                                                                         <i class="fa fa-file-video-o"></i>
-                                                                     @else
-                                                                         <i class="fa fa-file-image-o"> {{ $ad->media_img->count() }}</i>
-                                                                     @endif
-                                                                 </span>
-                                                            </a>
-                                                        </div>
-                                                        <div class="caption">
-                                                            <h4><a href="{{ route('single_ad', $ad->slug) }}" title="{{ $ad->title }}"><span itemprop="name">{{ str_limit($ad->title, 40) }} </span></a></h4>
-                                                            <a class="price text-muted" href="{{ route('listing', ['category' => $ad->category->id]) }}"> <i class="fa fa-folder-o"></i> {{ $ad->category->category_name }} </a>
-                                                            @if($ad->city)
-                                                                <a class="location text-muted" href="{{ route('listing', ['city' => $ad->city->id]) }}"> <i class="fa fa-location-arrow"></i> {{ $ad->city->city_name }} </a>
-                                                            @endif
-                                                            <p class="date-posted text-muted"> <i class="fa fa-clock-o"></i> {{ $ad->created_at->diffForHumans() }}</p>
-                                                            <p class="price"> <span itemprop="price" content="{{$ad->price}}"> {{ themeqx_price_ng($ad->price, $ad->is_negotiable) }} </span></p>
-                                                            <link itemprop="availability" href="http://schema.org/InStock" />
-                                                        </div>
-
-                                                        @if($ad->price_plan == 'premium')
-                                                            <div class="ribbon-wrapper-green"><div class="ribbon-green">{{ ucfirst($ad->price_plan) }}</div></div>
-                                                        @endif
-                                                        @if($ad->mark_ad_urgent == '1')
-                                                            <div class="ribbon-wrapper-red"><div class="ribbon-red">@lang('app.urgent')</div></div>
-                                                        @endif
-
-                                                    </div>
-                                                </div>
+                                                @include('theme.modern.partials.product-card', ['pageType' => ''])
                                             @endforeach
                                         </div>
                                     </div>
@@ -249,39 +216,7 @@
                                             <table class="table table-bordered table-responsive">
                                                 @foreach($premium_ads as $ad)
                                                     {{-- */ session('grid_list_view') == 'list'? $ad->increase_impression() :'none' /*--}}
-                                                    <tr class="ad-{{ $ad->price_plan }}">
-                                                        <td width="100">
-                                                            <img src="{{ media_url($ad->feature_img) }}" class="img-responsive" alt="">
-                                                            <span class="modern-img-indicator">
-                                                                @if(! empty($ad->video_url))
-                                                                    <i class="fa fa-file-video-o"></i>
-                                                                @else
-                                                                    <i class="fa fa-file-image-o"> {{ $ad->media_img->count() }}</i>
-                                                                @endif
-                                                            </span>
-                                                        </td>
-                                                        <td>
-                                                            <h5><a href="{{ route('single_ad', $ad->slug) }}" >{{ $ad->title }}</a> </h5>
-                                                            <p class="text-muted">
-                                                                @if($ad->city)
-                                                                    <i class="fa fa-map-marker"></i> <a class="location text-muted" href="{{ route('listing', ['city'=>$ad->city->id]) }}"> {{ $ad->city->city_name }} </a>,
-                                                                @endif
-                                                                <i class="fa fa-clock-o"></i> {{ $ad->created_at->diffForHumans() }}
-                                                            </p>
-                                                        </td>
-                                                        <td>
-                                                            <p>
-                                                                <a class="price text-muted" href="{{ route('listing', ['category' => $ad->category->id]) }}"> <i class="fa fa-folder-o"></i> {{ $ad->category->category_name }} </a>
-                                                            </p>
-                                                            <h5>{{ themeqx_price_ng($ad->price) }}</h5>
-                                                            @if($ad->price_plan == 'premium')
-                                                                <div class="ribbon-green-bar">{{ ucfirst($ad->price_plan) }}</div>
-                                                            @endif
-                                                            @if($ad->mark_ad_urgent == '1')
-                                                                <div class="ribbon-red-bar">@lang('app.urgent')</div>
-                                                            @endif
-                                                        </td>
-                                                    </tr>
+                                                    @include('theme.modern.partials.product-card-grid-view')
                                                 @endforeach
                                             </table>
 
@@ -291,8 +226,6 @@
                             @endif
                         @endif
                     @endif
-
-
 
                     @if($enable_monetize)
                         <div class="row">
@@ -309,42 +242,7 @@
 
                             <div class="row">
                                 @foreach($ads as $ad)
-                                    <div class="col-md-4 col-sm-6 col-xs-12">
-                                        <div itemscope itemtype="http://schema.org/Product" class="ads-item-thumbnail ad-box-{{$ad->price_plan}}">
-                                            <div class="ads-thumbnail">
-                                                <a href="{{ route('single_ad', $ad->slug) }}">
-                                                    <img itemprop="image"  src="{{ media_url($ad->feature_img) }}" class="img-responsive" alt="{{ $ad->title }}">
-
-                                                     <span class="modern-img-indicator">
-                                                         @if(! empty($ad->video_url))
-                                                             <i class="fa fa-file-video-o"></i>
-                                                         @else
-                                                             <i class="fa fa-file-image-o"> {{ $ad->media_img->count() }}</i>
-                                                         @endif
-                                                     </span>
-                                                </a>
-                                            </div>
-                                            <div class="caption">
-                                                <h4><a href="{{ route('single_ad', $ad->slug) }}" title="{{ $ad->title }}"><span itemprop="name">{{ str_limit($ad->title, 40) }} </span></a></h4>
-                                                <a class="price text-muted" href="{{ route('listing', ['category' => $ad->category->id]) }}"> <i class="fa fa-folder-o"></i> {{ $ad->category->category_name }} </a>
-                                                @if($ad->city)
-                                                    <a class="location text-muted" href="{{ route('listing', ['city' => $ad->city->id]) }}"> <i class="fa fa-location-arrow"></i> {{ $ad->city->city_name }} </a>
-                                                @endif
-                                                <p class="date-posted text-muted"> <i class="fa fa-clock-o"></i> {{ $ad->created_at->diffForHumans() }}</p>
-                                                <p class="price"> <span itemprop="price" content="{{$ad->price}}"> {{ themeqx_price_ng($ad->price, $ad->is_negotiable) }} </span></p>
-                                                <link itemprop="availability" href="http://schema.org/InStock" />
-                                            </div>
-
-
-                                            @if($ad->price_plan == 'premium')
-                                                <div class="ribbon-wrapper-green"><div class="ribbon-green">{{ ucfirst($ad->price_plan) }}</div></div>
-                                            @endif
-                                            @if($ad->mark_ad_urgent == '1')
-                                                <div class="ribbon-wrapper-red"><div class="ribbon-red">@lang('app.urgent')</div></div>
-                                            @endif
-
-                                        </div>
-                                    </div>
+                                    @include('theme.modern.partials.product-card', ['pageType' => ''])
                                 @endforeach
                             </div>
                         </div>
@@ -354,40 +252,7 @@
                                 <div class="col-sm-12">
                                     <table class="table table-bordered table-responsive">
                                         @foreach($ads as $ad)
-                                            <tr class="ad-{{ $ad->price_plan }}">
-                                                <td width="100">
-                                                    <img src="{{ media_url($ad->feature_img) }}" class="img-responsive" alt="">
-                                                     <span class="modern-img-indicator">
-                                                         @if(! empty($ad->video_url))
-                                                             <i class="fa fa-file-video-o"></i>
-                                                         @else
-                                                             <i class="fa fa-file-image-o"> {{ $ad->media_img->count() }}</i>
-                                                         @endif
-                                                     </span>
-                                                </td>
-                                                <td>
-                                                    <h5><a href="{{ route('single_ad', $ad->slug) }}" >{{ $ad->title }}</a> </h5>
-                                                    <p class="text-muted">
-                                                        @if($ad->city)
-                                                            <i class="fa fa-map-marker"></i> <a class="location text-muted" href="{{ route('listing', ['city'=>$ad->city->id]) }}"> {{ $ad->city->city_name }} </a>,
-                                                        @endif
-                                                        <i class="fa fa-clock-o"></i> {{ $ad->created_at->diffForHumans() }}
-                                                    </p>
-                                                </td>
-                                                <td>
-                                                    <p>
-                                                        <a class="price text-muted" href="{{ route('listing', ['category' => $ad->category->id]) }}"> <i class="fa fa-folder-o"></i> {{ $ad->category->category_name }} </a>
-                                                    </p>
-                                                    <h5>{{ themeqx_price_ng($ad->price) }}</h5>
-
-                                                    @if($ad->price_plan == 'premium')
-                                                        <div class="ribbon-green-bar">{{ ucfirst($ad->price_plan) }}</div>
-                                                    @endif
-                                                    @if($ad->mark_ad_urgent == '1')
-                                                        <div class="ribbon-red-bar">@lang('app.urgent')</div>
-                                                    @endif
-                                                </td>
-                                            </tr>
+                                            @include('theme.modern.partials.product-card-grid-view')
                                         @endforeach
                                     </table>
                                 </div>

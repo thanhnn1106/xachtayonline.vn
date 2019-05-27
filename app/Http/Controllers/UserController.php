@@ -334,6 +334,9 @@ class UserController extends Controller
             }
             $user->last_login = Carbon::now();
             $user->save();
+            if ($user->user_type === 'user') {
+                return redirect()->intended(route('profile'));
+            }
             // Authentication passed...
             return redirect()->intended(route('dashboard'));
         } else {

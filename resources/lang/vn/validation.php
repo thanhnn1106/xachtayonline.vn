@@ -102,6 +102,43 @@ return [
         'bank_reciept' => [
             'required' => 'Không được bỏ trống hoá đơn thanh toán',
         ],
+
+        // Product attribute
+        'category' => [
+            'required' => 'Danh mục không được bỏ trống.',
+        ],
+        'ad_title' => [
+            'required' => 'Tên sản phẩm không được bỏ trống.',
+        ],
+        'ad_description' => [
+            'required' => 'Mô tả của sản phẩm không được bỏ trống.',
+        ],
+        'type' => [
+            'required' => 'Loại sản phẩm không được bỏ trống.',
+        ],
+        'country' => [
+            'required' => 'Quốc gia không được bỏ trống.',
+        ],
+        'price' => [
+            'required' => 'Giá sản phẩm không được bỏ trống.',
+        ],
+        'discount_price' => [
+            'required' => 'Giá sản phẩm không được bỏ trống.',
+        ],
+        'shipping_fee' => [
+            'required' => 'Phí ship không được bỏ trống.',
+        ],
+        'shipping_days' => [
+            'required' => 'Số ngày ship không được bỏ trống.',
+            'min' => 'Số ngày không được nhỏ hơn :min.',
+        ],
+        'shipping_address' => [
+            'required' => 'Địa chỉ giao hàng không được bỏ trống.'
+        ],
+        'phone' => [
+            'required' => 'Số điện thoại không được bỏ trống.',
+            'numeric' => 'Số điện thoại không hợp lệ.',
+        ],
     ],
 
     /*
