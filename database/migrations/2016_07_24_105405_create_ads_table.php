@@ -31,6 +31,9 @@ class CreateAdsTable extends Migration
             $table->string('seller_email');
             $table->string('seller_phone');
 
+            $table->integer('shipping_day');
+            $table->decimal('shipping_fee');
+
             $table->integer('country_id');
             $table->integer('state_id');
             $table->integer('city_id');

@@ -106,9 +106,9 @@ class UserController extends Controller
             'activation_code' => $activationCode
         ];
 
-        $verifyUrl = url('verify/' . $request->email, [$activationCode]);
 
         $user_create = User::create($data);
+        $verifyUrl = url('verify/' . $request->email, [$activationCode, $user_create->id]);
 
         if ($user_create) {
             try {
@@ -323,10 +323,15 @@ class UserController extends Controller
         //Get input value
         $email = $request->email;
         $password = $request->password;
-
         //Authenticating
-        if (Auth::attempt(['email' => $email, 'password' => $password, 'active_status' => 1])) {
+        if (Auth::attempt(['email' => $email, 'password' => $password])) {
             $user = Auth::user();
+            if ($user->active_status == 0) {
+                return redirect(route('login'))->with('error', trans('Vui lòng vào email bạn đã đăng ký để xác thực tài khoản.'));
+            }
+            if ($user->active_status == 2) {
+                return redirect(route('login'))->with('error', trans('Tài khoản của bạn đã bị khoá.'));
+            }
             $user->last_login = Carbon::now();
             $user->save();
             // Authentication passed...
@@ -433,16 +438,18 @@ class UserController extends Controller
         return ['status' => 0, 'msg' => trans('app.error_msg')];
     }
 
-    public function verifyEmail($email, $activationCode)
+    public function verifyEmail($email, $activationCode, $id)
     {
-        $users = User::whereEmail($email)->whereActivationCode($activationCode)->first();
-        if ($users) {
-            $users->is_email_verified = 1;
-            $users->active_status = 1;
+        $users = User::find($id);
+        if ($users && $users->email == $email && $users->activation_code == $activationCode) {
+            $users->active_status = '1';
+            $users->is_email_verified = '1';
             $users->save();
 
             return redirect(route('login'))
                 ->with('success', 'Chúc mừng bạn đã xác thực email thành công! Vui lòng đăng nhập.');
+        } else {
+            return view('errors.error_404');
         }
     }
 }
