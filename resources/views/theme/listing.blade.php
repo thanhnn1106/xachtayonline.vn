@@ -283,7 +283,6 @@
 
                         <div class="ad-box-grid-view" style="display: {{ session('grid_list_view') ? (session('grid_list_view') == 'grid'? 'block':'none') : 'block' }};">
 
-                            <div class="row">
                                 @foreach($ads as $ad)
                                     <div class="col-md-4 col-sm-6 col-xs-12">
                                         <div itemscope itemtype="http://schema.org/Product" class="ads-item-thumbnail ad-box-{{$ad->price_plan}}">
@@ -296,10 +295,27 @@
                                                 <h4><a href="{{ route('single_ad', $ad->slug) }}" title="{{ $ad->title }}"><span itemprop="name">{{ str_limit($ad->title, 40) }} </span></a></h4>
                                                 <a class="price text-muted" href="{{ route('listing', ['category' => $ad->category->id]) }}"> <i class="fa fa-folder-o"></i> {{ $ad->category->category_name }} </a>
                                                 @if($ad->city)
-                                                <a class="location text-muted" href="{{ route('listing', ['city' => $ad->city->id]) }}"> <i class="fa fa-location-arrow"></i> {{ $ad->city->city_name }} </a>
+                                                    <a class="location text-muted" href="{{ route('listing', ['country' => $ad->country->id]) }}">
+                                                        <i class="fa fa-location-arrow"></i>
+                                                        {{ $ad->country->country_name }}
+                                                    </a>
                                                 @endif
-                                                <p class="date-posted text-muted"> <i class="fa fa-clock-o"></i> {{ $ad->created_at->diffForHumans() }}</p>
-                                                <p class="price"> <span itemprop="price" content="{{$ad->price}}"> {{ themeqx_price_ng($ad->price, $ad->is_negotiable) }} </span></p>
+                                                <p class="date-posted text-muted hidden">
+                                                    <i class="fa fa-clock-o"></i>
+                                                    {{ $ad->created_at->diffForHumans() }}
+                                                </p>
+                                                <p class="price @if ($ad->discount_price > 0) text-decorate-line-thought @endif">
+                                                    <span itemprop="price" content="{{$ad->price}}">
+                                                        {{ themeqx_price_ng(number_format($ad->price), $ad->is_negotiable) }}
+                                                    </span>
+                                                        </p>
+                                                        @if ($ad->discount_price > 0)
+                                                            <p class="price text-danger">
+                                                    <span itemprop="price" content="{{$ad->discount_price}}">
+                                                        {{ themeqx_price_ng(number_format($ad->discount_price), $ad->is_negotiable) }}
+                                                    </span>
+                                                 </p>
+                                                @endif
                                                 <link itemprop="availability" href="http://schema.org/InStock" />
                                             </div>
 

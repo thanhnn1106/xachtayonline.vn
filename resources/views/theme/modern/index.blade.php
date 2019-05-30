@@ -34,7 +34,7 @@
                         <h1>{{ get_option('modern_home_right_title') }}</h1>
 
                         <p>{{ get_option('modern_home_right_content') }}</p>
-                        <a href="" class="btn btn-info btn-lg"> @lang('app.post_an_ad') </a>
+                        <a href="{{route('contact_us_page')}}" class="btn btn-info btn-lg"> @lang('app.contact_us') </a>
                     </div>
 
                 </div>
@@ -85,7 +85,7 @@
                                     </select>
                                 </div>
 
-                                <button type="submit" class="btn theme-btn"> <i class="fa fa-search"></i> Search Ads</button>
+                                <button type="submit" class="btn theme-btn"> <i class="fa fa-search"></i> @lang('app.search_product')</button>
                             </form>
                         </div>
 
@@ -161,7 +161,8 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="carousel-header">
-                        <h4><a href="{{ route('listing') }}">
+                        <h4>
+                            <a href="{{ route('listing') }}">
                                 @lang('app.new_urgent_ads')
                             </a>
                         </h4>
@@ -170,41 +171,7 @@
                     <div class="themeqx_new_regular_ads_wrap themeqx-carousel-ads">
                         @foreach($urgent_ads as $ad)
                             @if ($ad->category->is_active == 1)
-                            <div>
-                                <div itemscope itemtype="http://schema.org/Product" class="ads-item-thumbnail ad-box-{{$ad->price_plan}}">
-                                    <div class="ads-thumbnail">
-                                        <a href="{{ route('single_ad', $ad->slug) }}">
-                                            <img itemprop="image"  src="{{ media_url($ad->feature_img) }}" class="img-responsive" alt="{{ $ad->title }}">
-
-                                            <span class="modern-img-indicator">
-                                                @if(! empty($ad->video_url))
-                                                    <i class="fa fa-file-video-o"></i>
-                                                @else
-                                                    <i class="fa fa-file-image-o"> {{ $ad->media_img->count() }}</i>
-                                                @endif
-                                            </span>
-                                        </a>
-                                    </div>
-                                    <div class="caption">
-                                        <h4><a href="{{ route('single_ad', $ad->slug) }}" title="{{ $ad->title }}"><span itemprop="name">{{ str_limit($ad->title, 40) }} </span></a></h4>
-                                        <a class="price text-muted" href="{{ route('listing', ['category' => $ad->category->id]) }}"> <i class="fa fa-folder-o"></i> {{ $ad->category->category_name }} </a>
-
-                                        @if($ad->city)
-                                            <a class="location text-muted" href="{{ route('listing', ['city' => $ad->city->id]) }}"> <i class="fa fa-location-arrow"></i> {{ $ad->city->city_name }} </a>
-                                        @endif
-                                        <p class="date-posted text-muted"> <i class="fa fa-clock-o"></i> {{ $ad->created_at->diffForHumans() }}</p>
-                                        <p class="price"> <span itemprop="price" content="{{$ad->price}}"> {{ themeqx_price_ng(number_format($ad->price), $ad->is_negotiable) }} </span></p>
-                                        <link itemprop="availability" href="http://schema.org/InStock" />
-                                    </div>
-
-                                    @if($ad->price_plan == 'premium')
-                                        <div class="ribbon-wrapper-green"><div class="ribbon-green">{{ ucfirst($ad->price_plan) }}</div></div>
-                                    @endif
-                                    @if($ad->mark_ad_urgent == '1')
-                                        <div class="ribbon-wrapper-red"><div class="ribbon-red">@lang('app.urgent')</div></div>
-                                    @endif
-                                </div>
-                            </div>
+                                @include('theme.modern.partials.product-card', ['pageType' => 'home'])
                             @endif
                         @endforeach
                     </div> <!-- themeqx_new_premium_ads_wrap -->
@@ -214,12 +181,13 @@
     @endif
 
 
-    @if($premium_ads->count() > 0)
+    @if(isset($premium_ads) && $premium_ads->count() > 0)
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">
                     <div class="carousel-header">
-                        <h4><a href="{{ route('listing') }}">
+                        <h4>
+                            <a href="{{ route('listing') }}">
                                 @lang('app.new_premium_ads')
                             </a>
                         </h4>
@@ -248,10 +216,27 @@
                                         <a class="price text-muted" href="{{ route('listing', ['category' => $ad->category->id]) }}"> <i class="fa fa-folder-o"></i> {{ $ad->category->category_name }} </a>
 
                                         @if($ad->city)
-                                            <a class="location text-muted" href="{{ route('listing', ['city' => $ad->city->id]) }}"> <i class="fa fa-location-arrow"></i> {{ $ad->city->city_name }} </a>
+                                            <a class="location text-muted" href="{{ route('listing', ['country' => $ad->country->id]) }}">
+                                                <i class="fa fa-location-arrow"></i>
+                                                {{ $ad->country->country_name }}
+                                            </a>
                                         @endif
-                                        <p class="date-posted text-muted"> <i class="fa fa-clock-o"></i> {{ $ad->created_at->diffForHumans() }}</p>
-                                        <p class="price"> <span itemprop="price" content="{{$ad->price}}"> {{ themeqx_price_ng($ad->price, $ad->is_negotiable) }} </span></p>
+                                        <p class="date-posted text-muted hidden">
+                                            <i class="fa fa-clock-o"></i>
+                                            {{ $ad->created_at->diffForHumans() }}
+                                        </p>
+                                        <p class="price @if ($ad->discount_price > 0) text-decorate-line-thought @endif">
+                                            <span itemprop="price" content="{{$ad->price}}">
+                                                {{ themeqx_price_ng(number_format($ad->price), $ad->is_negotiable) }}
+                                            </span>
+                                        </p>
+                                        @if ($ad->discount_price > 0)
+                                            <p class="price text-danger">
+                                            <span itemprop="price" content="{{$ad->discount_price}}">
+                                                {{ themeqx_price_ng(number_format($ad->discount_price), $ad->is_negotiable) }}
+                                            </span>
+                                            </p>
+                                        @endif
                                         <link itemprop="availability" href="http://schema.org/InStock" />
                                     </div>
 
@@ -292,7 +277,8 @@
                 <div class="col-sm-12">
 
                     <div class="carousel-header">
-                        <h4><a href="{{ route('listing') }}">
+                        <h4>
+                            <a href="{{ route('listing') }}">
                                 @lang('app.new_regular_ads')
                             </a>
                         </h4>
@@ -302,42 +288,8 @@
                     <div class="themeqx_new_premium_ads_wrap themeqx-carousel-ads">
                         @foreach($regular_ads as $ad)
                             @if ($ad->category->is_active == 1)
-                            <div>
-                                <div itemscope itemtype="http://schema.org/Product" class="ads-item-thumbnail ad-box-{{$ad->price_plan}}">
-                                    <div class="ads-thumbnail">
-                                        <a href="{{ route('single_ad', $ad->slug) }}">
-                                            <img itemprop="image"  src="{{ media_url($ad->feature_img) }}" class="img-responsive" alt="{{ $ad->title }}">
-
-                                            <span class="modern-img-indicator">
-                                                @if(! empty($ad->video_url))
-                                                    <i class="fa fa-file-video-o"></i>
-                                                @else
-                                                    <i class="fa fa-file-image-o"> {{ $ad->media_img->count() }}</i>
-                                                @endif
-                                            </span>
-                                        </a>
-                                    </div>
-                                    <div class="caption">
-                                        <h4><a href="{{ route('single_ad', $ad->slug) }}" title="{{ $ad->title }}"><span itemprop="name">{{ str_limit($ad->title, 40) }} </span></a></h4>
-                                        <a class="price text-muted" href="{{ route('listing', ['category' => $ad->category->id]) }}"> <i class="fa fa-folder-o"></i> {{ $ad->category->category_name }} </a>
-
-                                        @if($ad->city)
-                                            <a class="location text-muted" href="{{ route('listing', ['city' => $ad->city->id]) }}"> <i class="fa fa-location-arrow"></i> {{ $ad->city->city_name }} </a>
-                                        @endif
-                                        <p class="date-posted text-muted"> <i class="fa fa-clock-o"></i> {{ $ad->created_at->diffForHumans() }}</p>
-                                        <p class="price"> <span itemprop="price" content="{{$ad->price}}"> {{ themeqx_price_ng($ad->price, $ad->is_negotiable) }} </span></p>
-                                        <link itemprop="availability" href="http://schema.org/InStock" />
-                                    </div>
-
-                                    @if($ad->price_plan == 'premium')
-                                        <div class="ribbon-wrapper-green"><div class="ribbon-green">{{ ucfirst($ad->price_plan) }}</div></div>
-                                    @endif
-                                    @if($ad->mark_ad_urgent == '1')
-                                        <div class="ribbon-wrapper-red"><div class="ribbon-red">@lang('app.urgent')</div></div>
-                                    @endif
-                                </div>
-                            </div>
-                        @endif
+                                @include('theme.modern.partials.product-card', ['pageType' => 'home'])
+                            @endif
                         @endforeach
                     </div> <!-- themeqx_new_premium_ads_wrap -->
                 </div>
@@ -357,12 +309,13 @@
         </div>
     @endif
 
-    @if(get_option('show_latest_blog_in_homepage') ==1)
+    @if(get_option('show_latest_blog_in_homepage') == 1)
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">
                     <div class="carousel-header">
-                        <h4><a href="{{ route('blog') }}">
+                        <h4>
+                            <a href="{{ route('blog') }}">
                                 @lang('app.latest_post_from_blog')
                             </a>
                         </h4>
@@ -409,9 +362,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">
-                    <h1>@lang('app.want_something_sell_quickly')</h1>
-                    <p>@lang('app.post_your_ad_quicly')</p>
-                    <a href="{{route('create_ad')}}" class="btn btn-info btn-lg">@lang('app.post_an_ad')</a>
+                    <h1>@lang('app.want_to_find_something_quickly')</h1>
+                    <p>@lang('app.find_your_ad_quickly')</p>
+                    <a href="{{route('contact_us_page')}}" class="btn btn-info btn-lg">@lang('app.contact_us')</a>
                 </div>
             </div>
         </div>

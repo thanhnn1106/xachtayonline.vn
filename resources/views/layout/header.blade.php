@@ -34,32 +34,32 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/nprogress/nprogress.css') }}">
 
     <!-- Conditional page load script -->
-    @if(request()->segment(1) === 'dashboard')
+@if(request()->segment(1) === 'dashboard')
         <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/plugins/metisMenu/dist/metisMenu.min.css') }}">
-        @endif
+    @endif
 
-                <!-- main style.css -->
+    <!-- main style.css -->
 
-        <?php
+<?php
             $default_style = get_option('default_style');
             $default_style = 'blue';
         ?>
-        @if($default_style == 'default')
-            <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-        @else
-            <link rel="stylesheet" href="{{ asset("assets/css/style-{$default_style}.css") }}">
+    @if($default_style == 'default')
+        <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    @else
+        <link rel="stylesheet" href="{{ asset("assets/css/style-{$default_style}.css") }}">
+    @endif
+    <link rel="stylesheet" href="{{ asset('assets/css/style-custom.css') }}">
+    @yield('page-css')
+
+@if(get_option('additional_css'))
         @endif
+    <style type="text/css">
+        {{ get_option('additional_css') }}
+    </style>
 
-        @yield('page-css')
-
-        @if(get_option('additional_css'))
-            <style type="text/css">
-                {{ get_option('additional_css') }}
-            </style>
-        @endif
-
-        <script src="{{ asset('assets/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js') }}"></script>
+    <script src="{{ asset('assets/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js') }}"></script>
 </head>
 <body>
 <!--[if lt IE 8]>
@@ -164,34 +164,35 @@
 
             <ul class="nav navbar-nav navbar-right">
 
-                @if($header_menu_pages->count() > 0)
-                    @foreach($header_menu_pages as $page)
+                <link rel="stylesheet" href="{{ asset('assets/css/style-custom.css') }}">
+            @if($header_menu_pages->count() > 0)
+                @foreach($header_menu_pages as $page)
                         <li><a href="{{ route('single_page', $page->slug) }}">{{ $page->title }} </a></li>
                     @endforeach
                 @endif
 
                 @if( ! Auth::check())
-                    <li><a href="{{ route('login') }}"> <i class="fa fa-lock"></i>  {{ trans('app.login') }}  </a>  </li>
-                    <li><a href="{{ route('user.create') }}"> <i class="fa fa-save"></i>  {{ trans('app.register') }}</a></li>
-                @endif
+                        <li><a href="{{ route('login') }}"> <i class="fa fa-lock"></i>  {{ trans('app.login') }}  </a>  </li>
+                        <li><a href="{{ route('user.create') }}"> <i class="fa fa-save"></i>  {{ trans('app.register') }}</a></li>
+                    @endif
                 @if(Auth::check() && $lUser->is_admin())
-                    <li><a href="{{ route('create_ad') }}"> <i class="fa fa-tag"></i> @lang('app.post_an_ad')</a></li>
-                @endif
+                        <li><a href="{{ route('create_ad') }}"> <i class="fa fa-tag"></i> @lang('app.post_an_ad')</a></li>
+                    @endif
                 @if(get_option('show_blog_in_header'))
-                    <li><a href="{{ route('blog') }}"> <i class="fa fa-rss"></i> @lang('app.blog')</a></li>
-                @endif
-                <li><a href="{{ route('contact_us_page') }}"> <i class="fa fa-mail-forward"></i>@lang('app.contact_us')</a></li>
+                        <li><a href="{{ route('blog') }}"> <i class="fa fa-rss"></i> @lang('app.blog')</a></li>
+                    @endif
+                    <li><a href="{{ route('contact_us_page') }}"> <i class="fa fa-mail-forward"></i>@lang('app.contact_us')</a></li>
 
                     {{--@if(get_option('enable_language_switcher') == 1)--}}
-                        {{--<li class="dropdown">--}}
-                            {{--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Language <span class="caret"></span></a>--}}
-                            {{--<ul class="dropdown-menu">--}}
-                                {{--<li><a href="{{ route('switch_language', 'vn') }}">English</a></li>--}}
-                                {{--@foreach(get_languages() as $lang)--}}
-                                    {{--<li><a href="{{ route('switch_language', $lang->language_code) }}">{{ $lang->language_name }}</a></li>--}}
-                                {{--@endforeach--}}
-                            {{--</ul>--}}
-                        {{--</li>--}}
+                    {{--<li class="dropdown">--}}
+                    {{--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Language <span class="caret"></span></a>--}}
+                    {{--<ul class="dropdown-menu">--}}
+                    {{--<li><a href="{{ route('switch_language', 'vn') }}">English</a></li>--}}
+                    {{--@foreach(get_languages() as $lang)--}}
+                    {{--<li><a href="{{ route('switch_language', $lang->language_code) }}">{{ $lang->language_name }}</a></li>--}}
+                    {{--@endforeach--}}
+                    {{--</ul>--}}
+                    {{--</li>--}}
                     {{--@endif--}}
             </ul>
 

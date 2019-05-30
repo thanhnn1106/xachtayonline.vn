@@ -40,7 +40,7 @@
 
                 <div class="col-sm-4 col-xs-12">
                     <div class="footer-widget">
-                        <h4>Quick Link</h4>
+                        <h4>Liên kết nhanh</h4>
                         <ul class="footer-menu">
                             @if($show_in_footer_menu->count() > 0)
                                 @foreach($show_in_footer_menu as $page)

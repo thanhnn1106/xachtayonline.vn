@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation;
 
 use App\Order;
 use App\Ad;
@@ -36,9 +37,12 @@ class OrderController extends Controller
             return redirect(route('login'))->with('error', 'Vui lòng đăng nhập để đặt hàng.');
         }
         $rules = [
-            'quantity'  => 'required',
-            'bank_reciept'  => 'required',
+            'quantity' => 'required',
+            'bank_reciept' => 'required',
+            'shipping_address' => 'required',
+            'phone'  => 'required|numeric'
         ];
+
         $validator = $this->validate($request, $rules);
 
         if (!$validator) {
@@ -48,8 +52,8 @@ class OrderController extends Controller
         }
 
         $file = $request->file('bank_reciept');
-        $name = time() . $file->getClientOriginalName();
-        $filePath = $name;
+        $name = time() . '_' . $file->getClientOriginalName();
+        $filePath = 'bank-reciept/' . $name;
         Storage::disk('s3')->put($filePath, file_get_contents($file), 'public');
 
         $data = [
@@ -60,6 +64,9 @@ class OrderController extends Controller
             'quantity' => $request->quantity,
             'total_amount' => $ad->price * $request->quantity,
             'bank_reciept' => $filePath,
+            'note' => $request->note ? $request->note : '',
+            'shipping_address' => $request->shipping_address,
+            'phone' => $request->phone,
             'status' => 0
         ];
 

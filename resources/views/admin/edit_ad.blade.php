@@ -121,26 +121,79 @@
                             <label for="price" class="col-md-4 control-label">@lang('app.price')</label>
                             <div class="col-md-4">
                                 <div class="input-group">
-                                    <span class="input-group-addon">$</span>
-                                    <input type="text" placeholder="@lang('app.ex_price')" class="form-control" name="price" id="price" value="{{ old('price')? old('price') : $ad->price }}">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" value="1" name="negotiable" id="negotiable" {{ $ad->is_negotiable == 1 ? 'checked':'' }}>
-                                        @lang('app.negotiable')
-                                    </label>
+                                    <span class="input-group-addon">{{ get_option('currency_sign') }}</span>
+                                    <input type="text" placeholder="@lang('app.ex_price')" class="form-control"
+                                           name="price" id="price"
+                                           value="{{ old('price')? old('price') : $ad->price }}">
                                 </div>
                             </div>
 
                             <div class="col-sm-8 col-md-offset-4">
                                 {!! $errors->has('price')? '<p class="help-block">'.$errors->first('price').'</p>':'' !!}
-                                <p class="text-info">Pick a good price. </p>
                             </div>
 
                         </div>
 
+                        <div class="form-group  {{ $errors->has('discount_price')? 'has-error':'' }}">
+                            <label for="price" class="col-md-4 control-label">@lang('app.discount_price')</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">{{ get_option('currency_sign') }}</span>
+                                    <input type="text" placeholder="@lang('app.ex_price')" class="form-control"
+                                           name="discount_price" id="discount_price"
+                                           value="{{ old('discount_price')? old('discount_price') : $ad->discount_price }}">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-8 col-md-offset-4">
+                                {!! $errors->has('discount_price')? '<p class="help-block">'.$errors->first('discount_price').'</p>':'' !!}
+                            </div>
+
+                        </div>
+
+                        <div class="form-group  {{ $errors->has('shipping_fee')? 'has-error':'' }}">
+                            <label for="price" class="col-md-4 control-label">@lang('app.shipping_fee')</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">{{ get_option('currency_sign') }}</span>
+                                    <input type="text" placeholder="@lang('app.ex_price')" class="form-control"
+                                           name="shipping_fee" id="shipping_fee"
+                                           value="{{ old('shipping_fee')? old('shipping_fee') : $ad->shipping_fee }}">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-8 col-md-offset-4">
+                                {!! $errors->has('shipping_fee')? '<p class="help-block">'.$errors->first('shipping_fee').'</p>':'' !!}
+                            </div>
+
+                        </div>
+
+                        <div class="form-group  {{ $errors->has('shipping_days')? 'has-error':'' }}">
+                            <label for="price" class="col-md-4 control-label">@lang('app.shipping_days')</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <input type="number" class="form-control"
+                                           name="shipping_days" id="shipping_days"
+                                           min="1"
+                                           value="{{ old('shipping_days')? old('shipping_days') : $ad->shipping_days }}">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-8 col-md-offset-4">
+                                {!! $errors->has('shipping_days')? '<p class="help-block">'.$errors->first('shipping_days').'</p>':'' !!}
+                            </div>
+
+                        </div>
+
+                        <div class="form-group offset-8">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4 addon-ad-charge">
+                                <label class="control-label">
+                                    <input type="checkbox" class="mark_ad_urgent" name="mark_ad_urgent" value="1" data-price="{{ get_option('urgent_ads_price')  }}" {{ $ad->mark_ad_urgent == '1' ? 'checked':'' }} />
+                                    @lang('app.mark_as_urgent')
+                                </label>
+                            </div>
+                        </div>
 
                         <legend>@lang('app.image')</legend>
 
@@ -287,36 +340,36 @@
                         </div>
 
 
-                        <div class="form-group {{ $errors->has('price_plan')? 'has-error':'' }}">
-                            <label for="price_plan" class="col-sm-4 control-label">@lang('app.price_plan')</label>
-                            <div class="col-sm-8">
+                        {{--<div class="form-group {{ $errors->has('price_plan')? 'has-error':'' }}">--}}
+                            {{--<label for="price_plan" class="col-sm-4 control-label">@lang('app.price_plan')</label>--}}
+                            {{--<div class="col-sm-8">--}}
 
-                                <div class="price_input_group">
+                                {{--<div class="price_input_group">--}}
 
-                                    <label><input type="radio" value="regular" name="price_plan" data-price="{{ get_ads_price() }}"  {{ $ad->price_plan == 'regular' ? 'checked':'' }} />@lang('app.regular') </label> <br />
+                                    {{--<label><input type="radio" value="regular" name="price_plan" data-price="{{ get_ads_price() }}"  {{ $ad->price_plan == 'regular' ? 'checked':'' }} />@lang('app.regular') </label> <br />--}}
 
-                                    <label><input type="radio" value="premium" name="price_plan" data-price="{{ get_ads_price('premium') }}" {{ $ad->price_plan == 'premium' ? 'checked':'' }} />@lang('app.premium') </label>
+                                    {{--<label><input type="radio" value="premium" name="price_plan" data-price="{{ get_ads_price('premium') }}" {{ $ad->price_plan == 'premium' ? 'checked':'' }} />@lang('app.premium') </label>--}}
 
-                                    <hr />
-                                    <div class="addon-ad-charge">
-                                        <label>
-                                            <input type="checkbox" class="mark_ad_urgent" name="mark_ad_urgent" value="1" data-price="{{ get_option('urgent_ads_price')  }}" {{ $ad->mark_ad_urgent == '1' ? 'checked':'' }} />
-                                            @lang('app.mark_as_urgent')
-                                        </label>
-                                    </div>
-
-
-                                    <div class="well" id="price_summery" style="display: none;">
-                                        @lang('app.payable_amount') :
-                                        <span id="payable_amount">{{ get_option('regular_ads_price') }}</span>
-                                    </div>
+                                    {{--<hr />--}}
+                                    {{--<div class="addon-ad-charge">--}}
+                                        {{--<label>--}}
+                                            {{--<input type="checkbox" class="mark_ad_urgent" name="mark_ad_urgent" value="1" data-price="{{ get_option('urgent_ads_price')  }}" {{ $ad->mark_ad_urgent == '1' ? 'checked':'' }} />--}}
+                                            {{--@lang('app.mark_as_urgent')--}}
+                                        {{--</label>--}}
+                                    {{--</div>--}}
 
 
-                                    {!! $errors->has('price_plan')? '<p class="help-block">'.$errors->first('price_plan').'</p>':'' !!}
+                                    {{--<div class="well" id="price_summery" style="display: none;">--}}
+                                        {{--@lang('app.payable_amount') :--}}
+                                        {{--<span id="payable_amount">{{ get_option('regular_ads_price') }}</span>--}}
+                                    {{--</div>--}}
 
-                                </div>
-                            </div>
-                        </div>
+
+                                    {{--{!! $errors->has('price_plan')? '<p class="help-block">'.$errors->first('price_plan').'</p>':'' !!}--}}
+
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
 
                         <hr />
 

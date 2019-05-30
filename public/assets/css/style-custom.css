@@ -1,0 +1,22 @@
+.text-decorate-line-thought {
+    text-decoration: line-through;
+}
+.ads-item-thumbnail {
+    min-height: 340px;
+}
+.btn-order {
+    width: 100%;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+.btn-order span {
+    color: white;
+    font-weight: bold;
+}
+.owl-carousel .owl-item img {
+    width: 60%;
+    height: 160px;
+    display: block;
+    margin: auto;
+}
