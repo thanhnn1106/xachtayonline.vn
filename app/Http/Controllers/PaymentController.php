@@ -22,7 +22,7 @@ class PaymentController extends Controller
         if ($user->is_admin()){
             $payments = Payment::select('id','ad_id', 'user_id', 'amount','payment_method', 'status','local_transaction_id', 'created_at')->with('ad', 'user')->get();
         }else{
-            $payments = Payment::select('id','ad_id', 'user_id', 'amount','payment_method', 'status','local_transaction_id', 'created_at')->whereUserId($user->id)->with('ad', 'user')->get();
+            $payments = Payment::select('id','ad_id', 'user_id', 'amount','payment_method', 'status','local_transaction_id', 'created_at')->where('user_id',$user->id)->with('ad', 'user')->get();
         }
 
         return  Datatables::of($payments)
@@ -56,7 +56,7 @@ class PaymentController extends Controller
     }
     
     public function checkout($transaction_id){
-        $payment = Payment::whereLocalTransactionId($transaction_id)->whereStatus('initial')->first();
+        $payment = Payment::whereLocalTransactionId($transaction_id)->where('status','initial')->first();
         $title = trans('app.checkout');
         if ($payment){
             return view('admin.checkout', compact('title','payment'));
@@ -73,7 +73,7 @@ class PaymentController extends Controller
      */
 
     public function chargePayment(Request $request, $transaction_id){
-        $payment = Payment::whereLocalTransactionId($transaction_id)->whereStatus('initial')->first();
+        $payment = Payment::whereLocalTransactionId($transaction_id)->where('status','initial')->first();
         $ad = $payment->ad;
 
         //Determine which payment method is this
@@ -187,7 +187,7 @@ class PaymentController extends Controller
 
         //Start original logic
 
-        $payment = Payment::whereLocalTransactionId($transaction_id)->whereStatus('initial')->first();
+        $payment = Payment::whereLocalTransactionId($transaction_id)->where('status','initial')->first();
         $ad = $payment->ad;
 
         $paypal_action_url = "https://www.paypal.com/cgi-bin/webscr";
@@ -275,7 +275,7 @@ class PaymentController extends Controller
      * Ipn notify, receive from paypal
      */
     public function paypalNotify(Request $request, $transaction_id){
-        $payment = Payment::whereLocalTransactionId($transaction_id)->whereStatus('initial')->first();
+        $payment = Payment::whereLocalTransactionId($transaction_id)->where('status','initial')->first();
         $ad = $payment->ad;
 
         $paypal_action_url = "https://www.paypal.com/cgi-bin/webscr";

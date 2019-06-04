@@ -21,7 +21,7 @@
                             </li>
                             <li>{{ $ad->title }}</li>
                         </ol><!-- breadcrumb -->
-                        <h2 class="modern-single-ad-top-title">{{ $ad->title }}</h2>
+                        <h1 class="modern-single-ad-top-title h1-custom">{{ $ad->title }}</h1>
                     </div>
                 </div>
             </div>
@@ -76,22 +76,20 @@
                     </div>
 
                     <div class="col-sm-5 col-xs-12">
-                        <h2 class="ad-title"><a href="{{ route('single_ad', $ad->slug) }}">{{ $ad->title }}</a></h2>
+                        <h1 class="ad-title h1-custom">{{ $ad->title }}</h1>
                         <div class="ads-detail-meta">
                             <p class="text-muted">
-                                <i class="fa fa-folder-o"></i><a
-                                        href="{{ route('listing', ['category' => $ad->category->id]) }}">  {{ $ad->category->category_name }} </a>
-                                |
+                                <i class="fa fa-folder-o"></i>
+                                <a href="{{ route('listing', ['category' => $ad->category->id]) }}">  {{ $ad->category->category_name }} </a>
 
                                 @if($ad->brand)
                                     <i class="fa fa-industry"></i><a
                                             href="{{ route('listing', ['brand' => $ad->brand->id]) }}">  {{ $ad->brand->brand_name }} </a>
-                                    |
                                 @endif
                             </p>
                         </div>
 
-                        <h2 class="modern-single-ad-price">{{ themeqx_price_ng(number_format($ad->price)) }}</h2>
+                        <h1 class="modern-single-ad-price">{{ themeqx_price_ng(number_format($ad->price)) }}</h1>
 
                         @if($enable_monetize)
                             {!! get_option('monetize_code_below_ad_title') !!}
@@ -120,7 +118,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="total_amount" class="control-label">Tổng tiền:</label>
+                                    <label for="total_amount" class="control-label">Tổng tiền: </label>
                                     <input disabled="disabled" type="text" class="form-control" name="total_amount" id="total_amount" value="{{ old('total_amount') }}" />
                                     <div id="total_amount_info"></div>
                                 </div>
@@ -153,7 +151,15 @@
 
                                 <div class="row t-5">
                                     <div class="t-5 col-sm-8 col-xs-12">
-                                        <button type="submit" class="btn btn-info btn-lg">{{ trans('app.order') }}</button>
+                                        <button type="submit" class="btn btn-info btn-lg theme-btn">{{ trans('app.order') }}</button>
+                                    </div>
+                                </div>
+
+                                <div class="row t-5">
+                                    <div class="t-5 col-sm-12 col-xs-12">
+                                        <label class="text-danger">
+                                            {!! trans('app.order_note') !!}
+                                        </label>
                                     </div>
                                 </div>
                             {{ Form::close() }}
@@ -189,17 +195,7 @@
         </div>
     </div>
 
-    <div class="modern-post-ad-call-to-cation">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <h1>@lang('app.want_to_find_something_quickly')</h1>
-                    <p>@lang('app.find_your_ad_quickly')</p>
-                    <a href="{{route('contact_us_page')}}" class="btn btn-info btn-lg">@lang('app.contact_us')</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('theme.modern.partials.contact_us_section')
 
     <div class="modal fade" id="reportAdModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">

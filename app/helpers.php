@@ -268,6 +268,26 @@ function themeqx_price($price = 0){
     return get_option('currency_sign').' '.$price;
 }
 
+function get_image_url($imagesPath)
+{
+    return 'https://' . getenv('AWS_BUCKET') . '.s3-' . getenv('AWS_DEFAULT_REGION') . '.amazonaws.com/' . $imagesPath;
+}
+
+function get_gender($type)
+{
+    switch ($type) {
+        case 1:
+            return 'Nam';
+            break;
+        case 2:
+            return 'Nữ';
+            break;
+        default:
+            return 'Khác';
+            break;
+    }
+}
+
 /**
  * @param int $price
  * @param int $negotiable
@@ -294,8 +314,6 @@ function update_option($key, $value){
     $option -> option_value = $value;
     return $option->save();
 }
-
-
 
 function themeqx_classifieds_currencies(){
     return array(
@@ -460,5 +478,22 @@ function themeqx_classifieds_currencies(){
         'ZAR' => 'South African rand',
         'ZMW' => 'Zambian kwacha',
     );
-    
+    function getOrderStatus($status)
+    {
+        switch ($status) {
+            case 0:
+                return tran('app.waiting_for_confirm');
+                break;
+            case 1:
+                return tran('app.processing');
+                break;
+            case 2:
+                return tran('app.shipping');
+                break;
+            default:
+                return tran('app.done');
+                break;
+        }
+    }
+
 }

@@ -62,7 +62,7 @@
                             {!! $errors->has('password')? '<p class="help-block">'.$errors->first('password').'</p>':'' !!}
 
                             <span class="help-block"></span>
-                            <button class="btn btn-lg btn-primary btn-block" type="submit">{{ trans('app.login') }}</button>
+                            <button class="btn btn-lg btn-primary theme-btn btn-block" type="submit">{{ trans('app.login') }}</button>
                             {{ Form::close() }}
                         </div>
                     </div>

@@ -41,7 +41,7 @@
                 <div class="col-sm-4 col-xs-12">
                     <div class="footer-widget">
                         <h4>Liên kết nhanh</h4>
-                        <ul class="footer-menu">
+                        <ul class="footer-menu col-md-6">
                             @if($show_in_footer_menu->count() > 0)
                                 @foreach($show_in_footer_menu as $page)
                                     <li><a href="{{ route('single_page', $page->slug) }}">{{ $page->title }} </a></li>
@@ -54,7 +54,7 @@
                             <li><a href="{{ route('contact_us_page') }}">@lang('app.contact_us')</a></li>
                         </ul>
 
-                        <div class="social-icons">
+                        <div class="social-icons col-md-6">
                             <ul class="social-ul">
                                 @if(get_option('facebook_url'))
                                     <li><a href="{{ get_option('facebook_url') }}" target="_blank"><i class="fa fa-facebook"></i></a></li>

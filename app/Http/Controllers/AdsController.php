@@ -59,7 +59,8 @@ class AdsController extends Controller
         return view('admin.all_ads', compact('title', 'ads'));
     }
     
-    public function myAds(){
+    public function myAds()
+    {
         $title = trans('app.my_ads');
 
         $user = Auth::user();
@@ -68,7 +69,8 @@ class AdsController extends Controller
         return view('admin.my_ads', compact('title', 'ads'));
     }
 
-    public function pendingAds(){
+    public function pendingAds()
+    {
         $title = trans('app.my_ads');
 
         $user = Auth::user();
@@ -159,7 +161,7 @@ class AdsController extends Controller
             'brand_id' => $brand_id,
             'type' => $request->type,
             'ad_condition' => $request->condition,
-            'price' => number_format($request->price),
+            'price' => $request->price,
             'discount_price'  => number_format($request->discount_price),
             'shipping_fee'  => $request->shipping_fee,
             'shipping_days'  => $request->shipping_days,
@@ -300,6 +302,7 @@ class AdsController extends Controller
 
         $data = [
             'title' => $request->ad_title,
+            'slug' => unique_slug($request->ad_title),
             'description' => $request->ad_description,
             'category_id' => $sub_category->category_id,
             'sub_category_id' => $request->category,

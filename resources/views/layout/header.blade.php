@@ -60,6 +60,15 @@
     </style>
 
     <script src="{{ asset('assets/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js') }}"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-141776126-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-141776126-1');
+    </script>
 </head>
 <body>
 <!--[if lt IE 8]>
@@ -128,7 +137,7 @@
                     <div class="form-group">
                         <input  type="password" class="form-control" name="password" placeholder="{{ trans('app.password') }}">
                     </div>
-                    <button type="submit" class="btn btn-success">@lang('app.login')</button>
+                    <button type="submit" class="btn btn-success theme-btn">@lang('app.login')</button>
                     {{ Form::close() }}
                 @endif
 

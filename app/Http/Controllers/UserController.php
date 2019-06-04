@@ -27,23 +27,71 @@ class UserController extends Controller
      */
     public function index()
     {
-        $title = trans('app.users');
-        return view('admin.users', compact('title'));
+        $route = \Request::route()->getName();
+        switch ($route) {
+            case 'users':
+                $title = trans('app.users');
+                return view('admin.users_management.users_management', compact('title'));
+                break;
+            case 'sellers':
+                $title = trans('app.seller');
+                return view('admin.users_management.sellers_management', compact('title'));
+                break;
+            default:
+                break;
+        }
     }
 
-    public function usersData()
+    public function addNew(Request $request)
     {
-        $users = User::select('id', 'name', 'user_name', 'email', 'created_at')->whereUserType('user')->get();
+        $userType = $request->get('userType');
+        $title = trans('app.add_new');
+        $countries = Country::whereIn('country_code', ['US', 'JP', 'KR', 'MY', 'SG', 'HK', 'PH', 'TL', 'ID', 'VN'])->get();
+
+        return view('admin.users_management.user_add_new', compact('title', 'countries', 'userType'));
+    }
+
+    public function usersData($userType)
+    {
+        if ($userType == 'users') {
+            $users = User::select('id', 'name', 'email', 'phone', 'active_status', 'created_at')
+                ->where('user_type', 'user')
+                ->get();
+        } else {
+            $users = User::select('id', 'name', 'email', 'phone', 'active_status', 'created_at')
+                ->where('user_type', 'seller')
+                ->get();
+        }
+
         return Datatables::of($users)
-            ->editColumn('name', function ($user) {
-                $html = '<a href="' . route('user_info', $user->id) . '">' . $user->name . '</a>';
+            ->editColumn('name', function ($users) {
+                $html = '<a href="' . route('user_info', $users->id) . '">' . $users->name . '</a>';
                 return $html;
             })
-            ->editColumn('created_at', function ($user) {
-                return $user->signed_up_datetime();
+            ->editColumn('email', function ($users) {
+                return $users->email;
             })
-            ->removeColumn('id')
-            ->make();
+            ->editColumn('phone', function ($users) {
+                return $users->phone;
+            })
+            ->editColumn('created_at', function ($users) {
+                return $users->signed_up_datetime();
+            })
+            ->editColumn('', function ($users) {
+                $html = '';
+                if ($users->active_status === '1') {
+                    $html .= ' <a href="#" onclick="updateUserStatus(this)" class="btn btn-warning blockUser" data-user-id="' . $users->id . '" data-user-status="2"><i class="fa fa-ban"></i></a>';
+                }
+                if ($users->active_status === '2') {
+                    $html .= ' <a href="#" onclick="updateUserStatus(this)" class="btn btn-success activeUser" data-user-id="' . $users->id . '" data-user-status="1"><i class="fa fa-check-circle-o"></i></a>';
+                }
+                $html .= ' <a href="#" onclick="deleteUser(this)" class="btn btn-danger deleteUser" data-user-id="' . $users->id . '"><i class="fa fa-trash"></i></a>';
+
+                return $html;
+            })
+            ->removeColumn('id', 'active_status')
+            ->escapeColumns(['*'])
+            ->make(false);
     }
 
     public function userInfo($id)
@@ -56,7 +104,7 @@ class UserController extends Controller
             return view('admin.error.error_404');
         }
 
-        return view('admin.user_info', compact('title', 'user', 'ads'));
+        return view('admin.users_management.user_info', compact('title', 'user', 'ads'));
 
     }
 
@@ -70,6 +118,53 @@ class UserController extends Controller
         $countries = Country::whereIn('country_code',
             ['US', 'JP', 'KR', 'MY', 'SG', 'HK', 'PH', 'TL', 'ID', 'VN'])->get();
         return view('theme.user_create', compact('countries'));
+    }
+
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function adminAddNewUser(Request $request)
+    {
+        $rules = [
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required|email',
+            'password' => 'required',
+            'country' => 'required',
+            'phone' => 'required',
+            'gender' => 'required',
+            'address' => 'required',
+            'website' => 'required',
+        ];
+        $this->validate($request, $rules);
+
+        $data = [
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'name' => $request->first_name . ' ' . $request->last_name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'phone' => $request->phone,
+            'user_type' => $request->user_type,
+            'active_status' => '1',
+            'is_email_verified' => '1',
+        ];
+
+
+        $user_create = User::create($data);
+
+        $userType = $request->user_type . 's';
+        if ($user_create) {
+            return redirect(route($userType))
+                ->with('success', 'Thêm tài khoản ' . $userType . ' thành công');
+
+        } else {
+            return back()->withInput()->with('error', trans('app.error_msg'));
+        }
     }
 
     /**
@@ -163,12 +258,18 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $userId = $request->user_id;
+        $user = User::where('id', $userId)->first();
+        if ($user){
+            $user->delete();
+            return ['success' => 1, 'msg' => trans('app.user_deleted_success')];
+        }
+        return ['success'=> 0, 'msg' => trans('app.error_msg')];
     }
 
     public function profile()
@@ -278,7 +379,7 @@ class UserController extends Controller
             'password' => bcrypt($request->password),
             'phone' => $request->phone,
             'user_type' => 'admin',
-            'active_status' => 1,
+            'active_status' => '1',
             'activation_code' => str_random(30)
         ];
 
@@ -396,7 +497,7 @@ class UserController extends Controller
         $ad = Ad::whereSlug($slug)->first();
 
         if ($ad) {
-            $get_previous_favorite = Favorite::whereUserId($user->id)->whereAdId($ad->id)->first();
+            $get_previous_favorite = Favorite::where('user_id',$user->id)->whereAdId($ad->id)->first();
             if (!$get_previous_favorite) {
                 Favorite::create(['user_id' => $user->id, 'ad_id' => $ad->id]);
                 return [
@@ -454,5 +555,22 @@ class UserController extends Controller
         } else {
             return view('errors.error_404');
         }
+    }
+
+    public function userStatusChange(Request $request)
+    {
+        $userId= $request->user_id;
+        $user = User::where('id', $userId)->first();
+        if ($user){
+            $user->active_status = $request->status;
+            $isUpdated = $user->save();
+            if ($isUpdated && $request->status == 1) {
+                return ['success' => 1, 'msg' => trans('app.user_active_msg')];
+            } elseif($isUpdated && $request->status == 2) {
+                return ['success' => 1, 'msg' => trans('app.user_blocked_msg')];
+            }
+        }
+        return ['success' => 0, 'msg' => trans('app.error_msg')];
+
     }
 }

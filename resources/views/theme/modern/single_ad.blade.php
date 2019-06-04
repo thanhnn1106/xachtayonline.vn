@@ -33,7 +33,7 @@
                             <li><a href="{{ route('listing', ['category' => $ad->category->id]) }}">  {{ $ad->category->category_name }} </a></li>
                             <li>{{ $ad->title }}</li>
                         </ol><!-- breadcrumb -->
-                        <h2 class="modern-single-ad-top-title">{{ $ad->title }}</h2>
+                        <h1 class="modern-single-ad-top-title h1-custom">{{ $ad->title }}</h1>
                     </div>
                 </div>
             </div>
@@ -85,7 +85,9 @@
                     </div>
 
                     <div class="col-sm-5 col-xs-12">
-                        <h2 class="ad-title"><a href="{{ route('single_ad', $ad->slug) }}">{{ $ad->title }}</a>  </h2>
+                        <h1 class="h1-custom">
+                            <strong>{{ $ad->title }}</strong>
+                        </h1>
                         <div class="ads-detail-meta">
                             <p class="text-muted">
                                 <i class="fa fa-folder-o"></i><a href="{{ route('listing', ['category' => $ad->category->id]) }}">  {{ $ad->category->category_name }} </a> |
@@ -95,8 +97,18 @@
                                 @endif
                             </p>
                         </div>
+                        <p>
+                            <h1 class="modern-single-ad-price @if ($ad->discount_price > 0) text-decorate-line-thought text-info @endif">
+                                {{ themeqx_price_ng(number_format($ad->price)) }}
+                            </h1>
+                            @if ($ad->discount_price > 0)
+                                &nbsp;<span class="text-danger">-{{ number_format(100 - ($ad->discount_price / $ad->price * 100)) }}%</span><br/>
+                            @endif
+                        </p>
 
-                        <h2 class="modern-single-ad-price">{{ themeqx_price_ng(number_format($ad->price)) }}</h2>
+                        @if ($ad->discount_price > 0)
+                            <h2 class="modern-single-ad-price text-danger">{{ themeqx_price_ng(number_format($ad->discount_price)) }}</h2>
+                        @endif
 
                         @if($enable_monetize)
                             {!! get_option('monetize_code_below_ad_title') !!}
@@ -126,7 +138,7 @@
                         <br>
                         <div class="row t-5">
                             <div class="t-5 col-sm-8 col-xs-12">
-                                <a type="button" href="{{ route('order', [$ad->id]) }}" class="btn btn-info btn-lg">{{ trans('app.order') }}</a>
+                                <a type="button" href="{{ route('order', [$ad->id]) }}" class="btn btn-info btn-lg theme-btn">{{ trans('app.order') }}</a>
                             </div>
                         </div>
                     </div>
@@ -205,17 +217,7 @@
         </div>
     @endif
 
-    <div class="modern-post-ad-call-to-cation">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <h1>@lang('app.want_to_find_something_quickly')</h1>
-                    <p>@lang('app.find_your_ad_quickly')</p>
-                    <a href="{{route('contact_us_page')}}" class="btn btn-info btn-lg">@lang('app.contact_us')</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('theme.modern.partials.contact_us_section')
 
     <div class="modal fade" id="reportAdModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">

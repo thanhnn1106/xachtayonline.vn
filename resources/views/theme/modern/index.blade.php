@@ -34,7 +34,7 @@
                         <h1>{{ get_option('modern_home_right_title') }}</h1>
 
                         <p>{{ get_option('modern_home_right_content') }}</p>
-                        <a href="{{route('contact_us_page')}}" class="btn btn-info btn-lg"> @lang('app.contact_us') </a>
+                        <a href="{{route('contact_us_page')}}" class="btn btn-info btn-lg theme-btn"> @lang('app.contact_us') </a>
                     </div>
 
                 </div>
@@ -110,6 +110,7 @@
                         <div class="modern-home-cat-with-sub-wrap">
 
                             @foreach($top_categories as $category)
+                            @if ($category->category_slug !== 'danh-muc-khac')
                             <div class="modern-cat-list-with-sub-wrap">
                                 <div class="modern-home-cat-top-item">
                                     <a href="{{ route('listing') }}?category={{$category->id}}">
@@ -134,8 +135,36 @@
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
+                            @endif
                             @endforeach
+                            @foreach($top_categories as $category)
+                                @if ($category->category_slug == 'danh-muc-khac')
+                                    <div class="modern-cat-list-with-sub-wrap">
+                                        <div class="modern-home-cat-top-item">
+                                            <a href="{{ route('listing') }}?category={{$category->id}}">
+                                                <i class="fa {{ $category->fa_icon }}"></i>
+                                                <span class="category-name"><strong>{{ $category->category_name }}</strong> </span>
+                                            </a>
+                                        </div>
 
+                                        <div class="modern-home-cat-sub-item">
+                                            @if($category->sub_categories->count())
+                                                <ul class="list-unstyled">
+
+                                                    @foreach($category->sub_categories as $s_cat)
+
+                                                        <li><a href="{{ route('listing') }}?category={{$category->id}}&sub_category={{$s_cat->id}}">
+                                                                <i class="fa fa-arrow-right"></i> {{ $s_cat->category_name }}
+                                                            </a></li>
+                                                    @endforeach
+                                                </ul>
+
+                                            @endif
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                @endif
+                            @endforeach
                         </div>
                     @endif
 
@@ -284,14 +313,15 @@
                         </h4>
                     </div>
                     <hr />
-
-                    <div class="themeqx_new_premium_ads_wrap themeqx-carousel-ads">
-                        @foreach($regular_ads as $ad)
-                            @if ($ad->category->is_active == 1)
+                    @foreach($regular_ads->chunk(4) as $chunk)
+                    <div class="themeqx_new_regular_ads_wrap themeqx-carousel-ads">
+                        @foreach($chunk as $ad)
+                            @if ($ad['category']['is_active'] == 1)
                                 @include('theme.modern.partials.product-card', ['pageType' => 'home'])
                             @endif
                         @endforeach
                     </div> <!-- themeqx_new_premium_ads_wrap -->
+                    @endforeach
                 </div>
 
             </div>
@@ -358,17 +388,7 @@
         </div>
     @endif
 
-    <div class="modern-post-ad-call-to-cation">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <h1>@lang('app.want_to_find_something_quickly')</h1>
-                    <p>@lang('app.find_your_ad_quickly')</p>
-                    <a href="{{route('contact_us_page')}}" class="btn btn-info btn-lg">@lang('app.contact_us')</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('theme.modern.partials.contact_us_section')
 
 @endsection
 
@@ -383,7 +403,7 @@
                 responsive:{
                     0:{
                         items:1,
-                        nav:true
+                        nav:false
                     },
                     600:{
                         items:3,
@@ -407,7 +427,7 @@
                 responsive:{
                     0:{
                         items:1,
-                        nav:true
+                        nav:false
                     },
                     600:{
                         items:3,
@@ -416,7 +436,7 @@
                     1000:{
                         items:4,
                         nav:true,
-                        loop:false
+                        loop:true,
                     }
                 },
                 navText : ['<i class="fa fa-arrow-circle-o-left"></i>','<i class="fa fa-arrow-circle-o-right"></i>']
@@ -439,7 +459,7 @@
                     1000:{
                         items:4,
                         nav:true,
-                        loop:false
+                        loop:false,
                     }
                 },
                 navText : ['<i class="fa fa-arrow-circle-o-left"></i>','<i class="fa fa-arrow-circle-o-right"></i>']

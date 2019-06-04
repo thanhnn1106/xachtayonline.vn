@@ -70,7 +70,7 @@ class PostController extends Controller
     {
         $user_id = Auth::user()->id;
         $title = trans('app.create_new_post');
-        $ads_images = Media::whereUserId($user_id)->wherePostId(0)->whereRef('blog')->get();
+        $ads_images = Media::where('user_id',$user_id)->wherePostId(0)->whereRef('blog')->get();
 
         return view('admin.post_create', compact('title', 'ads_images'));
     }
@@ -104,7 +104,7 @@ class PostController extends Controller
         $post_created = Post::create($data);
 
         if ($post_created){
-            Media::whereUserId($user_id)->wherePostId(0)->whereRef('blog')->update(['post_id'=>$post_created->id]);
+            Media::where('user_id',$user_id)->wherePostId(0)->whereRef('blog')->update(['post_id'=>$post_created->id]);
 
             return redirect(route('posts'))->with('success', trans('app.post_has_been_created'));
         }
@@ -138,7 +138,7 @@ class PostController extends Controller
         $post_update = $page->update($data);
         if ($post_update){
             if (! $page->feature_img){
-                Media::whereUserId($user_id)->wherePostId(0)->whereRef('blog')->update(['post_id'=>$page->id]);
+                Media::where('user_id',$user_id)->wherePostId(0)->whereRef('blog')->update(['post_id'=>$page->id]);
             }
 
             return redirect()->back()->with('success', trans('app.post_has_been_updated'));
@@ -151,11 +151,11 @@ class PostController extends Controller
         $post_id = $request->post_id ? $request->post_id : 0 ;
 
         //Check is this post belongs with any image
-        $attachedPostMediaCount = Media::whereUserId($user_id)->wherePostId($post_id)->whereRef('blog')->count();
+        $attachedPostMediaCount = Media::where('user_id',$user_id)->wherePostId($post_id)->whereRef('blog')->count();
         if ($attachedPostMediaCount > 0){
             return ['success' => 0, 'msg' => trans('app.max_image_uploaded_msg')];
         }else{
-            $postMediaCount = Media::whereUserId($user_id)->wherePostId(0)->whereRef('blog')->count();
+            $postMediaCount = Media::where('user_id',$user_id)->wherePostId(0)->whereRef('blog')->count();
             if ($postMediaCount > 0){
                 return ['success' => 0, 'msg'=> trans('app.max_image_uploaded_msg')];
             }
@@ -201,7 +201,7 @@ class PostController extends Controller
 
     public function appendPostMediaImage(){
         $user_id = Auth::user()->id;
-        $ads_images = Media::whereUserId($user_id)->wherePostId(0)->whereRef('blog')->get();
+        $ads_images = Media::where('user_id',$user_id)->wherePostId(0)->whereRef('blog')->get();
 
         return view('admin.append_media', compact('ads_images'));
     }
@@ -318,7 +318,7 @@ class PostController extends Controller
 
 
     public function blogIndex(){
-        $posts = Post::whereType('post')->whereStatus(1)->paginate(20);
+        $posts = Post::whereType('post')->where('status',1)->paginate(20);
         $title = trans('app.blog');
         return view('theme.blog', compact('title', 'posts'));
     }
@@ -332,7 +332,7 @@ class PostController extends Controller
     }
 
     public function authorPosts($id){
-        $posts = Post::whereType('post')->whereUserId($id)->whereStatus(1)->paginate(20);
+        $posts = Post::whereType('post')->where('user_id',$id)->where('status',1)->paginate(20);
         $user = User::find($id);
         $title = $user->name."'s ".trans('app.blog');
         return view('theme.blog', compact('title', 'posts'));
