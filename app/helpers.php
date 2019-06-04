@@ -460,5 +460,21 @@ function themeqx_classifieds_currencies(){
         'ZAR' => 'South African rand',
         'ZMW' => 'Zambian kwacha',
     );
-    
+    function getOrderStatus($status)
+    {
+        switch ($status) {
+            case 0:
+                return tran('app.waiting_for_confirm');
+                break;
+            case 1:
+                return tran('app.processing');
+                break;
+            case 2:
+                return tran('app.shipping');
+                break;
+            default:
+                return tran('app.done');
+                break;
+        }
+    }
 }

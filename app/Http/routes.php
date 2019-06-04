@@ -231,7 +231,7 @@ Route::group(['prefix'=>'dashboard', 'middleware' => 'dashboard'], function(){
             Route::post('profile/edit', ['uses' => 'UserController@profileEditPost']);
             Route::get('profile/change-avatar', ['as'=>'change_avatar', 'uses' => 'UserController@changeAvatar']);
             Route::post('upload-avatar', ['as'=>'upload_avatar',  'uses' => 'UserController@uploadAvatar']);
-
+            Route::get('profile/change-avatar', ['as'=>'change_avatar', 'uses' => 'UserController@changeAvatar']);
             /**
              * Change Password route
              */
@@ -240,7 +240,11 @@ Route::group(['prefix'=>'dashboard', 'middleware' => 'dashboard'], function(){
                 Route::post('change-password', 'UserController@changePasswordPost');
             });
 
-
+            Route::group(['prefix' => 'orders'], function() {
+                Route::get('history', ['as' => 'order_history', 'uses' => 'OrderController@orderHistory']);
+                Route::get('order-history-data', ['as'=>'get_order_history_data', 'uses' => 'OrderController@orderHistoryData']);
+                Route::get('order-info/{order_id}', ['as'=>'order_info', 'uses' => 'OrderController@orderInfo']);
+            });
         });
     });
 

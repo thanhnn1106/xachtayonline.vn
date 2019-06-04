@@ -83,7 +83,7 @@
 
             @endif
 
-            <li> <a href="{{ route('payments') }}"><i class="fa fa-money"></i> @lang('app.payments')</a>  </li>
+            <li> <a href="{{ route('order_history') }}"><i class="fa fa-money"></i> @lang('app.order_history')</a>  </li>
             <li> <a href="{{ route('profile') }}"><i class="fa fa-user"></i> @lang('app.profile')</a>  </li>
             <li> <a href="{{ route('change_password') }}"><i class="fa fa-lock"></i> @lang('app.change_password')</a>  </li>
 

@@ -9,6 +9,7 @@ use Illuminate\Validation;
 
 use App\Order;
 use App\Ad;
+use Yajra\Datatables\Datatables;
 
 class OrderController extends Controller
 {
@@ -67,7 +68,7 @@ class OrderController extends Controller
             'note' => $request->note ? $request->note : '',
             'shipping_address' => $request->shipping_address,
             'phone' => $request->phone,
-            'status' => 0
+            'status' => '0'
         ];
 
         $orderCreate = Order::create($data);
@@ -77,5 +78,108 @@ class OrderController extends Controller
         } else {
             return back()->withInput()->with('error', trans('app.error_msg'));
         }
+    }
+
+    public function orderHistory()
+    {
+        $data = [
+            "title" => trans('app.order_history')
+        ];
+
+        return view('admin.orders', $data);
+    }
+
+    public function orderHistoryData()
+    {
+        $user = Auth::user();
+        if ($user->is_admin()){
+            $orders = Order::select
+                (
+                    'id',
+                    'ad_id',
+                    'user_id',
+                    'seller_id',
+                    'price',
+                    'quantity',
+                    'total_amount',
+                    'bank_reciept',
+                    'note',
+                    'shipping_address',
+                    'phone',
+                    'status',
+                    'created_at'
+            )->with('ad', 'user')->get();
+        }else{
+            $orders = Order::select
+                (
+                    'id',
+                    'ad_id',
+                    'user_id',
+                    'seller_id',
+                    'price',
+                    'quantity',
+                    'total_amount',
+                    'bank_reciept',
+                    'note',
+                    'shipping_address',
+                    'phone',
+                    'status',
+                    'created_at'
+                )->where('user_id', $user->id)->with('ad', 'user')->get();
+        }
+
+        return Datatables::of($orders)
+            ->editColumn('id', function($orders){
+                return $orders->id;
+            })
+            ->editColumn('ad_id', function($orders){
+                return '<a href="' . route('single_ad', $orders->ad->slug) . '" target="_blank">'
+                    . $orders->ad->title . '</a>';
+            })
+            ->editColumn('seller_id', function($orders){
+                return '<a href="' . route('listing', $orders->ad->user->id) . '" target="_blank">'
+                    . $orders->ad->user->name . '</a>';
+            })
+            ->editColumn('price', function($orders){
+                return themeqx_price_ng(number_format($orders->price));
+            })
+            ->editColumn('quantity', function($orders){
+                return $orders->quantity;
+            })
+            ->editColumn('total_amount', function($orders){
+                return themeqx_price_ng(number_format($orders->total_amount));
+            })
+            ->editColumn('status', function($orders){
+                return $this->getOrderStatus($orders->status);
+            })
+            ->editColumn('created_at', function($orders){
+                return $orders->created_at;
+            })
+            ->removeColumn('user_id', 'bank_reciept', 'note', 'shipping_address', 'phone')
+            ->escapeColumns(['*'])
+            ->make(false);
+    }
+
+    private function getOrderStatus($status)
+    {
+        switch ($status) {
+            case 0:
+                return trans('app.waiting_for_confirm');
+                break;
+            case 1:
+                return trans('app.processing');
+                break;
+            case 2:
+                return trans('app.shipping');
+                break;
+            default:
+                return trans('app.done');
+                break;
+        }
+    }
+
+    public function orderInfo()
+    {
+        //TODO
     }
 }

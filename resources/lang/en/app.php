@@ -517,5 +517,9 @@ return [
     'order_quickly' => 'Order now',
     'shipping_fee' => 'Shipping fee',
     'shipping_days' => 'Shipping days',
-    'discount_price' => 'Discount price'
+    'discount_price' => 'Discount price',
+    'waiting_for_confirm' => 'Chờ xác nhận',
+    'processing' => 'Đang xử lý',
+    'shipping' => 'Đang giao hàng',
+    'done' => 'Đơn hàng hoàn tất',
 ];
