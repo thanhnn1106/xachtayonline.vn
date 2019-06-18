@@ -539,4 +539,10 @@ return [
     'first_name' => 'Tên',
     'last_name' => 'Họ',
     'gender' => 'Giới tính',
+    'ad_content' => 'Thông tin sản phẩm',
+    'ad_content_info_text' => 'Thông tin sản phẩm sẽ giúp khách hàng biết chi tiết về sản phẩm của bạn.',
+    'ad_name' => 'Tên sản phẩm',
+    'ad_name_info' => 'Dành cho slug URL. Không thể thay đổi.',
+    'sku' => 'Mã sản phẩm',
+    'sku_info' => 'Dùng để tra cứu sản phẩm trên web nhà sản xuất. (Nếu có).',
 ];

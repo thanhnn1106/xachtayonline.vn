@@ -41,7 +41,7 @@
                 <div class="col-sm-4 col-xs-12">
                     <div class="footer-widget">
                         <h4>Liên kết nhanh</h4>
-                        <ul class="footer-menu col-md-6">
+                        <ul class="footer-menu col-md-12">
                             @if($show_in_footer_menu->count() > 0)
                                 @foreach($show_in_footer_menu as $page)
                                     <li><a href="{{ route('single_page', $page->slug) }}">{{ $page->title }} </a></li>
@@ -54,26 +54,26 @@
                             <li><a href="{{ route('contact_us_page') }}">@lang('app.contact_us')</a></li>
                         </ul>
 
-                        <div class="social-icons col-md-6">
+                        <div class="social-icons col-md-12">
                             <ul class="social-ul">
                                 @if(get_option('facebook_url'))
-                                    <li><a href="{{ get_option('facebook_url') }}" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a href="{{ get_option('facebook_url') }}" target="_blank"><i class="fa fa-facebook btn-default"></i></a></li>
                                 @endif
 
                                 @if(get_option('twitter_url'))
-                                    <li><a href="{{ get_option('twitter_url') }}" target="_blank"><i class="fa fa-twitter"></i></a></li>
+                                    <li><a href="{{ get_option('twitter_url') }}" target="_blank"><i class="fa fa-twitter btn-default"></i></a></li>
                                 @endif
                                 @if(get_option('linked_in_url'))
-                                    <li><a href="{{ get_option('linked_in_url') }}" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+                                    <li><a href="{{ get_option('linked_in_url') }}" target="_blank"><i class="fa fa-linkedin btn-default"></i></a></li>
                                 @endif
                                 @if(get_option('dribble_url'))
-                                    <li><a href="{{ get_option('dribble_url') }}" target="_blank"><i class="fa fa-dribbble"></i></a></li>
+                                    <li><a href="{{ get_option('dribble_url') }}" target="_blank"><i class="fa fa-dribbble btn-default"></i></a></li>
                                 @endif
                                 @if(get_option('google_plus_url'))
-                                    <li><a href="{{ get_option('google_plus_url') }}" target="_blank"><i class="fa fa-google-plus"></i></a></li>
+                                    <li><a href="{{ get_option('google_plus_url') }}" target="_blank"><i class="fa fa-google-plus btn-default"></i></a></li>
                                 @endif
                                 @if(get_option('youtube_url'))
-                                    <li><a href="{{ get_option('youtube_url') }}" target="_blank"><i class="fa fa-youtube"></i></a></li>
+                                    <li><a href="{{ get_option('youtube_url') }}" target="_blank"><i class="fa fa-youtube btn-default"></i></a></li>
                                 @endif
 
                             </ul>
