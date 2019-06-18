@@ -58,10 +58,11 @@
                             </label>
                             <div class="col-sm-8 {{ $errors->has('default_timezone')? 'has-error':'' }}">
                                 <select class="form-control select2" name="default_timezone" id="default_timezone">
-                                    {{-- */ $saved_timezone = get_option('default_timezone'); /*--}}
-                                    @foreach(timezone_identifiers_list() as $key=>$value)
-                                        <option value="{{ $value }}" {{ $saved_timezone == $value? 'selected':'' }}>{{ $value }}</option>
-                                    @endforeach
+                                    {{--@define $saved_timezone = get_option('default_timezone')--}}
+                                    {{--{{ dd($saved_timezone) }}--}}
+                                    {{--@foreach(timezone_identifiers_list() as $key=>$value)--}}
+                                        {{--<option value="{{ $value }}" {{ $saved_timezone == $value ? 'selected':'' }}>{{ $value }}</option>--}}
+                                    {{--@endforeach--}}
 
                                 </select>
 
@@ -79,16 +80,16 @@
                                 <fieldset>
                                     {{-- */ $saved_date_format = get_option('date_format'); /*--}}
 
-                                    <label><input type="radio" value="F j, Y" name="date_format" {{ $saved_date_format == 'F j, Y'? 'checked':'' }}> {{ date('F j, Y') }}<code>F j, Y</code></label> <br />
-                                    <label><input type="radio" value="Y-m-d" name="date_format" {{ $saved_date_format == 'Y-m-d'? 'checked':'' }}> {{ date('Y-m-d') }}<code>Y-m-d</code></label> <br />
+                                    {{--<label><input type="radio" value="F j, Y" name="date_format" {{ $saved_date_format == 'F j, Y'? 'checked':'' }}> {{ date('F j, Y') }}<code>F j, Y</code></label> <br />--}}
+                                    {{--<label><input type="radio" value="Y-m-d" name="date_format" {{ $saved_date_format == 'Y-m-d'? 'checked':'' }}> {{ date('Y-m-d') }}<code>Y-m-d</code></label> <br />--}}
 
-                                    <label><input type="radio" value="m/d/Y" name="date_format" {{ $saved_date_format == 'm/d/Y'? 'checked':'' }}> {{ date('m/d/Y') }}<code>m/d/Y</code></label> <br />
+                                    {{--<label><input type="radio" value="m/d/Y" name="date_format" {{ $saved_date_format == 'm/d/Y'? 'checked':'' }}> {{ date('m/d/Y') }}<code>m/d/Y</code></label> <br />--}}
 
-                                    <label><input type="radio" value="d/m/Y" name="date_format" {{ $saved_date_format == 'd/m/Y'? 'checked':'' }}> {{ date('d/m/Y') }}<code>d/m/Y</code></label> <br />
+                                    {{--<label><input type="radio" value="d/m/Y" name="date_format" {{ $saved_date_format == 'd/m/Y'? 'checked':'' }}> {{ date('d/m/Y') }}<code>d/m/Y</code></label> <br />--}}
 
-                                    <label><input type="radio" value="custom" name="date_format" {{ $saved_date_format == 'custom'? 'checked':'' }}> Custom:</label>
-                                    <input type="text" value="{{ get_option('date_format_custom') }}" id="date_format_custom" name="date_format_custom" />
-                                    <span>example: {{ date(get_option('date_format_custom')) }}</span>
+                                    {{--<label><input type="radio" value="custom" name="date_format" {{ $saved_date_format == 'custom'? 'checked':'' }}> Custom:</label>--}}
+                                    {{--<input type="text" value="{{ get_option('date_format_custom') }}" id="date_format_custom" name="date_format_custom" />--}}
+                                    {{--<span>example: {{ date(get_option('date_format_custom')) }}</span>--}}
                                 </fieldset>
                                 <p class="text-info"> @lang('app.date_format_help_text')</p>
                             </div>

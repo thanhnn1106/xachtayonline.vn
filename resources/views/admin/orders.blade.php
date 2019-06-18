@@ -32,29 +32,22 @@
                         <table class="table table-bordered table-striped" id="jDataTable">
                             <thead>
                                 <tr>
-                                    <th>@lang('app.name')</th>
-                                    <th>@lang('app.via')</th>
-                                    <th>@lang('app.email')</th>
-                                    <th>@lang('app.created_at')</th>
+                                    <th>Mã đơn hàng</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Người bán</th>
+                                    <th>Giá</th>
+                                    <th>Số lượng</th>
+                                    <th>Tổng tiền</th>
+                                    <th>Trạng thái</th>
+                                    <th>Ngày đặt hàng</th>
                                 </tr>
                             </thead>
-
                         </table>
 
                     </div>
                 </div>
-
-
-
-
             </div>   <!-- /#page-wrapper -->
-
-
-
-
         </div>   <!-- /#wrapper -->
-
-
     </div> <!-- /#container -->
 @endsection
 
@@ -65,9 +58,14 @@
         $(document).ready(function() {
             $('#jDataTable').DataTable({
                 processing: true,
-                serverSide: true,
-                ajax: '{{ route('get_users_data') }}',
-                "aaSorting": []
+                serverSide: false,
+                ajax: '{{ route('get_order_history_data') }}',
+                "aaSorting": [],
+                language: {
+                    url : '//cdn.datatables.net/plug-ins/1.10.10/i18n/Vietnamese.json'
+                },
+                paging: true,
+                pageLength: 10,
             });
         });
     </script>

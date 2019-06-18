@@ -2,31 +2,31 @@
 @section('title') Register | @parent @endsection
 @section('main')
 
-    <div class="container">
-        <div class="row">
-            <div class=" col-md-4 col-sm-4 col-xs-12">
-                <div class="info-box bg-white ">
-                    <h4><i class="fa fa-edit"></i> </h4>
-                    <p class="intro"> Xem, cập nhật và xoá sản phẩm của bạn. </p>
-                </div>
-            </div>
+    {{--<div class="container">--}}
+        {{--<div class="row">--}}
+            {{--<div class=" col-md-4 col-sm-4 col-xs-12">--}}
+                {{--<div class="info-box bg-white ">--}}
+                    {{--<h4><i class="fa fa-edit"></i> </h4>--}}
+                    {{--<p class="intro"> Xem, cập nhật và xoá sản phẩm của bạn. </p>--}}
+                {{--</div>--}}
+            {{--</div>--}}
 
-            <div class="col-md-4 col-sm-4 col-xs-12">
-                <div class="info-box bg-white ">
-                    <h4><i class="fa fa-clock-o"></i> </h4>
-                    <p class="intro"> Đăng sản phẩm mới nhanh với thông tin liên lạc chi tiết. </p>
-                </div>
-            </div>
+            {{--<div class="col-md-4 col-sm-4 col-xs-12">--}}
+                {{--<div class="info-box bg-white ">--}}
+                    {{--<h4><i class="fa fa-clock-o"></i> </h4>--}}
+                    {{--<p class="intro"> Đăng sản phẩm mới nhanh với thông tin liên lạc chi tiết. </p>--}}
+                {{--</div>--}}
+            {{--</div>--}}
 
-            <div class="col-md-4 col-sm-4 col-xs-12">
-                <div class="info-box bg-white ">
-                    <h4><i class="fa fa-bar-chart-o"></i> </h4>
-                    <p class="intro"> Theo dõi sản phẩm yêu thích của bạn. </p>
-                </div>
-            </div>
+            {{--<div class="col-md-4 col-sm-4 col-xs-12">--}}
+                {{--<div class="info-box bg-white ">--}}
+                    {{--<h4><i class="fa fa-bar-chart-o"></i> </h4>--}}
+                    {{--<p class="intro"> Theo dõi sản phẩm yêu thích của bạn. </p>--}}
+                {{--</div>--}}
+            {{--</div>--}}
 
-        </div>
-    </div>
+        {{--</div>--}}
+    {{--</div>--}}
 
 
     <div class="container">
@@ -135,8 +135,8 @@
 
                     <hr />
                     <div class="row">
-                        <div class="col-xs-12">
-                            <input type="submit" value="Đăng ký" class="btn btn-primary btn-block btn-lg" tabindex="7">
+                        <div class="col-xs-12">Chức năng đang tạm khoá. Vui lòng liên lạc trực tiếp qua điện thoại hoặc Facebook.
+                            {{--<input type="submit" value="Đăng ký" class="btn btn-primary btn-block btn-lg theme-btn" tabindex="7">--}}
                         </div>
                     </div>
                     {{ Form::close() }}

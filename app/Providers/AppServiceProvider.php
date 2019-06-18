@@ -51,8 +51,8 @@ class AppServiceProvider extends ServiceProvider
 
         view()->composer('*', function($view)
         {
-            $header_menu_pages = Post::whereStatus(1)->where('show_in_header_menu', 1)->get();
-            $show_in_footer_menu = Post::whereStatus(1)->where('show_in_footer_menu', 1)->get();
+            $header_menu_pages = Post::where('status',1)->where('show_in_header_menu', 1)->get();
+            $show_in_footer_menu = Post::where('status',1)->where('show_in_footer_menu', 1)->get();
             
             $enable_monetize = get_option('enable_monetize');
             $loggedUser = null;

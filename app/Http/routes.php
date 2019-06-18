@@ -169,12 +169,18 @@ Route::group(['prefix'=>'dashboard', 'middleware' => 'dashboard'], function(){
         Route::get('pending', ['as'=>'admin_pending_ads', 'uses' => 'AdsController@adminPendingAds']);
         Route::get('blocked', ['as'=>'admin_blocked_ads', 'uses' => 'AdsController@adminBlockedAds']);
         Route::post('status-change', ['as'=>'ads_status_change', 'uses' => 'AdsController@adStatusChange']);
-
         Route::get('ad-reports', ['as'=>'ad_reports', 'uses' => 'AdsController@reports']);
-        Route::get('users', ['as'=>'users', 'uses' => 'UserController@index']);
-        Route::get('users-data', ['as'=>'get_users_data', 'uses' => 'UserController@usersData']);
-        Route::get('users-info/{id}', ['as'=>'user_info', 'uses' => 'UserController@userInfo']);
         Route::post('delete-reports', ['as'=>'delete_report', 'uses' => 'AdsController@deleteReports']);
+
+        Route::get('users', ['as'=>'users', 'uses' => 'UserController@index']);
+        Route::get('seller', ['as'=>'sellers', 'uses' => 'UserController@index']);
+        Route::get('users/add-new', ['as'=>'users_add_new', 'uses' => 'UserController@addNew']);
+        Route::post('users/admin/add-new', ['as'=>'users_admin_add_new', 'uses' => 'UserController@adminAddNewUser']);
+        Route::get('users-data/{userType}', ['as'=>'get_users_data', 'uses' => 'UserController@usersData']);
+        Route::get('users-info/{id}', ['as'=>'user_info', 'uses' => 'UserController@userInfo']);
+        Route::post('user-status-change', ['as'=>'update_user_status', 'uses' => 'UserController@userStatusChange']);
+        Route::post('delete', ['as'=>'delete_user', 'uses' => 'UserController@destroy']);
+
 
         Route::get('contact-messages', ['as'=>'contact_messages', 'uses' => 'HomeController@contactMessages']);
         Route::get('contact-messages-data', ['as'=>'contact_messages_data', 'uses' => 'HomeController@contactMessagesData']);
@@ -231,7 +237,7 @@ Route::group(['prefix'=>'dashboard', 'middleware' => 'dashboard'], function(){
             Route::post('profile/edit', ['uses' => 'UserController@profileEditPost']);
             Route::get('profile/change-avatar', ['as'=>'change_avatar', 'uses' => 'UserController@changeAvatar']);
             Route::post('upload-avatar', ['as'=>'upload_avatar',  'uses' => 'UserController@uploadAvatar']);
-
+            Route::get('profile/change-avatar', ['as'=>'change_avatar', 'uses' => 'UserController@changeAvatar']);
             /**
              * Change Password route
              */
@@ -240,7 +246,11 @@ Route::group(['prefix'=>'dashboard', 'middleware' => 'dashboard'], function(){
                 Route::post('change-password', 'UserController@changePasswordPost');
             });
 
-
+            Route::group(['prefix' => 'orders'], function() {
+                Route::get('history', ['as' => 'order_history', 'uses' => 'OrderController@orderHistory']);
+                Route::get('order-history-data', ['as'=>'get_order_history_data', 'uses' => 'OrderController@orderHistoryData']);
+                Route::get('order-info/{order_id}', ['as'=>'order_info', 'uses' => 'OrderController@orderInfo']);
+            });
         });
     });
 

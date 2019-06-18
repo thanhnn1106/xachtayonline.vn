@@ -34,7 +34,7 @@ class HomeController extends Controller
         $regular_ads = Ad::activeRegular()
             ->with('category', 'city')
             ->limit($limit_regular_ads)
-            ->orderBy('id', 'desc')
+            ->inRandomOrder()
             ->get();
         $urgent_ads = Ad::activeUrgent()
             ->with('category', 'city')

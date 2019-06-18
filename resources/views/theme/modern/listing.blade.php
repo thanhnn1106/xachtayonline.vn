@@ -153,16 +153,16 @@
 
                         <?php
                         $allAdTab = route('listing').str_replace('/', '', str_replace(route('listing'), '', request()->fullUrlWithQuery(['adType'=>'all'])));
-                        $personalAdTab = route('listing').str_replace('/', '', str_replace(route('listing'), '', request()->fullUrlWithQuery(['adType'=>'personal'])));
-                        $businessAdTab = route('listing').str_replace('/', '', str_replace(route('listing'), '', request()->fullUrlWithQuery(['adType'=>'business'])));
+//                        $personalAdTab = route('listing').str_replace('/', '', str_replace(route('listing'), '', request()->fullUrlWithQuery(['adType'=>'personal'])));
+//                        $businessAdTab = route('listing').str_replace('/', '', str_replace(route('listing'), '', request()->fullUrlWithQuery(['adType'=>'business'])));
 
                         ?>
 
                         <div class="listingTopFilterBar">
                             <ul class="filterAdType pull-left">
                                 <li class="{{ request('adType') == false || request('adType') == 'all'? 'active':'' }}"><a href="{{ $allAdTab }}">@lang('app.all_ads') <small>({{ $personal_ads_count + $business_ads_count }})</small></a> </li>
-                                <li class="{{ request('adType') == 'personal'? 'active':'' }}"><a href="{{ $personalAdTab }}">@lang('app.personal') <small>({{ $personal_ads_count }})</small></a> </li>
-                                <li class="{{ request('adType') == 'business'? 'active':'' }}"><a href="{{ $businessAdTab }}">@lang('app.business') <small>({{ $business_ads_count }})</small></a> </li>
+                                {{--<li class="{{ request('adType') == 'personal'? 'active':'' }}"><a href="{{ $personalAdTab }}">@lang('app.personal') <small>({{ $personal_ads_count }})</small></a> </li>--}}
+                                {{--<li class="{{ request('adType') == 'business'? 'active':'' }}"><a href="{{ $businessAdTab }}">@lang('app.business') <small>({{ $business_ads_count }})</small></a> </li>--}}
                             </ul>
 
                             <ul class="listingViewIcon pull-right">

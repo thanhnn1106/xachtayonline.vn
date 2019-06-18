@@ -1,6 +1,6 @@
-<div class="@if ($pageType !== 'home') col-md-4 col-sm-6 col-xs-12 @endif">
+<div class="@if ($pageType !== 'home') col-md-4 col-sm-6 col-xs-12 owl-carousel @endif">
     <div itemscope itemtype="http://schema.org/Product" class="ads-item-thumbnail ad-box-{{$ad->price_plan}}">
-        <div class="ads-thumbnail">
+        <div class="ads-thumbnail @if ($pageType !== 'home') owl-item @endif">
             <a href="{{ route('single_ad', $ad->slug) }}">
                 <img itemprop="image" src="{{ media_url($ad->feature_img) }}" class="img-responsive"
                      alt="{{ $ad->title }}">
@@ -18,20 +18,25 @@
         <div class="caption">
             <h4>
                 <a href="{{ route('single_ad', $ad->slug) }}" title="{{ $ad->title }}">
-                    <span itemprop="name">{{ str_limit($ad->title, 40) }} </span>
+                    <span class="text-info" itemprop="name">{{ str_limit($ad->title, 60) }} </span>
                 </a>
             </h4>
-            <a class="price text-muted" href="{{ route('listing', ['category' => $ad->category->id]) }}">
-                <i class="fa fa-folder-o"></i>
-                {{ $ad->category->category_name }}
-            </a>
-
-            @if($ad->country)
-                <a class="location text-muted" href="{{ route('listing', ['country' => $ad->country->id]) }}">
-                    <i class="fa fa-location-arrow"></i>
-                    {{ $ad->country->country_name }}
+            <p>
+                <a class="price text-muted" href="{{ route('listing', ['category' => $ad->category->id]) }}">
+                    <i class="fa fa-folder-o"></i>
+                    {{ $ad->category->category_name }}
                 </a>
-            @endif
+
+                @if($ad->country)
+                    <a class="location text-muted" href="{{ route('listing', ['country' => $ad->country->id]) }}">
+                        <i class="fa fa-location-arrow"></i>
+                        {{ $ad->country->country_name }}
+                    </a>
+                @endif
+            </p>
+            <p class="text-muted">
+                <a href="{{ route('listing', ['user_id' => $ad->user_id]) }}">{{ $ad->seller_name }}</a>
+            </p>
             <p class="date-posted text-muted hidden">
                 <i class="fa fa-clock-o"></i>
                 {{ $ad->created_at->diffForHumans() }}
@@ -41,7 +46,7 @@
                     {{ themeqx_price_ng(number_format($ad->price), $ad->is_negotiable) }}
                 </span>&nbsp;
                 @if ($ad->discount_price > 0)
-                    <span class="text-danger">-{{ number_format(100 - ($ad->discount_price / $ad->price * 100)) }}%</span>
+                    <span class="text-danger">-{{ number_format(100 - ($ad->discount_price / $ad->price * 100)) }}%</span><br/>
                 @endif
             </p>
             @if ($ad->discount_price > 0)
@@ -54,7 +59,7 @@
             <link itemprop="availability" href="http://schema.org/InStock"/>
         </div>
         <div class="caption btn-order">
-            <a type="button" href="{{ route('order', [$ad->id]) }}" class="btn btn-info btn-xl font-weight-bold text-capitalize">
+            <a type="button" href="{{ route('order', [$ad->id]) }}" class="btn btn-info theme-btn btn-xl font-weight-bold text-capitalize">
                 <span>{{ trans('app.order_quickly') }}</span>
             </a>
         </div>

@@ -17,10 +17,7 @@
                         </div> <!-- /.col-lg-12 -->
                     </div> <!-- /.row -->
                 @endif
-
                 @include('admin.flash_msg')
-
-
                 <div class="row">
                     <div class="col-xs-12">
 
@@ -31,20 +28,12 @@
                                 <td>{{ $user->name }}</td>
                             </tr>
                             <tr>
-                                <th>@lang('app.user_name')</th>
-                                <td>{{ $user->user_name }}</td>
-                            </tr>
-                            <tr>
                                 <th>@lang('app.email')</th>
                                 <td>{{ $user->email }}</td>
                             </tr>
                             <tr>
                                 <th>@lang('app.gender')</th>
                                 <td>{{ ucfirst($user->gender) }}</td>
-                            </tr>
-                            <tr>
-                                <th>@lang('app.mobile')</th>
-                                <td>{{ $user->mobile }}</td>
                             </tr>
                             <tr>
                                 <th>@lang('app.phone')</th>
@@ -79,52 +68,40 @@
                     </div>
                 </div>
 
-                    @if($ads->total() > 0)
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <h3>@lang('app.posted_ads')</h3>
+                @if($ads->total() > 0)
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <h3>@lang('app.posted_ads')</h3>
 
-                                <table class="table table-bordered table-striped">
+                            <table class="table table-bordered table-striped">
 
-                                    @foreach($ads as $ad)
-                                        <tr>
-                                            <td width="100">
-                                                <img src="{{ media_url($ad->feature_img) }}" class="img-responsive" alt="">
-                                            </td>
-                                            <td>
-                                                <h5><a href="{{ route('single_ad', $ad->slug) }}" target="_blank">{{ $ad->title }}</a> </h5>
-                                                <p class="text-muted">
-                                                    <i class="fa fa-map-marker"></i> {{ $ad->full_address() }} <br />  <i class="fa fa-clock-o"></i> {{ $ad->posting_datetime()  }}
+                                @foreach($ads as $ad)
+                                    <tr>
+                                        <td width="100">
+                                            <img src="{{ media_url($ad->feature_img) }}" class="img-responsive" alt="">
+                                        </td>
+                                        <td>
+                                            <h5><a href="{{ route('single_ad', $ad->slug) }}" target="_blank">{{ $ad->title }}</a> </h5>
+                                            <p class="text-muted">
+                                                <i class="fa fa-map-marker"></i> {{ $ad->full_address() }} <br />  <i class="fa fa-clock-o"></i> {{ $ad->posting_datetime()  }}
 
-                                                    @if($ad->reports->count() > 0)
-                                                    <br />
-                                                    <a href="{{ route('reports_by_ads', $ad->slug) }}">
-                                                    <i class="fa fa-exclamation-triangle"></i> @lang('app.reports') : {{ $ad->reports->count() }}
-                                                    </a>
-                                                    @endif
-                                                </p>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </table>
-
-                                {!! $ads->links() !!}
-
-                            </div>
+                                                @if($ad->reports->count() > 0)
+                                                <br />
+                                                <a href="{{ route('reports_by_ads', $ad->slug) }}">
+                                                <i class="fa fa-exclamation-triangle"></i> @lang('app.reports') : {{ $ad->reports->count() }}
+                                                </a>
+                                                @endif
+                                            </p>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </table>
+                            {!! $ads->links() !!}
                         </div>
-
-                    @endif
-
-
-
+                    </div>
+                @endif
             </div>   <!-- /#page-wrapper -->
-
-
-
-
         </div>   <!-- /#wrapper -->
-
-
     </div> <!-- /#container -->
 @endsection
 
