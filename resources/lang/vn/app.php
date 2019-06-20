@@ -177,7 +177,7 @@ return [
     'new_regular_ads' => 'SẢN PHẨM MỚI',
     'new_premium_ads' => 'Sản phẩm mới nổi bật',
     'search___' => 'Từ khoá tìm kiếm',
-    'filter' => 'Bộ lộc',
+    'filter' => 'Bộ lọc',
     'reset' => 'Reset',
     'loading' => 'Loading',
     'short_by' => 'Sắp xếp theo',

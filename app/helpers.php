@@ -121,14 +121,15 @@ function get_text_tpl($text = ''){
  * @return string
  */
 
-function unique_slug($title = '', $model = 'Ad'){
+function unique_slug($title = '', $model, $column)
+{
     $slug = str_slug($title);
     //get unique slug...
     $nSlug = $slug;
     $i = 0;
 
     $model = str_replace(' ','',"\App\ ".$model);
-    while( ($model::whereSlug($nSlug)->count()) > 0){
+    while( ($model::where($column, $nSlug)->count()) > 0){
         $i++;
         $nSlug = $slug.'-'.$i;
     }

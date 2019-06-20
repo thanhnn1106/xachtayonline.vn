@@ -1,6 +1,10 @@
 @extends('layout.main')
 @section('title') @if( ! empty($title)) {{ $title }} | @endif @parent @endsection
 
+@section('data-structure-json')
+    @include('theme.modern.partials.data-structure-json', ['ad' => $ad])
+@endsection
+
 @section('social-meta')
     <meta property="og:title" content="{{ $ad->title }}">
     <meta property="og:description" content="{{ substr(trim(preg_replace('/\s\s+/', ' ',strip_tags($ad->description) )),0,160) }}">
@@ -164,64 +168,7 @@
         </div>
     </div>
 
-
-
-    @if($related_ads->count() > 0 && get_option('enable_related_ads') == 1)
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="carousel-header">
-                        <h4><a href="{{ route('listing') }}">
-                                @lang('app.new_premium_ads')
-                            </a>
-                        </h4>
-                    </div>
-                    <hr />
-                    <div class="themeqx_new_regular_ads_wrap themeqx-carousel-ads">
-                        @foreach($related_ads as $rad)
-                            <div>
-                                <div itemscope itemtype="http://schema.org/Product" class="ads-item-thumbnail ad-box-{{$rad->price_plan}}">
-                                    <div class="ads-thumbnail">
-                                        <a href="{{ route('single_ad', $rad->slug) }}">
-                                            <img itemprop="image"  src="{{ media_url($rad->feature_img) }}" class="img-responsive" alt="{{ $rad->title }}">
-                                             <span class="modern-img-indicator">
-                                                @if(! empty($rad->video_url))
-                                                     <i class="fa fa-file-video-o"></i>
-                                                 @else
-                                                     <i class="fa fa-file-image-o"> {{ $rad->media_img->count() }}</i>
-                                                 @endif
-                                            </span>
-                                        </a>
-                                    </div>
-                                    <div class="caption">
-                                        <h4><a href="{{ route('single_ad', $rad->slug) }}" title="{{ $rad->title }}"><span itemprop="name">{{ str_limit($rad->title, 40) }} </span></a></h4>
-                                        <a class="price text-muted" href="{{ route('listing', ['category' => $rad->category->id]) }}"> <i class="fa fa-folder-o"></i> {{ $rad->category->category_name }} </a>
-
-                                        @if($rad->city)
-                                            <a class="location text-muted" href="{{ route('listing', ['city' => $rad->city->id]) }}"> <i class="fa fa-location-arrow"></i> {{ $rad->city->city_name }} </a>
-                                        @endif
-                                        <p class="date-posted text-muted"> <i class="fa fa-clock-o"></i> {{ $rad->created_at->diffForHumans() }}</p>
-                                        <p class="price"> <span itemprop="price" content="{{$rad->price}}"> {{ themeqx_price_ng($rad->price, $rad->is_negotiable) }} </span></p>
-                                        <link itemprop="availability" href="http://schema.org/InStock" />
-                                    </div>
-
-                                    @if($rad->price_plan == 'premium')
-                                        <div class="ribbon-wrapper-green"><div class="ribbon-green">{{ ucfirst($rad->price_plan) }}</div></div>
-                                    @endif
-                                    @if($rad->mark_ad_urgent == '1')
-                                        <div class="ribbon-wrapper-red"><div class="ribbon-red">@lang('app.urgent')</div></div>
-                                    @endif
-
-
-                                </div>
-                            </div>
-                        @endforeach
-                    </div> <!-- themeqx_new_premium_ads_wrap -->
-                </div>
-
-            </div>
-        </div>
-    @endif
+    @include('theme.modern.partials.related_ads', ["ad" => $ad])
 
     @include('theme.modern.partials.contact_us_section')
 

@@ -91,7 +91,7 @@ class PostController extends Controller
         ];
         $this->validate($request, $rules);
 
-        $slug = unique_slug($request->title, 'Post');
+        $slug = unique_slug($request->title, 'Post', 'slug');
         $data = [
             'user_id'               => $user->id,
             'title'                 => $request->title,
@@ -236,7 +236,7 @@ class PostController extends Controller
         $show_in_header_menu = $request->show_in_header_menu ? 1:0;
         $show_in_footer_menu = $request->show_in_footer_menu ? 1:0;
 
-        $slug = unique_slug($request->title, 'Post');
+        $slug = unique_slug($request->title, 'Post', 'slug');
         $data = [
             'user_id'               => $user->id,
             'title'                 => $request->title,

@@ -34,12 +34,12 @@ class HomeController extends Controller
         $regular_ads = Ad::activeRegular()
             ->with('category', 'city')
             ->limit($limit_regular_ads)
-            ->inRandomOrder()
+            ->orderBy('created_at', 'desc')
             ->get();
         $urgent_ads = Ad::activeUrgent()
             ->with('category', 'city')
             ->limit($limit_urgent_ads)
-            ->orderBy('id', 'desc')
+            ->orderBy('view', 'desc')
             ->get();
 
         $posts = Post::where('type', 'post')->where('status', '1')

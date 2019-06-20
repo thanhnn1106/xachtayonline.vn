@@ -42,9 +42,10 @@
         </div>
     </div>
 
+    {{--Main menu--}}
+    @include('theme.modern.partials.main_menu')
 
     <div class="modern-top-hom-cat-section">
-
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -52,14 +53,14 @@
                         <div class="search-wrapper">
                             <form class="form-inline" action="{{ route('listing') }}" method="get">
                                 <div class="form-group">
-                                    <input type="text"  class="form-control" id="searchTerms" name="q" value="{{ request('q') }}" placeholder="@lang('app.search___')" />
+                                    <input type="text" class="form-control" id="searchTerms" name="q" value="{{ request('q') }}" placeholder="@lang('app.search___')" />
                                 </div>
 
                                 <div class="form-group">
-                                    <select class="form-control select2" name="sub_category">
+                                    <select class="form-control" name="sub_category">
                                         <option value="">@lang('app.select_a_category')</option>
                                         @foreach($top_categories as $category)
-                                           @if($category->sub_categories->count() > 0)
+                                            @if($category->sub_categories->count() > 0)
                                                 <optgroup label="{{ $category->category_name }}">
                                                     @foreach($category->sub_categories as $sub_category)
                                                         <option value="{{ $sub_category->id }}" {{ old('category') == $sub_category->id ? 'selected': '' }}>{{ $sub_category->category_name }}</option>
@@ -71,7 +72,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <select class="form-control select2" name="country">
+                                    <select class="form-control" name="country">
                                         <option value="">@lang('app.select_a_country')</option>
                                         @foreach($countries as $country)
                                             <option value="{{ $country->id }}" {{ request('country') == $country->id ? 'selected' :'' }}>{{ $country->country_name }}</option>
@@ -79,100 +80,24 @@
                                     </select>
                                 </div>
 
-                                <div class="form-group">
-                                    <select class="form-control select2" id="state_select" name="state">
-                                        <option value=""> @lang('app.select_state') </option>
-                                    </select>
-                                </div>
+                                {{--<div class="form-group">--}}
+                                    {{--<select class="form-control select2" id="state_select" name="state">--}}
+                                        {{--<option value=""> @lang('app.select_state') </option>--}}
+                                    {{--</select>--}}
+                                {{--</div>--}}
 
                                 <button type="submit" class="btn theme-btn"> <i class="fa fa-search"></i> @lang('app.search_product')</button>
                             </form>
                         </div>
 
                     </div>
-
                     <div class="clearfix"></div>
-
-                    @if(get_option('modern_category_display_style') == 'show_top_category')
-                    <div class="modern-home-cat-wrap">
-                        <ul class="modern-home-cat-ul">
-                            @foreach($top_categories as $category)
-                                <li><a href="{{ route('listing') }}?category={{$category->id}}">
-                                        <i class="fa {{ $category->fa_icon }}"></i>
-                                        <span class="category-name">{{ $category->category_name }} </span>
-                                        <p class="count text-muted">({{ number_format($category->product_count) }})</p>
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    @else
-                        <div class="modern-home-cat-with-sub-wrap">
-
-                            @foreach($top_categories as $category)
-                            @if ($category->category_slug !== 'danh-muc-khac')
-                            <div class="modern-cat-list-with-sub-wrap">
-                                <div class="modern-home-cat-top-item">
-                                    <a href="{{ route('listing') }}?category={{$category->id}}">
-                                        <i class="fa {{ $category->fa_icon }}"></i>
-                                        <span class="category-name"><strong>{{ $category->category_name }}</strong> </span>
-                                    </a>
-                                </div>
-
-                                <div class="modern-home-cat-sub-item">
-                                    @if($category->sub_categories->count())
-                                        <ul class="list-unstyled">
-
-                                            @foreach($category->sub_categories as $s_cat)
-
-                                                <li><a href="{{ route('listing') }}?category={{$category->id}}&sub_category={{$s_cat->id}}">
-                                                        <i class="fa fa-arrow-right"></i> {{ $s_cat->category_name }}
-                                                    </a></li>
-                                            @endforeach
-                                        </ul>
-
-                                    @endif
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                            @endif
-                            @endforeach
-                            @foreach($top_categories as $category)
-                                @if ($category->category_slug == 'danh-muc-khac')
-                                    <div class="modern-cat-list-with-sub-wrap">
-                                        <div class="modern-home-cat-top-item">
-                                            <a href="{{ route('listing') }}?category={{$category->id}}">
-                                                <i class="fa {{ $category->fa_icon }}"></i>
-                                                <span class="category-name"><strong>{{ $category->category_name }}</strong> </span>
-                                            </a>
-                                        </div>
-
-                                        <div class="modern-home-cat-sub-item">
-                                            @if($category->sub_categories->count())
-                                                <ul class="list-unstyled">
-
-                                                    @foreach($category->sub_categories as $s_cat)
-
-                                                        <li><a href="{{ route('listing') }}?category={{$category->id}}&sub_category={{$s_cat->id}}">
-                                                                <i class="fa fa-arrow-right"></i> {{ $s_cat->category_name }}
-                                                            </a></li>
-                                                    @endforeach
-                                                </ul>
-
-                                            @endif
-                                        </div>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                @endif
-                            @endforeach
-                        </div>
-                    @endif
-
                 </div>
             </div>
         </div>
 
     </div>
+
 
     @if($enable_monetize)
         <div class="container">
@@ -200,7 +125,7 @@
                     <div class="themeqx_new_regular_ads_wrap themeqx-carousel-ads">
                         @foreach($urgent_ads as $ad)
                             @if ($ad->category->is_active == 1)
-                                @include('theme.modern.partials.product-card', ['pageType' => 'home'])
+                                @include('theme.modern.partials.product-card', ['pageType' => 'home', 'ad' => $ad])
                             @endif
                         @endforeach
                     </div> <!-- themeqx_new_premium_ads_wrap -->
@@ -403,11 +328,11 @@
                 responsive:{
                     0:{
                         items:1,
-                        nav:false
+                        nav:true
                     },
                     600:{
                         items:3,
-                        nav:false
+                        nav:true
                     },
                     1000:{
                         items:4,
@@ -427,11 +352,11 @@
                 responsive:{
                     0:{
                         items:1,
-                        nav:false
+                        nav:true
                     },
                     600:{
                         items:3,
-                        nav:false
+                        nav:true
                     },
                     1000:{
                         items:4,
@@ -454,12 +379,12 @@
                     },
                     600:{
                         items:3,
-                        nav:false
+                        nav:true
                     },
                     1000:{
                         items:4,
                         nav:true,
-                        loop:false,
+                        loop:true,
                     }
                 },
                 navText : ['<i class="fa fa-arrow-circle-o-left"></i>','<i class="fa fa-arrow-circle-o-right"></i>']

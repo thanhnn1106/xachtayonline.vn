@@ -2,6 +2,7 @@
 @section('title') @if( ! empty($title)) {{ $title }} | @endif @parent @endsection
 <!-- include summernote css/js -->
 <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
+<link href="{{ asset('assets/tam-emoji/css/emoji.css') }}" rel="stylesheet">
 @section('main')
 
     <div class="container">
@@ -437,6 +438,8 @@
 @section('page-js')
 
     <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"></script>
+    <script src="{{ asset('assets/tam-emoji/js/config.js') }}"></script>
+    <script src="{{ asset('assets/tam-emoji/js/tam-emoji.min.js') }}"></script>
     <script>
 
         function generate_option_from_json(jsonData, fromLoad){
@@ -492,8 +495,32 @@
 
 
         $(document).ready(function(){
-            $('#ad_description').summernote();
-            $('#ad_content').summernote();
+            document.emojiType = 'unicode';
+            document.emojiSource = '../../../../assets/tam-emoji/img';
+            $('#ad_description').summernote({
+                toolbar: [
+                    ['insert', ['emoji']],
+                    ['tool', ['undo', 'redo', 'codeview']],
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']]
+                ]
+            });
+            $('#ad_content').summernote({
+                toolbar: [
+                    ['insert', ['emoji']],
+                    ['tool', ['undo', 'redo', 'codeview']],
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']]
+                ]
+            });
             $('[name="category"]').change(function(){
                 var category_id = $(this).val();
                 $('#brand_loader').show();

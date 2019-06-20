@@ -1,2 +1,5 @@
 User-agent: *
-Disallow:
+Allow: /
+Allow: /listing*
+Allow: /san-pham*
+Disallow: /dasboard*
