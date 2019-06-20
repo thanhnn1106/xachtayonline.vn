@@ -14,9 +14,12 @@ class CreateAdsTable extends Migration
     {
         Schema::create('ads', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('sku')->nullable();
+            $table->string('name');
             $table->string('title');
             $table->string('slug');
             $table->text('description');
+            $table->text('content');
 
             $table->integer('category_id');
             $table->integer('sub_category_id');

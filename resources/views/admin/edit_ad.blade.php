@@ -1,6 +1,7 @@
 @extends('layout.main')
 @section('title') @if( ! empty($title)) {{ $title }} | @endif @parent @endsection
-
+<!-- include summernote css/js -->
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
 @section('main')
 
     <div class="container">
@@ -29,7 +30,9 @@
 
 
                         <div class="form-group  {{ $errors->has('category')? 'has-error':'' }}">
-                            <label for="category_name" class="col-sm-4 control-label">@lang('app.category')</label>
+                            <label for="category_name" class="col-sm-4 control-label">
+                                @lang('app.category')<span class="text-danger"> (*)</span>
+                            </label>
                             <div class="col-sm-8">
                                 <select class="form-control select2" name="category">
                                     <option value="">@lang('app.select_a_category')</option>
@@ -50,7 +53,7 @@
 
                         <div class="form-group">
                             <label for="brand_select" class="col-sm-4 control-label">
-                                @lang('app.brand')
+                                @lang('app.brand')<span class="text-danger"> (*)</span>
                             </label>
                             <div class="col-sm-8 {{ $errors->has('brand')? 'has-error':'' }}">
                                 <select class="form-control select2" name="brand" id="brand_select">
@@ -68,9 +71,18 @@
                             </div>
                         </div>
 
-
+                        <div class="form-group {{ $errors->has('sku')? 'has-error':'' }}">
+                            <label for="sku" class="col-sm-4 control-label">@lang('app.sku')</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="sku" value="{{ old('sku') ? old('sku') : $ad->sku }}" name="sku" placeholder="@lang('app.sku')">
+                                {!! $errors->has('sku')? '<p class="help-block">'.$errors->first('sku').'</p>':'' !!}
+                                <p class="text-info"> @lang('app.sku_info')</p>
+                            </div>
+                        </div>
                         <div class="form-group {{ $errors->has('ad_title')? 'has-error':'' }}">
-                            <label for="ad_title" class="col-sm-4 control-label">@lang('app.ad_title')</label>
+                            <label for="ad_title" class="col-sm-4 control-label">
+                                @lang('app.ad_title')<span class="text-danger"> (*)</span>
+                            </label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" id="ad_title" value="{{ old('ad_title') ? old('ad_title') : $ad->title }}" name="ad_title" placeholder="@lang('app.ad_title')">
                                 {!! $errors->has('ad_title')? '<p class="help-block">'.$errors->first('ad_title').'</p>':'' !!}
@@ -79,9 +91,11 @@
                         </div>
 
                         <div class="form-group {{ $errors->has('ad_description')? 'has-error':'' }}">
-                            <label for="ad_title" class="col-sm-4 control-label">@lang('app.ad_description')</label>
+                            <label for="ad_description" class="col-sm-4 control-label">
+                                @lang('app.ad_description')<span class="text-danger"> (*)</span>
+                            </label>
                             <div class="col-sm-8">
-                                <textarea name="ad_description" class="form-control" rows="8">{{ old('ad_description')?  old('ad_description') : $ad->description }}</textarea>
+                                <textarea id="ad_description" name="ad_description" class="form-control" rows="8">{{ old('ad_description')?  old('ad_description') : $ad->description }}</textarea>
                                 {!! $errors->has('ad_description')? '<p class="help-block">'.$errors->first('ad_description').'</p>':'' !!}
                                 <p class="text-info"> @lang('app.ad_description_info_text')</p>
                             </div>
@@ -89,8 +103,21 @@
 
 
 
+                        <div class="form-group {{ $errors->has('ad_content')? 'has-error':'' }}">
+                            <label for="ad_content" class="col-sm-4 control-label">
+                                @lang('app.ad_content') <span class="text-danger"> (*)</span>
+                            </label>
+                            <div class="col-sm-8">
+                                <textarea id="ad_content" name="ad_content" class="form-control" rows="8">{{ old('ad_content')?  old('ad_content') : $ad->content }}</textarea>
+                                {!! $errors->has('ad_content')? '<p class="help-block">'.$errors->first('ad_content').'</p>':'' !!}
+                                <p class="text-info"> @lang('app.ad_content_info_text')</p>
+                            </div>
+                        </div>
+
                         <div class="form-group required {{ $errors->has('type')? 'has-error':'' }}">
-                            <label class="col-md-4 control-label">@lang('app.add_type') </label>
+                            <label class="col-md-4 control-label">
+                                @lang('app.add_type') <span class="text-danger"> (*)</span>
+                            </label>
                             <div class="col-md-8">
                                 <label for="type_private" class="radio-inline">
                                     <input type="radio" value="personal" id="type_private" name="type"  {{ $ad->type == 'personal'? 'checked="checked"' : '' }}>
@@ -106,7 +133,9 @@
                         </div>
 
                         <div class="form-group {{ $errors->has('condition')? 'has-error':'' }}">
-                            <label for="condition" class="col-sm-4 control-label">@lang('app.condition')</label>
+                            <label for="condition" class="col-sm-4 control-label">
+                                @lang('app.condition')<span class="text-danger"> (*)</span>
+                            </label>
                             <div class="col-sm-8">
                                 <select class="form-control select2NoSearch" name="condition" id="condition">
                                     <option value="new" {{ $ad->ad_condition == 'new' ? 'selected':'' }}>@lang('app.new')</option>
@@ -118,7 +147,9 @@
 
 
                         <div class="form-group  {{ $errors->has('price')? 'has-error':'' }}">
-                            <label for="price" class="col-md-4 control-label">@lang('app.price')</label>
+                            <label for="price" class="col-md-4 control-label">
+                                @lang('app.price')<span class="text-danger"> (*)</span>
+                            </label>
                             <div class="col-md-4">
                                 <div class="input-group">
                                     <span class="input-group-addon">{{ get_option('currency_sign') }}</span>
@@ -135,7 +166,9 @@
                         </div>
 
                         <div class="form-group  {{ $errors->has('discount_price')? 'has-error':'' }}">
-                            <label for="price" class="col-md-4 control-label">@lang('app.discount_price')</label>
+                            <label for="price" class="col-md-4 control-label">
+                                @lang('app.discount_price')<span class="text-danger"> (*)</span>
+                            </label>
                             <div class="col-md-4">
                                 <div class="input-group">
                                     <span class="input-group-addon">{{ get_option('currency_sign') }}</span>
@@ -152,7 +185,9 @@
                         </div>
 
                         <div class="form-group  {{ $errors->has('shipping_fee')? 'has-error':'' }}">
-                            <label for="price" class="col-md-4 control-label">@lang('app.shipping_fee')</label>
+                            <label for="price" class="col-md-4 control-label">
+                                @lang('app.shipping_fee')<span class="text-danger"> (*)</span>
+                            </label>
                             <div class="col-md-4">
                                 <div class="input-group">
                                     <span class="input-group-addon">{{ get_option('currency_sign') }}</span>
@@ -169,7 +204,9 @@
                         </div>
 
                         <div class="form-group  {{ $errors->has('shipping_days')? 'has-error':'' }}">
-                            <label for="price" class="col-md-4 control-label">@lang('app.shipping_days')</label>
+                            <label for="price" class="col-md-4 control-label">
+                                @lang('app.shipping_days')<span class="text-danger"> (*)</span>
+                            </label>
                             <div class="col-md-4">
                                 <div class="input-group">
                                     <input type="number" class="form-control"
@@ -195,7 +232,7 @@
                             </div>
                         </div>
 
-                        <legend>@lang('app.image')</legend>
+                        <legend>@lang('app.image')<span class="text-danger"> (*)</span></legend>
 
                         <div class="form-group {{ $errors->has('images')? 'has-error':'' }}">
                             <div class="col-sm-12">
@@ -257,7 +294,9 @@
                         <legend>@lang('app.location_info')</legend>
 
                         <div class="form-group  {{ $errors->has('country')? 'has-error':'' }}">
-                            <label for="category_name" class="col-sm-4 control-label">@lang('app.country')</label>
+                            <label for="category_name" class="col-sm-4 control-label">
+                                @lang('app.country')<span class="text-danger"> (*)</span>
+                            </label>
                             <div class="col-sm-8">
                                 <select class="form-control select2" name="country">
                                     <option value="">@lang('app.select_a_country')</option>
@@ -271,7 +310,9 @@
                         </div>
 
                         <div class="form-group  {{ $errors->has('state')? 'has-error':'' }}">
-                            <label for="category_name" class="col-sm-4 control-label">@lang('app.state')</label>
+                            <label for="category_name" class="col-sm-4 control-label">
+                                @lang('app.state')<span class="text-danger"> (*)</span>
+                            </label>
                             <div class="col-sm-8">
                                 <select class="form-control select2" id="state_select" name="state">
                                     @if($previous_states->count() > 0)
@@ -395,7 +436,7 @@
 
 @section('page-js')
 
-
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"></script>
     <script>
 
         function generate_option_from_json(jsonData, fromLoad){
@@ -451,6 +492,8 @@
 
 
         $(document).ready(function(){
+            $('#ad_description').summernote();
+            $('#ad_content').summernote();
             $('[name="category"]').change(function(){
                 var category_id = $(this).val();
                 $('#brand_loader').show();

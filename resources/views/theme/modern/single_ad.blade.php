@@ -95,19 +95,25 @@
                                 @if($ad->brand)
                                     <i class="fa fa-industry"></i><a href="{{ route('listing', ['brand' => $ad->brand->id]) }}">  {{ $ad->brand->brand_name }} </a> |
                                 @endif
+
+                                <i class="fa fa-eye"></i> Đã xem: {{ $ad->view }}
+                                @if ($ad->sku) | SKU: {{ $ad->sku }} @endif
                             </p>
                         </div>
-                        <p>
-                            <h1 class="modern-single-ad-price @if ($ad->discount_price > 0) text-decorate-line-thought text-info @endif">
+                        <div class="ads-detail-meta">
+                            <span class="modern-single-ad-price text-danger">Thời gian giao hàng dự kiến: {{ $ad->shipping_days }} ngày</span>
+                        </div>
+                        <span class="d-inline-block">
+                            <h3 class="d-inline-block modern-single-ad-price @if ($ad->discount_price > 0) text-decorate-line-thought text-info @endif">
                                 {{ themeqx_price_ng(number_format($ad->price)) }}
-                            </h1>
+                            </h3>
                             @if ($ad->discount_price > 0)
-                                &nbsp;<span class="text-danger">-{{ number_format(100 - ($ad->discount_price / $ad->price * 100)) }}%</span><br/>
+                                &nbsp;<h3 class="d-inline-block text-danger">-{{ number_format(100 - ($ad->discount_price / $ad->price * 100)) }}%</h3>
                             @endif
-                        </p>
+                        </span>
 
                         @if ($ad->discount_price > 0)
-                            <h2 class="modern-single-ad-price text-danger">{{ themeqx_price_ng(number_format($ad->discount_price)) }}</h2>
+                            <h3 class="modern-single-ad-price text-danger">{{ themeqx_price_ng(number_format($ad->discount_price)) }}</h3>
                         @endif
 
                         @if($enable_monetize)

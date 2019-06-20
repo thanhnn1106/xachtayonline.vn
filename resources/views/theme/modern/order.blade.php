@@ -1,6 +1,18 @@
 @extends('layout.main')
 @section('title') @if( ! empty($title)) {{ $title }} | @endif @parent @endsection
-
+@section('social-meta')
+    <meta property="og:title" content="{{ $ad->title }}">
+    <meta property="og:description" content="{{ substr(trim(preg_replace('/\s\s+/', ' ',strip_tags($ad->description) )),0,160) }}">
+    @if($ad->media_img->first())
+        <meta property="og:image" content="{{ media_url($ad->media_img->first(), true) }}">
+    @else
+        <meta property="og:image" content="{{ asset('uploads/placeholder.png') }}">
+    @endif
+    <meta property="og:url" content="{{ route('single_ad', $ad->slug) }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <!--  Non-Essential, But Recommended -->
+    <meta name="og:site_name" content="{{ get_option('site_name') }}">
+@endsection
 @section('page-css')
     <link rel="stylesheet" href="{{ asset('assets/plugins/fotorama-4.6.4/fotorama.css') }}"
           xmlns="http://www.w3.org/1999/html">
@@ -80,16 +92,33 @@
                         <div class="ads-detail-meta">
                             <p class="text-muted">
                                 <i class="fa fa-folder-o"></i>
-                                <a href="{{ route('listing', ['category' => $ad->category->id]) }}">  {{ $ad->category->category_name }} </a>
+                                <a href="{{ route('listing', ['category' => $ad->category->id]) }}">  {{ $ad->category->category_name }} </a> |
 
                                 @if($ad->brand)
                                     <i class="fa fa-industry"></i><a
-                                            href="{{ route('listing', ['brand' => $ad->brand->id]) }}">  {{ $ad->brand->brand_name }} </a>
+                                            href="{{ route('listing', ['brand' => $ad->brand->id]) }}">  {{ $ad->brand->brand_name }} </a> |
                                 @endif
+                                <i class="fa fa-eye"></i> Đã xem: {{ $ad->view }}
+                                @if ($ad->sku) | SKU: {{ $ad->sku }} @endif
                             </p>
                         </div>
 
-                        <h1 class="modern-single-ad-price">{{ themeqx_price_ng(number_format($ad->price)) }}</h1>
+                        <div class="ads-detail-meta">
+                            <span class="modern-single-ad-price text-danger">Thời gian giao hàng dự kiến: {{ $ad->shipping_days }} ngày</span>
+                        </div>
+
+                        <span class="d-inline-block">
+                            <h3 class="d-inline-block modern-single-ad-price @if ($ad->discount_price > 0) text-decorate-line-thought text-info @endif">
+                                {{ themeqx_price_ng(number_format($ad->price)) }}
+                            </h3>
+                            @if ($ad->discount_price > 0)
+                                &nbsp;<h3 class="d-inline-block text-danger">-{{ number_format(100 - ($ad->discount_price / $ad->price * 100)) }}%</h3>
+                            @endif
+                        </span>
+
+                        @if ($ad->discount_price > 0)
+                            <h3 class="modern-single-ad-price text-danger">{{ themeqx_price_ng(number_format($ad->discount_price)) }}</h3>
+                        @endif
 
                         @if($enable_monetize)
                             {!! get_option('monetize_code_below_ad_title') !!}

@@ -145,3 +145,12 @@
 .ads-item-thumbnail .caption .price , .ads-item-thumbnail .caption .location {
     display: inline;
 }
+
+.d-inline-block {
+    display: inline-block;
+}
+
+.btn-default {
+    color: #fff;
+    background: #01505E;
+}

@@ -138,12 +138,14 @@ class AdsController extends Controller
             'discount_price'  => 'required',
             'shipping_fee'  => 'required',
             'shipping_days'  => 'required|min:1',
+            'ad_content'  => 'required',
+            'ad_name'  => 'required',
         ];
 
         $this->validate($request, $rules);
 
-        $title = $request->ad_title;
-        $slug = unique_slug($title);
+        $adName = $request->ad_name;
+        $slug = unique_slug($adName);
        
 
         $sub_category = Category::find($request->category);
@@ -178,6 +180,9 @@ class AdsController extends Controller
             'status' => '0',
             'user_id' => $user_id,
             'price_plan' => 'regular',
+            'content' => $request->ad_content,
+            'name' => $adName,
+            'sku' => $request->sku ?? '',
         ];
 
         //Check ads moderation settings
@@ -288,12 +293,10 @@ class AdsController extends Controller
             'discount_price'  => 'required',
             'shipping_fee'  => 'required',
             'shipping_days'  => 'required|min:1',
+            'ad_content'  => 'required',
         ];
 
         $this->validate($request, $rules);
-
-        $title = $request->ad_title;
-        //$slug = unique_slug($title);
         
         $sub_category = Category::find($request->category);
         $is_negotialble = $request->negotiable ? $request->negotiable : 0;
@@ -302,7 +305,6 @@ class AdsController extends Controller
 
         $data = [
             'title' => $request->ad_title,
-            'slug' => unique_slug($request->ad_title),
             'description' => $request->ad_description,
             'category_id' => $sub_category->category_id,
             'sub_category_id' => $request->category,
@@ -325,6 +327,8 @@ class AdsController extends Controller
             'video_url' => $video_url,
             'price_plan' => 'regular',
             'mark_ad_urgent' => $mark_ad_urgent,
+            'content' => $request->ad_content,
+            'sku' => $request->sku ?? '',
         ];
         $updated_ad = $ad->update($data);
 
