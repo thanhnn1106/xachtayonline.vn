@@ -1,5 +1,9 @@
 <div class="@if ($pageType !== 'home') col-md-4 col-sm-6 col-xs-12 owl-carousel @endif">
     <div itemscope itemtype="http://schema.org/Product" class="ads-item-thumbnail ad-box-{{$ad->price_plan}}">
+
+        <meta itemprop="name" content="{{$ad->title}}" />
+        <meta itemprop="description" content="{{strip_tags($ad->description)}}" />
+
         <div class="ads-thumbnail @if ($pageType !== 'home') owl-item @endif">
             <a href="{{ route('single_ad', $ad->slug) }}">
                 <img itemprop="image" src="{{ media_url($ad->feature_img) }}" class="img-responsive"
@@ -15,10 +19,19 @@
             </a>
         </div>
 
-        <div class="caption">
+        <div class="caption" itemprop="offers" itemtype="http://schema.org/Offer" itemscope>
+            <link itemprop="url" href="{{ route('listing', ['category' => $ad->category->id]) }}" />
+            <meta itemprop="availability" content="https://schema.org/InStock" />
+            <meta itemprop="priceCurrency" content="VND" />
+            <meta itemprop="itemCondition" content="https://schema.org/UsedCondition" />
+            <meta itemprop="price" content="{{$ad->price}}" />
+            <meta itemprop="priceValidUntil" content="{{date('Y-m-d', strtotime('+5 years'))}}" />
+            <div itemprop="seller" itemtype="http://schema.org/Organization" itemscope>
+                <meta itemprop="name" content="{{$ad->seller_name}}" />
+            </div>
             <h4>
                 <a href="{{ route('single_ad', $ad->slug) }}" title="{{ $ad->title }}">
-                    <span class="text-info" itemprop="name">{{ str_limit($ad->title, 60) }} </span>
+                    <span class="text-info">{{ str_limit($ad->title, 60) }} </span>
                 </a>
             </h4>
             <p>
@@ -56,7 +69,23 @@
                     </span>
                 </p>
             @endif
-            <link itemprop="availability" href="http://schema.org/InStock"/>
+        </div>
+        <div itemprop="aggregateRating" itemtype="http://schema.org/AggregateRating" itemscope>
+            <meta itemprop="reviewCount" content="89" />
+            <meta itemprop="ratingValue" content="4.4" />
+        </div>
+        <div itemprop="review" itemtype="http://schema.org/Review" itemscope>
+            <div itemprop="author" itemtype="http://schema.org/Person" itemscope>
+                <meta itemprop="name" content="{{$ad->seller_name}}" />
+            </div>
+            <div itemprop="reviewRating" itemtype="http://schema.org/Rating" itemscope>
+                <meta itemprop="ratingValue" content="4" />
+                <meta itemprop="bestRating" content="5" />
+            </div>
+        </div>
+        <meta itemprop="sku" content="{{$ad->sku}}" />
+        <div itemprop="brand" itemtype="http://schema.org/Thing" itemscope>
+            <meta itemprop="name" content="{{$ad->brand->brand_name}}" />
         </div>
         <div class="caption btn-order">
             <a type="button" href="{{ route('order', [$ad->id]) }}" class="btn btn-info theme-btn btn-xl font-weight-bold text-capitalize">

@@ -48,7 +48,7 @@ class BrandsController extends Controller
         ];
         $this->validate($request, $rules);
 
-        $slug = str_slug($request->brand_name);
+        $slug = unique_slug($request->brand_name, 'Brand', 'brand_slug');
         $duplicate = Brand::where('brand_slug', $slug)->count();
         if ($duplicate > 0){
             return back()->with('error', trans('app.brand_exists_in_db'));

@@ -29,7 +29,7 @@
 
                         <hr />
                         <div class="form-group">
-                            <select class="form-control select2" name="category">
+                            <select class="form-control" name="category">
                                 <option value="">@lang('app.select_a_category')</option>
                                 @foreach($categories as $category)
                                     <option value="{{ $category->id }}" {{ request('category') ==  $category->id ? 'selected':'' }}>{{ $category->category_name }}</option>
@@ -38,7 +38,7 @@
                         </div>
 
                         <div class="form-group">
-                            <select class="form-control select2" id="sub_category_select" name="sub_category">
+                            <select class="form-control" id="sub_category_select" name="sub_category">
                                 <option value="">@lang('app.select_a_sub_category')</option>
                                 @if($selected_categories)
                                     @foreach($selected_categories->sub_categories as $sub_category)
@@ -49,7 +49,7 @@
                         </div>
 
                         <div class="form-group">
-                            <select class="form-control select2" name="brand" id="brand_select">
+                            <select class="form-control" name="brand" id="brand_select">
                                 <option value=""> @lang('app.select_a_brand') </option>
                                 @if($selected_sub_categories)
                                     @foreach($selected_sub_categories->brands as $brand)
@@ -61,7 +61,7 @@
 
                         <hr />
                         <div class="form-group">
-                            <select class="form-control select2" name="country">
+                            <select class="form-control" name="country">
                                 <option value="">@lang('app.select_a_country')</option>
 
                                 @foreach($countries as $country)
@@ -70,27 +70,27 @@
                             </select>
                         </div>
 
-                        <div class="form-group">
-                            <select class="form-control select2" id="state_select" name="state">
-                                <option value=""> @lang('app.select_state') </option>
-                                @if($selected_countries)
-                                    @foreach($selected_countries->states as $state)
-                                        <option value="{{ $state->id }}" {{ request('state') ==  $state->id ? 'selected':'' }} >{{ $state->state_name }}</option>
-                                    @endforeach
-                                @endif
-                            </select>
-                        </div>
+                        {{--<div class="form-group">--}}
+                            {{--<select class="form-control" id="state_select" name="state">--}}
+                                {{--<option value=""> @lang('app.select_state') </option>--}}
+                                {{--@if($selected_countries)--}}
+                                    {{--@foreach($selected_countries->states as $state)--}}
+                                        {{--<option value="{{ $state->id }}" {{ request('state') ==  $state->id ? 'selected':'' }} >{{ $state->state_name }}</option>--}}
+                                    {{--@endforeach--}}
+                                {{--@endif--}}
+                            {{--</select>--}}
+                        {{--</div>--}}
 
-                        <div class="form-group">
-                            <select class="form-control select2" id="city_select" name="city">
-                                <option value=""> @lang('app.select_city') </option>
-                                @if($selected_states)
-                                    @foreach($selected_states->cities as $city)
-                                        <option value="{{ $city->id }}" {{ request('city') ==  $city->id ? 'selected':'' }} >{{ $city->city_name }}</option>
-                                    @endforeach
-                                @endif
-                            </select>
-                        </div>
+                        {{--<div class="form-group">--}}
+                            {{--<select class="form-control" id="city_select" name="city">--}}
+                                {{--<option value=""> @lang('app.select_city') </option>--}}
+                                {{--@if($selected_states)--}}
+                                    {{--@foreach($selected_states->cities as $city)--}}
+                                        {{--<option value="{{ $city->id }}" {{ request('city') ==  $city->id ? 'selected':'' }} >{{ $city->city_name }}</option>--}}
+                                    {{--@endforeach--}}
+                                {{--@endif--}}
+                            {{--</select>--}}
+                        {{--</div>--}}
 
                         <hr />
                         <div class="form-group">

@@ -1,5 +1,10 @@
 @extends('layout.main')
 @section('title') @if( ! empty($title)) {{ $title }} | @endif @parent @endsection
+
+@section('data-structure-json')
+    @include('theme.modern.partials.data-structure-json', ['ad' => $ad])
+@endsection
+
 @section('social-meta')
     <meta property="og:title" content="{{ $ad->title }}">
     <meta property="og:description" content="{{ substr(trim(preg_replace('/\s\s+/', ' ',strip_tags($ad->description) )),0,160) }}">
@@ -224,6 +229,7 @@
         </div>
     </div>
 
+    @include('theme.modern.partials.related_ads')
     @include('theme.modern.partials.contact_us_section')
 
     <div class="modal fade" id="reportAdModal" tabindex="-1" role="dialog">

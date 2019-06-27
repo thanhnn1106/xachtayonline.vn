@@ -145,8 +145,7 @@ class AdsController extends Controller
         $this->validate($request, $rules);
 
         $adName = $request->ad_name;
-        $slug = unique_slug($adName);
-       
+        $slug = unique_slug($adName, 'Ad', 'slug');
 
         $sub_category = Category::find($request->category);
 
@@ -721,7 +720,13 @@ class AdsController extends Controller
         $title = $ad->title;
 
         //Get Related Ads, add [->where('country_id', $ad->country_id)] for more specific results
-        $related_ads = Ad::active()->where('category_id', $ad->category_id)->where('id', '!=',$ad->id)->with('category', 'city')->limit($limit_regular_ads)->orderByRaw('RAND()')->get();
+        $related_ads = Ad::active()
+            ->where('category_id', $ad->category_id)
+            ->where('id', '!=',$ad->id)
+            ->with('category', 'city')
+            ->limit($limit_regular_ads)
+            ->orderByRaw('RAND()')
+            ->get();
         
         return view($this->theme.'single_ad', compact('ad', 'title', 'related_ads'));
     }

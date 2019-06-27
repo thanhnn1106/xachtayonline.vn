@@ -7,22 +7,23 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>@section('title') {{ get_option('site_title') }} @show</title>
-    <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    @yield('data-structure-json')
     @section('social-meta')
-        <meta property="og:title" content="{{ get_option('site_title') }}">
-        <meta property="og:description" content="{{ get_option('meta_description') }}">
-        <meta property="og:image" content="http://euro-travel-example.com/thumbnail.jpg">
-        <meta property="og:url" content="{{ route('home') }}">
+        <meta name="robots" content="index, follow" class="next-head">
+        <meta name="description" content="{{ get_option('meta_description') }}" class="next-head">
+        <meta property="og:title" content="{{ get_option('site_title') }}" class="next-head">
+        <meta property="og:description" content="{{ get_option('meta_description') }}" class="next-head">
+        <meta property="og:image" content="https://xachtayonline-vn.s3-ap-southeast-1.amazonaws.com/uploads/images/xachtayonline-vn.jpeg" class="next-head">
+        <meta property="og:url" content="{{ route('home') }}" class="next-head">
         <meta name="twitter:card" content="summary_large_image">
         <!--  Non-Essential, But Recommended -->
-        <meta name="og:site_name" content="{{ get_option('site_name') }}">
+        <meta name="og:site_name" content="{{ get_option('site_name') }}" class="next-head">
     @show
 
     <!-- bootstrap css -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-theme.min.css') }}">
+    {{--<link rel="stylesheet" href="{{ asset('assets/css/bootstrap-theme.min.css') }}">--}}
     <!-- Font awesome 4.4.0 -->
     <link rel="stylesheet" href="{{ asset('assets/font-awesome-4.4.0/css/font-awesome.min.css') }}">
     <!-- load page specific css -->

@@ -21,13 +21,21 @@ class OrderController extends Controller
      */
     public function order($adId)
     {
+        $limit_regular_ads = get_option('number_of_free_ads_in_home');
         $ad = Ad::where('id', $adId)->first();
         $userId = Auth::user() ? Auth::user()->id : '';
+        $related_ads = Ad::active()
+            ->where('category_id', $ad->category_id)
+            ->where('id', '!=',$ad->id)
+            ->with('category', 'city')
+            ->limit($limit_regular_ads)
+            ->orderByRaw('RAND()')
+            ->get();
         if(empty($userId)) {
             return redirect(route('login'))->with('error', 'Vui lòng đăng nhập để đặt hàng.');
         }
 
-        return view('theme.modern.order',['ad' => $ad]);
+        return view('theme.modern.order',['ad' => $ad, 'related_ads' => $related_ads]);
     }
 
     public function submitOrder(Request $request)
