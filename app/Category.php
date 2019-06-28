@@ -12,7 +12,7 @@ class Category extends Model
         if (strpos(url()->current(), 'dashboard')) {
             return $this->hasMany('App\Sub_Category');
         }
-        return $this->hasMany('App\Sub_Category')->whereIsActive(1);
+        return $this->hasMany('App\Sub_Category')->where('is_active', '1');
     }
 
     public function brands(){

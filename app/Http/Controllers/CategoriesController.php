@@ -19,7 +19,9 @@ class CategoriesController extends Controller
     public function index()
     {
         $title = trans('app.categories');
-        $categories = Category::where('category_id', 0)->whereIsActive(1)->get();
+        $categories = Category::where('category_id', 0)
+            ->where('is_active', '1')
+            ->get();
 
         return view('admin.categories', compact('title', 'categories'));
     }
