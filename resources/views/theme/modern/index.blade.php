@@ -63,7 +63,7 @@
                                             @if($category->sub_categories->count() > 0)
                                                 <optgroup label="{{ $category->category_name }}">
                                                     @foreach($category->sub_categories as $sub_category)
-                                                        <option value="{{ $sub_category->id }}" {{ old('category') == $sub_category->id ? 'selected': '' }}>{{ $sub_category->category_name }}</option>
+                                                        <option value="{{ $sub_category->category_slug }}" {{ old('category') == $sub_category->id ? 'selected': '' }}>{{ $sub_category->category_name }}</option>
                                                     @endforeach
                                                 </optgroup>
                                             @endif

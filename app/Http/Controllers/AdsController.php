@@ -400,21 +400,24 @@ class AdsController extends Controller
         return ['success'=>0, 'msg' => trans('app.error_msg')];
     }
 
-    public function getSubCategoryByCategory(Request $request){
-        $category_id = $request->category_id;
-        $brands = Sub_Category::where('category_id', $category_id)
+    public function getSubCategoryByCategory(Request $request)
+    {
+        $catId = Category::select('id')->where('category_slug', $request->category_slug)->first()->id;
+        $brands = Sub_Category::where('category_id', $catId)
             ->select('id', 'category_name', 'category_slug')->get();
         return $brands;
     }
 
-    public function getBrandByCategory(Request $request){
-        $category_id = $request->category_id;
-        $brands = Brand::where('category_id', $category_id)
-            ->select('id', 'brand_name')->get();
+    public function getBrandByCategory(Request $request)
+    {
+        $catId = Category::select('id')->where('category_slug', $request->category_slug)->first()->id;
+        $brands = Brand::where('category_id', $catId)
+            ->select('id', 'brand_name', 'brand_slug')->get();
         return $brands;
     }
 
-    public function getStateByCountry(Request $request){
+    public function getStateByCountry(Request $request)
+    {
         $country_id = $request->country_id;
         $states = State::where('country_id', $country_id)->select('id', 'state_name')->get();
         return $states;
@@ -543,18 +546,18 @@ class AdsController extends Controller
      * Listing
      */
 
-    public function listing(Request $request){
+    public function listing(Request $request)
+    {
         $ads = Ad::active();
         $business_ads_count = Ad::active()->business();
         $personal_ads_count = Ad::active()->personal();
-
         $premium_ads = Ad::activePremium();
 
         if ($request->q){
             $ads = $ads->where(function($ads) use($request){
                 $ads->where('title','like', "%{$request->q}%")->orWhere('description','like', "%{$request->q}%");
             });
-            
+
             $business_ads_count = $business_ads_count->where(function($business_ads_count) use($request){
                 $business_ads_count->where('title','like', "%{$request->q}%")->orWhere('description','like', "%{$request->q}%");
             });
@@ -563,50 +566,54 @@ class AdsController extends Controller
                 $personal_ads_count->where('title','like', "%{$request->q}%")->orWhere('description','like', "%{$request->q}%");
             });
         }
-        if ($request->category){
-            $ads = $ads->where('category_id', $request->category);
-            $business_ads_count = $business_ads_count->where('category_id', $request->category);
-            $personal_ads_count = $personal_ads_count->where('category_id', $request->category);
+        if ($request->category) {
+            $catId = Category::select('id')->where('category_slug', $request->category)->first()->id;
+            $ads = $ads->where('category_id', $catId);
+            $business_ads_count = $business_ads_count->where('category_id', $catId);
+            $personal_ads_count = $personal_ads_count->where('category_id', $catId);
 
-            $premium_ads = $premium_ads->where('category_id', $request->category);
+            $premium_ads = $premium_ads->where('category_id', $catId);
         }
-        if ($request->sub_category){
-            $ads = $ads->where('sub_category_id', $request->sub_category);
-            $business_ads_count = $business_ads_count->where('sub_category_id', $request->sub_category);
-            $personal_ads_count = $personal_ads_count->where('sub_category_id', $request->sub_category);
+        if ($request->sub_category) {
+            $subCatId = Category::select('id')->where('category_slug', $request->sub_category)->first()->id;
+            $ads = $ads->where('sub_category_id', $subCatId);
+            $business_ads_count = $business_ads_count->where('sub_category_id', $subCatId);
+            $personal_ads_count = $personal_ads_count->where('sub_category_id', $subCatId);
 
-            $premium_ads = $premium_ads->where('sub_category_id', $request->sub_category);
+            $premium_ads = $premium_ads->where('sub_category_id', $subCatId);
         }
-        if ($request->brand){
-            $ads = $ads->where('brand_id', $request->brand);
-            $business_ads_count = $business_ads_count->where('brand_id', $request->brand);
-            $personal_ads_count = $personal_ads_count->where('brand_id', $request->brand);
+        if ($request->brand) {
+            $brandId = Brand::select('id')->where('brand_slug', $request->brand)->first()->id;
+            $ads = $ads->where('brand_id', $brandId);
+            $business_ads_count = $business_ads_count->where('brand_id', $brandId);
+            $personal_ads_count = $personal_ads_count->where('brand_id', $brandId);
         }
-        if ($request->condition){
-            $ads = $ads->where('ad_condition', $request->condition);
-            $business_ads_count = $business_ads_count->where('ad_condition', $request->condition);
-            $personal_ads_count = $personal_ads_count->where('ad_condition', $request->condition);
-        }
-        if ($request->type){
-            $ads = $ads->where('type', $request->type);
-            $business_ads_count = $business_ads_count->where('type', $request->type);
-            $personal_ads_count = $personal_ads_count->where('type', $request->type);
-        }
+//        if ($request->condition){
+//            $ads = $ads->where('ad_condition', $request->condition);
+//            $business_ads_count = $business_ads_count->where('ad_condition', $request->condition);
+//            $personal_ads_count = $personal_ads_count->where('ad_condition', $request->condition);
+//        }
+//        if ($request->type){
+//            $ads = $ads->where('type', $request->type);
+//            $business_ads_count = $business_ads_count->where('type', $request->type);
+//            $personal_ads_count = $personal_ads_count->where('type', $request->type);
+//        }
         if ($request->country){
-            $ads = $ads->where('country_id', $request->country);
-            $business_ads_count = $business_ads_count->where('country_id', $request->country);
-            $personal_ads_count = $personal_ads_count->where('country_id', $request->country);
+            $countryId = Country::select('id')->where('country_name', $request->country)->first()->id;
+            $ads = $ads->where('country_id', $countryId);
+            $business_ads_count = $business_ads_count->where('country_id', $countryId);
+            $personal_ads_count = $personal_ads_count->where('country_id', $countryId);
         }
-        if ($request->state){
-            $ads = $ads->where('state_id', $request->state);
-            $business_ads_count = $business_ads_count->where('state_id', $request->state);
-            $personal_ads_count = $personal_ads_count->where('state_id', $request->state);
-        }
-        if ($request->city){
-            $ads = $ads->whereCityId($request->city);
-            $business_ads_count = $business_ads_count->whereCityId($request->city);
-            $personal_ads_count = $personal_ads_count->whereCityId($request->city);
-        }
+//        if ($request->state){
+//            $ads = $ads->where('state_id', $request->state);
+//            $business_ads_count = $business_ads_count->where('state_id', $request->state);
+//            $personal_ads_count = $personal_ads_count->where('state_id', $request->state);
+//        }
+//        if ($request->city){
+//            $ads = $ads->whereCityId($request->city);
+//            $business_ads_count = $business_ads_count->whereCityId($request->city);
+//            $personal_ads_count = $personal_ads_count->whereCityId($request->city);
+//        }
         if ($request->min_price){
             $ads = $ads->where('price', '>=', $request->min_price);
             $business_ads_count = $business_ads_count->where('price', '>=', $request->min_price);
@@ -617,13 +624,13 @@ class AdsController extends Controller
             $business_ads_count = $business_ads_count->where('price', '<=', $request->max_price);
             $personal_ads_count = $personal_ads_count->where('price', '<=', $request->max_price);
         }
-        if ($request->adType){
-            if ($request->adType == 'business') {
-                $ads = $ads->business();
-            }elseif ($request->adType == 'personal'){
-                $ads = $ads->personal();
-            }
-        }
+//        if ($request->adType){
+//            if ($request->adType == 'business') {
+//                $ads = $ads->business();
+//            }elseif ($request->adType == 'personal'){
+//                $ads = $ads->personal();
+//            }
+//        }
         if ($request->user_id){
             $ads = $ads->where('user_id', $request->user_id);
             $business_ads_count = $business_ads_count->where('user_id', $request->user_id);
@@ -681,11 +688,11 @@ class AdsController extends Controller
         $categories = Category::where('category_id', 0)->where('is_active', 1)->get();
         $countries = Country::whereIn('country_code', ['US', 'JP', 'KOR', 'MY', 'SG', 'HK', 'PH', 'TL', 'ID', 'VN'])->get();
 
-        $selected_categories = Category::find($request->category);
-        $selected_sub_categories = Category::find($request->sub_category);
+        $selected_categories = Category::find($catId ?? '');
+        $selected_sub_categories = Category::find($subCatId ?? '');
 
-        $selected_countries = Country::find($request->country);
-        $selected_states = State::find($request->state);
+        $selected_countries = Country::find($countryId ?? '');
+//        $selected_states = State::find($request->state);
         //dd($selected_countries->states);
 
         return view($this->theme.'listing', compact('top_categories', 'ads', 'title', 'categories', 'countries', 'selected_categories', 'selected_sub_categories', 'selected_countries', 'selected_states', 'personal_ads_count', 'business_ads_count', 'premium_ads'));

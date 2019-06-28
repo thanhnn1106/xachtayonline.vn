@@ -1,11 +1,19 @@
 @extends('layout.main')
 @section('title') @if( ! empty($title)) {{ $title }} | @endif @parent @endsection
 
+<style>
+    /*div.sticky {*/
+        /*position: -webkit-sticky;*/
+        /*position: sticky;*/
+        /*top: 0;*/
+    /*}*/
+</style>
+
 @section('main')
 
     <div class="container">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-3 sticky">
                 <div class="bg-white">
                     <div class="sidebar-filter-wrapper">
 
@@ -32,7 +40,7 @@
                             <select class="form-control" name="category">
                                 <option value="">@lang('app.select_a_category')</option>
                                 @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" {{ request('category') ==  $category->id ? 'selected':'' }}>{{ $category->category_name }}</option>
+                                    <option value="{{ $category->category_slug }}" {{ request('category') ==  $category->category_slug ? 'selected':'' }}>{{ $category->category_name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -42,7 +50,7 @@
                                 <option value="">@lang('app.select_a_sub_category')</option>
                                 @if($selected_categories)
                                     @foreach($selected_categories->sub_categories as $sub_category)
-                                        <option value="{{ $sub_category->id }}" {{ request('sub_category') ==  $sub_category->id ? 'selected':'' }} >{{ $sub_category->category_name }}</option>
+                                        <option value="{{ $sub_category->category_slug }}" {{ request('sub_category') ==  $sub_category->category_slug ? 'selected':'' }} >{{ $sub_category->category_name }}</option>
                                     @endforeach
                                 @endif
                             </select>
@@ -53,7 +61,7 @@
                                 <option value=""> @lang('app.select_a_brand') </option>
                                 @if($selected_sub_categories)
                                     @foreach($selected_sub_categories->brands as $brand)
-                                        <option value="{{ $brand->id }}" {{ request('brand') ==  $brand->id ? 'selected':'' }} >{{ $brand->brand_name }}</option>
+                                        <option value="{{ $brand->brand_slug }}" {{ request('brand') ==  $brand->brand_slug ? 'selected':'' }} >{{ $brand->brand_name }}</option>
                                     @endforeach
                                 @endif
                             </select>
@@ -65,7 +73,7 @@
                                 <option value="">@lang('app.select_a_country')</option>
 
                                 @foreach($countries as $country)
-                                    <option value="{{ $country->id }}" {{ request('country') == $country->id ? 'selected' :'' }}>{{ $country->country_name }}</option>
+                                    <option value="{{ $country->country_name }}" {{ request('country') == $country->country_name ? 'selected' :'' }}>{{ $country->country_name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -107,23 +115,23 @@
                         </div>
 
                         <hr />
-                        <div class="form-group">
-                            <label>@lang('app.condition')</label>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="radio" name="condition" id="new" value="new" {{ request('condition') == 'new'? 'checked':'' }}>
-                                    @lang('app.new')
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="radio" name="condition" id="used" value="used" {{ request('condition') == 'used'? 'checked':'' }}>
-                                    @lang('app.used')
-                                </label>
-                            </div>
-                        </div>
+                        {{--<div class="form-group">--}}
+                            {{--<label>@lang('app.condition')</label>--}}
+                            {{--<div class="checkbox">--}}
+                                {{--<label>--}}
+                                    {{--<input type="radio" name="condition" id="new" value="new" {{ request('condition') == 'new'? 'checked':'' }}>--}}
+                                    {{--@lang('app.new')--}}
+                                {{--</label>--}}
+                            {{--</div>--}}
+                            {{--<div class="checkbox">--}}
+                                {{--<label>--}}
+                                    {{--<input type="radio" name="condition" id="used" value="used" {{ request('condition') == 'used'? 'checked':'' }}>--}}
+                                    {{--@lang('app.used')--}}
+                                {{--</label>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
 
-                        <hr />
+                        {{--<hr />--}}
                         <div class="form-group">
                             <div class="row">
                                 <div class=" col-sm-6 col-xs-12">
@@ -298,7 +306,7 @@
                 if (jsonData.length > 0) {
                     option += '<option value="" selected> <?php echo trans('app.select_a_sub_category') ?> </option>';
                     for ( i in jsonData){
-                        option += '<option value="'+jsonData[i].id+'"> '+jsonData[i].category_name +' </option>';
+                        option += '<option value="'+jsonData[i].category_slug+'"> '+jsonData[i].category_name +' </option>';
                     }
                     $('#sub_category_select').html(option);
                     $('#sub_category_select').select2();
@@ -312,7 +320,7 @@
                 if (jsonData.length > 0) {
                     option += '<option value="" selected> <?php echo trans('app.select_a_brand') ?> </option>';
                     for ( i in jsonData){
-                        option += '<option value="'+jsonData[i].id+'"> '+jsonData[i].brand_name +' </option>';
+                        option += '<option value="'+jsonData[i].brand_slug+'"> '+jsonData[i].brand_name +' </option>';
                     }
                     $('#brand_select').html(option);
                     $('#brand_select').select2();
@@ -326,7 +334,7 @@
                 if (jsonData.length > 0) {
                     option += '<option value="" selected> @lang('app.select_state') </option>';
                     for ( i in jsonData){
-                        option += '<option value="'+jsonData[i].id+'"> '+jsonData[i].state_name +' </option>';
+                        option += '<option value="'+jsonData[i].country_name+'"> '+jsonData[i].state_name +' </option>';
                     }
                     $('#state_select').html(option);
                     $('#state_select').select2();
@@ -355,13 +363,13 @@
 
         $(function(){
             $('[name="category"]').change(function(){
-                var category_id = $(this).val();
+                var category_slug = $(this).val();
                 $('#loaderListingIcon').show();
                 //window.history.pushState("", "", 'newpage');
                 $.ajax({
                     type : 'POST',
                     url : '{{ route('get_sub_category_by_category') }}',
-                    data : { category_id : category_id,  _token : '{{ csrf_token() }}' },
+                    data : { category_slug : category_slug,  _token : '{{ csrf_token() }}' },
                     success : function (data) {
                         generate_option_from_json(data, 'category_to_sub_category');
                     }
@@ -369,13 +377,13 @@
             });
 
             $('[name="sub_category"]').change(function(){
-                var category_id = $(this).val();
+                var category_slug = $(this).val();
                 $('#loaderListingIcon').show();
 
                 $.ajax({
                     type : 'POST',
                     url : '{{ route('get_brand_by_category') }}',
-                    data : { category_id : category_id,  _token : '{{ csrf_token() }}' },
+                    data : { category_slug : category_slug,  _token : '{{ csrf_token() }}' },
                     success : function (data) {
                         generate_option_from_json(data, 'category_to_brand');
                     }

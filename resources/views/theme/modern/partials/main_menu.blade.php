@@ -69,7 +69,7 @@
                                     <ul class="dropdown-menu" role="menu">
                                         @foreach($category->sub_categories as $s_cat)
                                         <li>
-                                            <a href="{{ route('listing') }}?category={{$category->id}}&sub_category={{$s_cat->id}}">
+                                            <a href="{{ route('listing') }}?category={{$category->category_slug}}&sub_category={{$s_cat->category_slug}}">
                                                 <i class="fa fa-angle-right"></i>
                                                 {{ $s_cat->category_name }}
                                             </a>
