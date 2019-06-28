@@ -35,13 +35,13 @@
                 </a>
             </h4>
             <p>
-                <a class="price text-muted" href="{{ route('listing', ['category' => $ad->category->id]) }}">
+                <a class="price text-muted" href="{{ route('listing', ['category' => $ad->category->category_slug]) }}">
                     <i class="fa fa-folder-o"></i>
                     {{ $ad->category->category_name }}
                 </a>
 
                 @if($ad->country)
-                    <a class="location text-muted" href="{{ route('listing', ['country' => $ad->country->id]) }}">
+                    <a class="location text-muted" href="{{ route('listing', ['country' => $ad->country->country_name]) }}">
                         <i class="fa fa-location-arrow"></i>
                         {{ $ad->country->country_name }}
                     </a>
@@ -88,7 +88,10 @@
             <meta itemprop="name" content="{{$ad->brand->brand_name}}" />
         </div>
         <div class="caption btn-order">
-            <a type="button" href="{{ route('order', [$ad->id]) }}" class="btn btn-info theme-btn btn-xl font-weight-bold text-capitalize">
+            {{--<a type="button" href="{{ route('order', [$ad->id]) }}" class="btn btn-info theme-btn btn-xl font-weight-bold text-capitalize">--}}
+                {{--<span>{{ trans('app.order_quickly') }}</span>--}}
+            {{--</a>--}}
+            <a type="button" target="_blank" href="https://m.me/xachtayonlinevn.vn/" class="btn btn-info theme-btn btn-xl font-weight-bold text-capitalize">
                 <span>{{ trans('app.order_quickly') }}</span>
             </a>
         </div>

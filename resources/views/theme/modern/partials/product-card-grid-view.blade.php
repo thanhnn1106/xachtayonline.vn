@@ -12,13 +12,13 @@
     <td>
         <h5><a href="{{ route('single_ad', $ad->slug) }}" >{{ $ad->title }}</a> </h5>
         <p class="text-muted">
-            <a class="price text-muted" href="{{ route('listing', ['category' => $ad->category->id]) }}">
+            <a class="price text-muted" href="{{ route('listing', ['category' => $ad->category->category_slug]) }}">
                 <i class="fa fa-folder-o"></i>
                 {{ $ad->category->category_name }}
             </a>
             @if($ad->country)
                 <i class="fa fa-map-marker"></i>
-                <a class="location text-muted" href="{{ route('listing', ['country'=>$ad->country->id]) }}">
+                <a class="location text-muted" href="{{ route('listing', ['country'=>$ad->country->country_name]) }}">
                     {{ $ad->country->country_name }}
                 </a>
             @endif
@@ -52,7 +52,10 @@
             <div class="ribbon-red-bar">@lang('app.urgent')</div>
         @endif
         <div class="caption btn-order-grid">
-            <a type="button" href="{{ route('order', [$ad->id]) }}" class="btn btn-info theme-btn btn-xl font-weight-bold text-capitalize">
+            {{--<a type="button" href="{{ route('order', [$ad->id]) }}" class="btn btn-info theme-btn btn-xl font-weight-bold text-capitalize">--}}
+                {{--<span>{{ trans('app.order_quickly') }}</span>--}}
+            {{--</a>--}}
+            <a type="button" target="_blank" href="https://m.me/xachtayonlinevn.vn/" class="btn btn-info theme-btn btn-xl font-weight-bold text-capitalize">
                 <span>{{ trans('app.order_quickly') }}</span>
             </a>
         </div>

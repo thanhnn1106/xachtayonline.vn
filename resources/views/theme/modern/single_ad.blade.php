@@ -34,7 +34,7 @@
                     <div class="modern-single-ad-breadcrumb">
                         <ol class="breadcrumb">
                             <li><a href="{{ route('home') }}">@lang('app.home')</a></li>
-                            <li><a href="{{ route('listing', ['category' => $ad->category->id]) }}">  {{ $ad->category->category_name }} </a></li>
+                            <li><a href="{{ route('listing', ['category' => $ad->category->category_slug]) }}">  {{ $ad->category->category_name }} </a></li>
                             <li>{{ $ad->title }}</li>
                         </ol><!-- breadcrumb -->
                         <h1 class="modern-single-ad-top-title h1-custom">{{ $ad->title }}</h1>
@@ -94,10 +94,10 @@
                         </h1>
                         <div class="ads-detail-meta">
                             <p class="text-muted">
-                                <i class="fa fa-folder-o"></i><a href="{{ route('listing', ['category' => $ad->category->id]) }}">  {{ $ad->category->category_name }} </a> |
+                                <i class="fa fa-folder-o"></i><a href="{{ route('listing', ['category' => $ad->category->category_slug]) }}">  {{ $ad->category->category_name }} </a> |
 
                                 @if($ad->brand)
-                                    <i class="fa fa-industry"></i><a href="{{ route('listing', ['brand' => $ad->brand->id]) }}">  {{ $ad->brand->brand_name }} </a> |
+                                    <i class="fa fa-industry"></i><a href="{{ route('listing', ['brand' => $ad->brand->brand_slug]) }}">  {{ $ad->brand->brand_name }} </a> |
                                 @endif
 
                                 <i class="fa fa-eye"></i> Đã xem: {{ $ad->view }}
@@ -109,16 +109,24 @@
                         </div>
                         <span class="d-inline-block">
                             <h3 class="d-inline-block modern-single-ad-price @if ($ad->discount_price > 0) text-decorate-line-thought text-info @endif">
-                                {{ themeqx_price_ng(number_format($ad->price)) }}
+                                Giá gốc: {{ themeqx_price_ng(number_format($ad->price)) }}
                             </h3>
                             @if ($ad->discount_price > 0)
-                                &nbsp;<h3 class="d-inline-block text-danger">-{{ number_format(100 - ($ad->discount_price / $ad->price * 100)) }}%</h3>
+                                <h3 class="d-inline-block text-danger">-{{ number_format(100 - ($ad->discount_price / $ad->price * 100)) }}%</h3>
                             @endif
                         </span>
 
                         @if ($ad->discount_price > 0)
-                            <h3 class="modern-single-ad-price text-danger">{{ themeqx_price_ng(number_format($ad->discount_price)) }}</h3>
+                            <h3 class="modern-single-ad-price text-danger">Giá gốc: {{ themeqx_price_ng(number_format($ad->discount_price)) }}</h3>
+                            <h3  style="color: #00505F;" class="d-inline-block modern-single-ad-price">
+                                Giá xách tay: {{ themeqx_price_ng(number_format($ad->discount_price + $ad->shipping_fee)) }}
+                            </h3>
+                        @else
+                            <h3 style="color: #00505F;" class="d-inline-block modern-single-ad-price @if ($ad->discount_price > 0) text-decorate-line-thought text-info @endif">
+                                Giá xách tay: {{ themeqx_price_ng(number_format($ad->price + $ad->shipping_fee)) }}
+                            </h3>
                         @endif
+
 
                         @if($enable_monetize)
                             {!! get_option('monetize_code_below_ad_title') !!}
@@ -148,7 +156,8 @@
                         <br>
                         <div class="row t-5">
                             <div class="t-5 col-sm-8 col-xs-12">
-                                <a type="button" href="{{ route('order', [$ad->id]) }}" class="btn btn-info btn-lg theme-btn">{{ trans('app.order') }}</a>
+                                {{--<a type="button" href="{{ route('order', [$ad->id]) }}" class="btn btn-info btn-lg theme-btn">{{ trans('app.order') }}</a>--}}
+                                <a type="button" target="_blank" href="https://m.me/xachtayonlinevn.vn/"" class="btn btn-info btn-lg theme-btn">{{ trans('app.order') }}</a>
                             </div>
                         </div>
                     </div>
