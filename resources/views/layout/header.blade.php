@@ -182,6 +182,7 @@
 
             </a>
         </div>
+        @if (\Request::route()->getName() == 'home')
         <div class="navbar-form navbar-right">
             <form class="form-inline-block" action="{{ route('listing') }}" method="get">
                 <div class="form-group">
@@ -190,5 +191,6 @@
                 <button type="submit" class="btn theme-btn"> <i class="fa fa-search"></i> @lang('app.search_product')</button>
             </form>
         </div>
+        @endif
     </div>
 </nav>
