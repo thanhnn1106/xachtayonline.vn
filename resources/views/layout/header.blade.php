@@ -51,7 +51,6 @@
     @else
         <link rel="stylesheet" href="{{ asset("assets/css/style-{$default_style}.css") }}">
     @endif
-    <link rel="stylesheet" href="{{ asset('assets/css/style-custom.css') }}">
     @yield('page-css')
 
 @if(get_option('additional_css'))
@@ -70,6 +69,7 @@
 
         gtag('config', 'UA-141776126-1');
     </script>
+    <link rel="stylesheet" href="{{ asset('assets/css/style-custom.css') }}">
 </head>
 <body>
 <!--[if lt IE 8]>
