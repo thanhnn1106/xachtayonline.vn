@@ -13,7 +13,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-3 sticky">
+            <div class="col-md-12">
                 <div class="bg-white">
                     <div class="sidebar-filter-wrapper">
 
@@ -23,7 +23,7 @@
 
                         {{ Form::open([ 'method'=>'get', 'id' => 'listingFilterForm']) }}
 
-                        <div class="row">
+                        <div class="">
                             <div class="col-xs-12">
                                 <p class="listingSidebarLeftHeader">@lang('app.filter_ads')
                                     <span id="loaderListingIcon" class="pull-right" style="display: none;"><i class="fa fa-spinner fa-spin"></i></span>
@@ -31,12 +31,11 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group col-md-3 col-xs-12">
                             <input type="text" class="form-control" name="q" value="{{ request('q') }}" placeholder="@lang('app.search___')" />
                         </div>
 
-                        <hr />
-                        <div class="form-group">
+                        <div class="form-group col-md-3 col-xs-12">
                             <select class="form-control" name="category">
                                 <option value="">@lang('app.select_a_category')</option>
                                 @foreach($categories as $category)
@@ -45,7 +44,7 @@
                             </select>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group col-md-3 col-xs-12">
                             <select class="form-control" id="sub_category_select" name="sub_category">
                                 <option value="">@lang('app.select_a_sub_category')</option>
                                 @if($selected_categories)
@@ -56,7 +55,7 @@
                             </select>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group col-md-3 col-xs-12">
                             <select class="form-control" name="brand" id="brand_select">
                                 <option value=""> @lang('app.select_a_brand') </option>
                                 @if($selected_sub_categories)
@@ -68,7 +67,7 @@
                         </div>
 
                         <hr />
-                        <div class="form-group">
+                        <div class="form-group col-md-3 col-xs-12">
                             <select class="form-control" name="country">
                                 <option value="">@lang('app.select_a_country')</option>
 
@@ -101,8 +100,8 @@
                         {{--</div>--}}
 
                         <hr />
-                        <div class="form-group">
-                            <label>@lang('app.price_min_max')</label>
+                        <div class="form-group col-md-3 col-xs-12">
+                            {{--<label>@lang('app.price_min_max')</label>--}}
 
                             <div class="row">
                                 <div class="col-xs-6">
@@ -132,7 +131,7 @@
                         {{--</div>--}}
 
                         {{--<hr />--}}
-                        <div class="form-group">
+                        <div class="form-group col-md-3 col-xs-12">
                             <div class="row">
                                 <div class=" col-sm-6 col-xs-12">
                                     <button class="btn btn-primary btn-block"><i class="fa fa-search"></i>  @lang('app.filter')</button>
@@ -155,7 +154,7 @@
                 </div>
             </div>
 
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <div class="row">
                     <div class="col-sm-12">
 

@@ -45,40 +45,40 @@
     {{--Main menu--}}
     @include('theme.modern.partials.main_menu')
 
-    <div class="modern-top-hom-cat-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="modern-home-search-bar-wrap">
-                        <div class="search-wrapper">
-                            <form class="form-inline" action="{{ route('listing') }}" method="get">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" id="searchTerms" name="q" value="{{ request('q') }}" placeholder="@lang('app.search___')" />
-                                </div>
+    {{--<div class="modern-top-hom-cat-section">--}}
+        {{--<div class="container">--}}
+            {{--<div class="row">--}}
+                {{--<div class="col-md-12">--}}
+                    {{--<div class="modern-home-search-bar-wrap">--}}
+                        {{--<div class="search-wrapper">--}}
+                            {{--<form class="form-inline" action="{{ route('listing') }}" method="get">--}}
+                                {{--<div class="form-group">--}}
+                                    {{--<input type="text" class="form-control" id="searchTerms" name="q" value="{{ request('q') }}" placeholder="@lang('app.search___')" />--}}
+                                {{--</div>--}}
 
-                                <div class="form-group">
-                                    <select class="form-control" name="sub_category">
-                                        <option value="">@lang('app.select_a_category')</option>
-                                        @foreach($top_categories as $category)
-                                            @if($category->sub_categories->count() > 0)
-                                                <optgroup label="{{ $category->category_name }}">
-                                                    @foreach($category->sub_categories as $sub_category)
-                                                        <option value="{{ $sub_category->category_slug }}" {{ old('category') == $sub_category->id ? 'selected': '' }}>{{ $sub_category->category_name }}</option>
-                                                    @endforeach
-                                                </optgroup>
-                                            @endif
-                                        @endforeach
-                                    </select>
-                                </div>
+                                {{--<div class="form-group">--}}
+                                    {{--<select class="form-control" name="sub_category">--}}
+                                        {{--<option value="">@lang('app.select_a_category')</option>--}}
+                                        {{--@foreach($top_categories as $category)--}}
+                                            {{--@if($category->sub_categories->count() > 0)--}}
+                                                {{--<optgroup label="{{ $category->category_name }}">--}}
+                                                    {{--@foreach($category->sub_categories as $sub_category)--}}
+                                                        {{--<option value="{{ $sub_category->category_slug }}" {{ old('category') == $sub_category->id ? 'selected': '' }}>{{ $sub_category->category_name }}</option>--}}
+                                                    {{--@endforeach--}}
+                                                {{--</optgroup>--}}
+                                            {{--@endif--}}
+                                        {{--@endforeach--}}
+                                    {{--</select>--}}
+                                {{--</div>--}}
 
-                                <div class="form-group">
-                                    <select class="form-control" name="country">
-                                        <option value="">@lang('app.select_a_country')</option>
-                                        @foreach($countries as $country)
-                                            <option value="{{ $country->id }}" {{ request('country') == $country->id ? 'selected' :'' }}>{{ $country->country_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                {{--<div class="form-group">--}}
+                                    {{--<select class="form-control" name="country">--}}
+                                        {{--<option value="">@lang('app.select_a_country')</option>--}}
+                                        {{--@foreach($countries as $country)--}}
+                                            {{--<option value="{{ $country->id }}" {{ request('country') == $country->id ? 'selected' :'' }}>{{ $country->country_name }}</option>--}}
+                                        {{--@endforeach--}}
+                                    {{--</select>--}}
+                                {{--</div>--}}
 
                                 {{--<div class="form-group">--}}
                                     {{--<select class="form-control select2" id="state_select" name="state">--}}
@@ -86,17 +86,18 @@
                                     {{--</select>--}}
                                 {{--</div>--}}
 
-                                <button type="submit" class="btn theme-btn"> <i class="fa fa-search"></i> @lang('app.search_product')</button>
-                            </form>
-                        </div>
+                                {{--<button type="submit" class="btn theme-btn"> <i class="fa fa-search"></i> @lang('app.search_product')</button>--}}
+                            {{--</form>--}}
+                        {{--</div>--}}
 
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-            </div>
-        </div>
+                    {{--</div>--}}
+                    {{--<div class="clearfix"></div>--}}
+                {{--</div>--}}
+            {{--</div>--}}
+        {{--</div>--}}
 
-    </div>
+    {{--</div>--}}
+    <br />
 
 
     @if($enable_monetize)

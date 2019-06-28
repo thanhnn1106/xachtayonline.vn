@@ -131,17 +131,35 @@
 
                 @else
 
-                    {{ Form::open(['route'=>'login','class'=> 'navbar-form navbar-right', 'role'=> 'form']) }}
-                    <div class="form-group">
-                        <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="{{ trans('app.email_address') }}">
-                    </div>
-                    <div class="form-group">
-                        <input  type="password" class="form-control" name="password" placeholder="{{ trans('app.password') }}">
-                    </div>
-                    <button type="submit" class="btn btn-success theme-btn">@lang('app.login')</button>
-                    {{ Form::close() }}
+                    {{--{{ Form::open(['route'=>'login','class'=> 'navbar-form navbar-right', 'role'=> 'form']) }}--}}
+                    {{--<div class="form-group">--}}
+                        {{--<input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="{{ trans('app.email_address') }}">--}}
+                    {{--</div>--}}
+                    {{--<div class="form-group">--}}
+                        {{--<input  type="password" class="form-control" name="password" placeholder="{{ trans('app.password') }}">--}}
+                    {{--</div>--}}
+                    {{--<button type="submit" class="btn btn-success theme-btn">@lang('app.login')</button>--}}
+                    {{--{{ Form::close() }}--}}
                 @endif
+                <ul class="nav nav-pills pull-right loginBar">
+                    @if($header_menu_pages->count() > 0)
+                        @foreach($header_menu_pages as $page)
+                            <li><a class="text-white" href="{{ route('single_page', $page->slug) }}">{{ $page->title }} </a></li>
+                        @endforeach
+                    @endif
 
+                    @if( ! Auth::check())
+                        <li><a href="{{ route('login') }}"> <i class="fa fa-lock"></i>  {{ trans('app.login') }}  </a>  </li>
+                        <li><a href="{{ route('user.create') }}"> <i class="fa fa-save"></i>  {{ trans('app.register') }}</a></li>
+                    @endif
+                    @if(Auth::check() && $lUser->is_admin())
+                        <li><a href="{{ route('create_ad') }}"> <i class="fa fa-tag"></i> @lang('app.post_an_ad')</a></li>
+                    @endif
+                    @if(get_option('show_blog_in_header'))
+                        <li><a href="{{ route('blog') }}"> <i class="fa fa-rss"></i> @lang('app.blog')</a></li>
+                    @endif
+                    <li><a href="{{ route('contact_us_page') }}"> <i class="fa fa-mail-forward"></i>@lang('app.contact_us')</a></li>
+                </ul>
             </div>
         </div>
     </div>
@@ -151,12 +169,6 @@
 <nav class="navbar navbar-default" role="navigation">
     <div class="container">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
             <a class="navbar-brand" href="{{ route('home') }}">
                 @if(get_option('logo_settings') == 'show_site_name')
                     {{ get_option('site_name') }}
@@ -170,43 +182,13 @@
 
             </a>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-
-            <ul class="nav navbar-nav navbar-right">
-
-                <link rel="stylesheet" href="{{ asset('assets/css/style-custom.css') }}">
-            @if($header_menu_pages->count() > 0)
-                @foreach($header_menu_pages as $page)
-                        <li><a href="{{ route('single_page', $page->slug) }}">{{ $page->title }} </a></li>
-                    @endforeach
-                @endif
-
-                @if( ! Auth::check())
-                        <li><a href="{{ route('login') }}"> <i class="fa fa-lock"></i>  {{ trans('app.login') }}  </a>  </li>
-                        <li><a href="{{ route('user.create') }}"> <i class="fa fa-save"></i>  {{ trans('app.register') }}</a></li>
-                    @endif
-                @if(Auth::check() && $lUser->is_admin())
-                        <li><a href="{{ route('create_ad') }}"> <i class="fa fa-tag"></i> @lang('app.post_an_ad')</a></li>
-                    @endif
-                @if(get_option('show_blog_in_header'))
-                        <li><a href="{{ route('blog') }}"> <i class="fa fa-rss"></i> @lang('app.blog')</a></li>
-                    @endif
-                    <li><a href="{{ route('contact_us_page') }}"> <i class="fa fa-mail-forward"></i>@lang('app.contact_us')</a></li>
-
-                    {{--@if(get_option('enable_language_switcher') == 1)--}}
-                    {{--<li class="dropdown">--}}
-                    {{--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Language <span class="caret"></span></a>--}}
-                    {{--<ul class="dropdown-menu">--}}
-                    {{--<li><a href="{{ route('switch_language', 'vn') }}">English</a></li>--}}
-                    {{--@foreach(get_languages() as $lang)--}}
-                    {{--<li><a href="{{ route('switch_language', $lang->language_code) }}">{{ $lang->language_name }}</a></li>--}}
-                    {{--@endforeach--}}
-                    {{--</ul>--}}
-                    {{--</li>--}}
-                    {{--@endif--}}
-            </ul>
-
-
-        </div><!--/.navbar-collapse -->
+        <div class="navbar-form navbar-right">
+            <form class="form-inline-block" action="{{ route('listing') }}" method="get">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="searchTerms" name="q" value="{{ request('q') }}" placeholder="@lang('app.search___')" />
+                </div>
+                <button type="submit" class="btn theme-btn"> <i class="fa fa-search"></i> @lang('app.search_product')</button>
+            </form>
+        </div>
     </div>
 </nav>

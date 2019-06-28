@@ -159,3 +159,7 @@
 .animatedParent {
     width: 59%;
 }
+
+.loginBar a {
+    color: #fff
+}

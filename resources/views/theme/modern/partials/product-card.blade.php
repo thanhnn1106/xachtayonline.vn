@@ -1,4 +1,4 @@
-<div class="@if ($pageType !== 'home') col-md-4 col-sm-6 col-xs-12 owl-carousel @endif">
+<div class="@if ($pageType !== 'home') col-md-3 col-sm-6 col-xs-12 owl-carousel @endif">
     <div itemscope itemtype="http://schema.org/Product" class="ads-item-thumbnail ad-box-{{$ad->price_plan}}">
 
         <meta itemprop="name" content="{{$ad->title}}" />
