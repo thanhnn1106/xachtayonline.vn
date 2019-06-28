@@ -4,7 +4,7 @@
         <meta itemprop="name" content="{{$ad->title}}" />
         <meta itemprop="description" content="{{strip_tags($ad->description)}}" />
 
-        <div class="ads-thumbnail @if ($pageType !== 'home') owl-item @endif">
+        <div class="ads-thumbnail owl-item">
             <a href="{{ route('single_ad', $ad->slug) }}">
                 <img itemprop="image" src="{{ media_url($ad->feature_img) }}" class="img-responsive"
                      alt="{{ $ad->title }}">
