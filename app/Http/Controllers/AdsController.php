@@ -127,13 +127,14 @@ class AdsController extends Controller
             'category'  => 'required',
             'ad_title'  => 'required',
             'ad_description'  => 'required',
-            'type'  => 'required',
-            'condition'  => 'required',
+//            'type'  => 'required',
+//            'condition'  => 'required',
             'country'  => 'required',
             'seller_name'  => 'required',
             'seller_email'  => 'required',
             'seller_phone'  => 'required',
             'address'  => 'required',
+            'price_plan'  => 'required',
             'price'  => 'required',
             'discount_price'  => 'required',
             'shipping_fee'  => 'required',
@@ -161,8 +162,8 @@ class AdsController extends Controller
             'category_id' => $sub_category->category_id,
             'sub_category_id' => $subCatId,
             'brand_id' => $brand_id,
-            'type' => $request->type,
-            'ad_condition' => $request->condition,
+//            'type' => $request->type,
+//            'ad_condition' => $request->condition,
             'price' => $request->price,
             'discount_price'  => number_format($request->discount_price),
             'shipping_fee'  => $request->shipping_fee,
@@ -179,7 +180,6 @@ class AdsController extends Controller
             'mark_ad_urgent' => $mark_ad_urgent,
             'status' => '0',
             'user_id' => $user_id,
-            'price_plan' => 'regular',
             'content' => $request->ad_content,
             'name' => $adName,
             'sku' => $request->sku ?? '',
@@ -188,11 +188,6 @@ class AdsController extends Controller
         //Check ads moderation settings
         if (get_option('ads_moderation') == 'direct_publish'){
             $data['status'] = 1;
-        }
-
-        //if price_plan not in post data, then set a default value, although mysql will save it as enum first value
-        if ( ! $request->price_plan){
-            $data['price_plan'] = 'regular';
         }
 
         $created_ad = Ad::create($data);
@@ -282,13 +277,14 @@ class AdsController extends Controller
             'category'  => 'required',
             'ad_title'  => 'required',
             'ad_description'  => 'required',
-            'type'  => 'required',
-            'condition'  => 'required',
+//            'type'  => 'required',
+//            'condition'  => 'required',
             'country'  => 'required',
             'seller_name'  => 'required',
             'seller_email'  => 'required',
             'seller_phone'  => 'required',
             'address'  => 'required',
+            'price_plan'  => 'required',
             'price'  => 'required',
             'discount_price'  => 'required',
             'shipping_fee'  => 'required',
@@ -309,8 +305,8 @@ class AdsController extends Controller
             'category_id' => $sub_category->category_id,
             'sub_category_id' => $request->category,
             'brand_id' => $brand_id,
-            'type' => $request->type,
-            'ad_condition' => $request->condition,
+//            'type' => $request->type,
+//            'ad_condition' => $request->condition,
             'price' => $request->price,
             'discount_price'  => $request->discount_price,
             'shipping_fee'  => $request->shipping_fee,
@@ -325,7 +321,7 @@ class AdsController extends Controller
             'city_id' => $request->city,
             'address' => $request->address,
             'video_url' => $video_url,
-            'price_plan' => 'regular',
+            'price_plan' => $request->price_plan,
             'mark_ad_urgent' => $mark_ad_urgent,
             'content' => $request->ad_content,
             'sku' => $request->sku ?? '',

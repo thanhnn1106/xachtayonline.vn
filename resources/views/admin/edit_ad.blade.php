@@ -30,7 +30,7 @@
                         <legend>@lang('app.ad_info')</legend>
 
 
-                        <div class="form-group  {{ $errors->has('category')? 'has-error':'' }}">
+                        <div class="form-group {{ $errors->has('category')? 'has-error':'' }}">
                             <label for="category_name" class="col-sm-4 control-label">
                                 @lang('app.category')<span class="text-danger"> (*)</span>
                             </label>
@@ -115,37 +115,49 @@
                             </div>
                         </div>
 
-                        <div class="form-group required {{ $errors->has('type')? 'has-error':'' }}">
-                            <label class="col-md-4 control-label">
-                                @lang('app.add_type') <span class="text-danger"> (*)</span>
-                            </label>
-                            <div class="col-md-8">
-                                <label for="type_private" class="radio-inline">
-                                    <input type="radio" value="personal" id="type_private" name="type"  {{ $ad->type == 'personal'? 'checked="checked"' : '' }}>
-                                    @lang('app.private')
-                                </label>
-                                <label for="type_business" class="radio-inline">
-                                    <input type="radio" value="business" id="type_business" name="type" {{ $ad->type == 'business'? 'checked="checked"' : '' }}>
+                        {{--<div class="form-group required {{ $errors->has('type')? 'has-error':'' }}">--}}
+                            {{--<label class="col-md-4 control-label">--}}
+                                {{--@lang('app.add_type') <span class="text-danger"> (*)</span>--}}
+                            {{--</label>--}}
+                            {{--<div class="col-md-8">--}}
+                                {{--<label for="type_private" class="radio-inline">--}}
+                                    {{--<input type="radio" value="personal" id="type_private" name="type"  {{ $ad->type == 'personal'? 'checked="checked"' : '' }}>--}}
+                                    {{--@lang('app.private')--}}
+                                {{--</label>--}}
+                                {{--<label for="type_business" class="radio-inline">--}}
+                                    {{--<input type="radio" value="business" id="type_business" name="type" {{ $ad->type == 'business'? 'checked="checked"' : '' }}>--}}
 
-                                    @lang('app.business')
-                                </label>
-                                {!! $errors->has('type')? '<p class="help-block">'.$errors->first('type').'</p>':'' !!}
-                            </div>
-                        </div>
+                                    {{--@lang('app.business')--}}
+                                {{--</label>--}}
+                                {{--{!! $errors->has('type')? '<p class="help-block">'.$errors->first('type').'</p>':'' !!}--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
 
-                        <div class="form-group {{ $errors->has('condition')? 'has-error':'' }}">
-                            <label for="condition" class="col-sm-4 control-label">
-                                @lang('app.condition')<span class="text-danger"> (*)</span>
+                        {{--<div class="form-group {{ $errors->has('condition')? 'has-error':'' }}">--}}
+                            {{--<label for="condition" class="col-sm-4 control-label">--}}
+                                {{--@lang('app.condition')<span class="text-danger"> (*)</span>--}}
+                            {{--</label>--}}
+                            {{--<div class="col-sm-8">--}}
+                                {{--<select class="form-control select2NoSearch" name="condition" id="condition">--}}
+                                    {{--<option value="new" {{ $ad->ad_condition == 'new' ? 'selected':'' }}>@lang('app.new')</option>--}}
+                                    {{--<option value="used" {{ $ad->ad_condition == 'used' ? 'selected':'' }}>@lang('app.used')</option>--}}
+                                {{--</select>--}}
+                                {{--{!! $errors->has('condition')? '<p class="help-block">'.$errors->first('condition').'</p>':'' !!}--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+
+                        <div class="form-group {{ $errors->has('price_plan')? 'has-error':'' }}">
+                            <label for="price_plan" class="col-sm-4 control-label">
+                                @lang('app.price_plan')<span class="text-danger"> (*)</span>
                             </label>
                             <div class="col-sm-8">
-                                <select class="form-control select2NoSearch" name="condition" id="condition">
-                                    <option value="new" {{ $ad->ad_condition == 'new' ? 'selected':'' }}>@lang('app.new')</option>
-                                    <option value="used" {{ $ad->ad_condition == 'used' ? 'selected':'' }}>@lang('app.used')</option>
+                                <select class="form-control select2NoSearch" name="price_plan" id="price_plan">
+                                    <option value="regular" {{ $ad->price_plan == 'regular' ? 'selected':'' }}>@lang('app.regular')</option>
+                                    <option value="premium" {{ $ad->price_plan == 'premium' ? 'selected':'' }}>@lang('app.premium')</option>
                                 </select>
-                                {!! $errors->has('condition')? '<p class="help-block">'.$errors->first('condition').'</p>':'' !!}
+                                {!! $errors->has('price_plan')? '<p class="help-block">'.$errors->first('price_plan').'</p>':'' !!}
                             </div>
                         </div>
-
 
                         <div class="form-group  {{ $errors->has('price')? 'has-error':'' }}">
                             <label for="price" class="col-md-4 control-label">

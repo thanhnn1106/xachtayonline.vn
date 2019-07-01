@@ -24,8 +24,8 @@ class CreateAdsTable extends Migration
             $table->integer('category_id');
             $table->integer('sub_category_id');
             $table->integer('brand_id');
-            $table->enum('type', ['personal', 'business']);
-            $table->enum('ad_condition', ['new', 'used']);
+            $table->enum('type', ['personal', 'business'])->nullable();
+            $table->enum('ad_condition', ['new', 'used'])->nullable();
             $table->string('model');
             $table->decimal('price', 12,2);
             $table->decimal('discount_price', 12,2);
