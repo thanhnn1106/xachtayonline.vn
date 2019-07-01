@@ -147,7 +147,8 @@ class AdsController extends Controller
         $adName = $request->ad_name;
         $slug = unique_slug($adName, 'Ad', 'slug');
 
-        $sub_category = Category::find($request->category);
+        $subCatId = Category::select('id')->where('category_slug', $request->category)->first()->id;
+        $sub_category = Category::find($subCatId);
 
         $brand_id = $request->brand ? $request->brand : 0;
         $mark_ad_urgent = $request->mark_ad_urgent ? $request->mark_ad_urgent : 0;
@@ -158,7 +159,7 @@ class AdsController extends Controller
             'slug' => $slug,
             'description' => $request->ad_description,
             'category_id' => $sub_category->category_id,
-            'sub_category_id' => $request->category,
+            'sub_category_id' => $subCatId,
             'brand_id' => $brand_id,
             'type' => $request->type,
             'ad_condition' => $request->condition,
