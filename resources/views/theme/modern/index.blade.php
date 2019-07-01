@@ -124,7 +124,7 @@
                     </div>
                     <hr />
 
-                    @foreach($urgent_ads->chunk(1) as $chunk)
+                    @foreach($urgent_ads->chunk(10) as $chunk)
                     <div class="themeqx_new_regular_ads_wrap themeqx-carousel-ads">
                         @foreach($chunk as $ad)
                             @if ($ad->category->is_active == 1)
@@ -193,7 +193,7 @@
                         </h4>
                     </div>
                     <hr />
-                    @foreach($regular_ads->chunk(1) as $chunk)
+                    @foreach($regular_ads->chunk(10) as $chunk)
                     <div class="themeqx_new_regular_ads_wrap themeqx-carousel-ads">
                         @foreach($chunk as $ad)
                             @if ($ad['category']['is_active'] == 1)
