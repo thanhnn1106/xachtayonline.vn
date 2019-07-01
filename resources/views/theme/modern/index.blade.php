@@ -317,8 +317,8 @@
                     },
                     1000:{
                         items:4,
-                        nav:false,
-                        loop:false,
+                        nav:true,
+                        loop:true,
                     }
                 },
                 navText : ['<i class="fa fa-arrow-circle-o-left"></i>','<i class="fa fa-arrow-circle-o-right"></i>']
