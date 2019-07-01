@@ -151,9 +151,9 @@
                         </h4>
                     </div>
                     <hr />
-                    @foreach($urgent_ads->chunk(4) as $chunk)
+                    @foreach($premium_ads->chunk(4) as $chunk)
                     <div class="themeqx_new_premium_ads_wrap themeqx-carousel-ads">
-                        @foreach($premium_ads as $ad)
+                        @foreach($chunk as $ad)
                             @if ($ad->category->is_active == 1)
                                 @include('theme.modern.partials.product-card', ['pageType' => 'home', 'ad' => $ad])
                             @endif
