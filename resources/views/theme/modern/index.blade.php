@@ -123,13 +123,16 @@
                         </h4>
                     </div>
                     <hr />
+
+                    @foreach($urgent_ads->chunk(4) as $chunk)
                     <div class="themeqx_new_regular_ads_wrap themeqx-carousel-ads">
-                        @foreach($urgent_ads as $ad)
+                        @foreach($chunk as $ad)
                             @if ($ad->category->is_active == 1)
                                 @include('theme.modern.partials.product-card', ['pageType' => 'home', 'ad' => $ad])
                             @endif
                         @endforeach
                     </div> <!-- themeqx_new_premium_ads_wrap -->
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -361,8 +364,8 @@
                     },
                     1000:{
                         items:4,
-                        nav:true,
-                        loop:true,
+                        nav:false,
+                        loop:false,
                     }
                 },
                 navText : ['<i class="fa fa-arrow-circle-o-left"></i>','<i class="fa fa-arrow-circle-o-right"></i>']
