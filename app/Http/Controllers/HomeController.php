@@ -26,11 +26,11 @@ class HomeController extends Controller
             ->orderBy('category_name', 'asc')
             ->where('is_active', 1)
             ->get();
-//        $premium_ads = Ad::activePremium()
-//            ->with('category', 'city')
-//            ->limit($limit_premium_ads)
-//            ->orderBy('id', 'desc')
-//            ->get();
+        $premium_ads = Ad::activePremium()
+            ->with('category', 'city')
+            ->limit($limit_premium_ads)
+            ->orderBy('id', 'desc')
+            ->get();
         $regular_ads = Ad::activeRegular()
             ->with('category', 'city')
             ->limit($limit_regular_ads)

@@ -96,8 +96,8 @@
             </a>
         </div>
         @if($ad->price_plan == 'premium')
-            <div class="ribbon-wrapper-green">
-                <div class="ribbon-green">{{ ucfirst($ad->price_plan) }}</div>
+            <div class="ribbon-wrapper-red">
+                <div class="ribbon-red">HOT</div>
             </div>
         @endif
         @if($ad->mark_ad_urgent == '1')
