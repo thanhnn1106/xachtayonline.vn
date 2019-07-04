@@ -545,7 +545,7 @@
                 toolbar: [
                     ['insert', ['emoji']],
                     ['tool', ['undo', 'redo', 'codeview']],
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['style', ['style', 'bold', 'italic', 'underline', 'clear']],
                     ['font', ['strikethrough', 'superscript', 'subscript']],
                     ['fontsize', ['fontsize']],
                     ['color', ['color']],
@@ -553,13 +553,14 @@
                     ['height', ['height']],
                     ['insert', ['link', 'picture', 'hr']],
                     ['table', ['table']],
-                ]
+                ],
+                styleTags: ['p', 'h1', 'h2', 'h3', 'h4', 'h5'],
             });
             $('#ad_content').summernote({
                 toolbar: [
                     ['insert', ['emoji']],
                     ['tool', ['undo', 'redo', 'codeview']],
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['style', ['style', 'bold', 'italic', 'underline', 'clear']],
                     ['font', ['strikethrough', 'superscript', 'subscript']],
                     ['fontsize', ['fontsize']],
                     ['color', ['color']],
@@ -567,7 +568,8 @@
                     ['height', ['height']],
                     ['insert', ['link', 'picture', 'hr']],
                     ['table', ['table']],
-                ]
+                ],
+                styleTags: ['p', 'h1', 'h2', 'h3', 'h4', 'h5'],
             });
             $('[name="category"]').change(function () {
                 var category_slug = $(this).val();

@@ -6,6 +6,7 @@
 @endsection
 
 @section('social-meta')
+    <meta name="robots" content="index, follow" class="next-head">
     <meta property="og:title" content="{{ $ad->title }}">
     <meta property="og:description" content="{{ substr(trim(preg_replace('/\s\s+/', ' ',strip_tags($ad->description) )),0,160) }}">
     @if($ad->media_img->first())

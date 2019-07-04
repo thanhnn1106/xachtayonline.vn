@@ -10,15 +10,15 @@
         </span>
     </td>
     <td>
-        <h5><a href="{{ route('single_ad', $ad->slug) }}" >{{ $ad->title }}</a> </h5>
+        <h5><a href="{{ route('single_ad', $ad->slug) }}" rel="follow">{{ $ad->title }}</a> </h5>
         <p class="text-muted">
-            <a class="price text-muted" href="{{ route('listing', ['category' => $ad->category->category_slug]) }}">
+            <a class="price text-muted" href="{{ route('listing', ['category' => $ad->category->category_slug]) }}" rel="follow">
                 <i class="fa fa-folder-o"></i>
                 {{ $ad->category->category_name }}
             </a>
             @if($ad->country)
                 <i class="fa fa-map-marker"></i>
-                <a class="location text-muted" href="{{ route('listing', ['country'=>$ad->country->country_name]) }}">
+                <a class="location text-muted" href="{{ route('listing', ['country'=>$ad->country->country_name]) }}" rel="follow">
                     {{ $ad->country->country_name }}
                 </a>
             @endif
@@ -27,7 +27,7 @@
             </p>
         </p>
         <p class="text-muted">
-            <a href="{{ route('listing', ['user_id' => $ad->user_id]) }}">{{ $ad->seller_name }}</a>
+            <a href="{{ route('listing', ['user_id' => $ad->user_id]) }}" rel="follow">{{ $ad->seller_name }}</a>
         </p>
     </td>
     <td>
