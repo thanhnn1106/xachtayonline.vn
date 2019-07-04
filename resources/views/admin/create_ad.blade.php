@@ -550,7 +550,9 @@
                     ['fontsize', ['fontsize']],
                     ['color', ['color']],
                     ['para', ['ul', 'ol', 'paragraph']],
-                    ['height', ['height']]
+                    ['height', ['height']],
+                    ['insert', ['link', 'picture', 'hr']],
+                    ['table', ['table']],
                 ]
             });
             $('#ad_content').summernote({
@@ -562,7 +564,9 @@
                     ['fontsize', ['fontsize']],
                     ['color', ['color']],
                     ['para', ['ul', 'ol', 'paragraph']],
-                    ['height', ['height']]
+                    ['height', ['height']],
+                    ['insert', ['link', 'picture', 'hr']],
+                    ['table', ['table']],
                 ]
             });
             $('[name="category"]').change(function () {

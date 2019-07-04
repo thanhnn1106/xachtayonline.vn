@@ -65,8 +65,6 @@
                                 @endif
                             </select>
                         </div>
-
-                        <hr />
                         <div class="form-group col-md-3 col-xs-12">
                             <select class="form-control" name="country">
                                 <option value="">@lang('app.select_a_country')</option>
@@ -98,8 +96,6 @@
                                 {{--@endif--}}
                             {{--</select>--}}
                         {{--</div>--}}
-
-                        <hr />
                         <div class="form-group col-md-3 col-xs-12">
                             {{--<label>@lang('app.price_min_max')</label>--}}
 
@@ -112,8 +108,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <hr />
                         {{--<div class="form-group">--}}
                             {{--<label>@lang('app.condition')</label>--}}
                             {{--<div class="checkbox">--}}
