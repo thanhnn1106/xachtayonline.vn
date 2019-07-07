@@ -474,7 +474,7 @@
             }else if(fromLoad === 'country_to_state'){
                 var option = '';
                 if (jsonData.length > 0) {
-                    option += '<option value="0" selected> @lang('app.select_state') </option>';
+                    option += '<option value="" selected> @lang('app.select_state') </option>';
                     for ( i in jsonData){
                         option += '<option value="'+jsonData[i].id+'"> '+jsonData[i].state_name +' </option>';
                     }

@@ -495,7 +495,7 @@
             if (fromLoad === 'category_to_brand') {
                 var option = '';
                 if (jsonData.length > 0) {
-                    option += '<option value="0" selected> <?php echo trans('app.select_a_brand') ?> </option>';
+                    option += '<option value="" selected> <?php echo trans('app.select_a_brand') ?> </option>';
                     for (i in jsonData) {
                         option += '<option value="' + jsonData[i].id + '"> ' + jsonData[i].brand_name + ' </option>';
                     }

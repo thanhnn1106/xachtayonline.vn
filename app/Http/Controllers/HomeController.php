@@ -36,6 +36,7 @@ class HomeController extends Controller
             ->limit($limit_regular_ads)
             ->orderBy('created_at', 'desc')
             ->get();
+
         $urgent_ads = Ad::activeUrgent()
             ->with('category', 'city')
             ->limit($limit_urgent_ads)

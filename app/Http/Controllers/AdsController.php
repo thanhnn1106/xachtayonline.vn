@@ -125,6 +125,7 @@ class AdsController extends Controller
 
         $rules = [
             'category'  => 'required',
+            'brand'  => 'required',
             'ad_title'  => 'required',
             'ad_description'  => 'required',
 //            'type'  => 'required',
@@ -151,7 +152,6 @@ class AdsController extends Controller
         $subCatId = Category::select('id')->where('category_slug', $request->category)->first()->id;
         $sub_category = Category::find($subCatId);
 
-        $brand_id = $request->brand ? $request->brand : 0;
         $mark_ad_urgent = $request->mark_ad_urgent ? $request->mark_ad_urgent : 0;
         $video_url = $request->video_url ? $request->video_url : '';
 
@@ -161,7 +161,7 @@ class AdsController extends Controller
             'description' => $request->ad_description,
             'category_id' => $sub_category->category_id,
             'sub_category_id' => $subCatId,
-            'brand_id' => $brand_id,
+            'brand_id' => $request->brand,
 //            'type' => $request->type,
 //            'ad_condition' => $request->condition,
             'price' => $request->price,
@@ -184,7 +184,7 @@ class AdsController extends Controller
             'name' => $adName,
             'sku' => $request->sku ?? '',
         ];
-
+dd($data);
         //Check ads moderation settings
         if (get_option('ads_moderation') == 'direct_publish'){
             $data['status'] = 1;
@@ -275,6 +275,7 @@ class AdsController extends Controller
 
         $rules = [
             'category'  => 'required',
+            'brand'  => 'required',
             'ad_title'  => 'required',
             'ad_description'  => 'required',
 //            'type'  => 'required',
@@ -296,7 +297,6 @@ class AdsController extends Controller
         
         $sub_category = Category::find($request->category);
         $is_negotialble = $request->negotiable ? $request->negotiable : 0;
-        $brand_id = $request->brand ? $request->brand : 0;
         $video_url = $request->video_url ? $request->video_url : '';
 
         $data = [
@@ -304,7 +304,7 @@ class AdsController extends Controller
             'description' => $request->ad_description,
             'category_id' => $sub_category->category_id,
             'sub_category_id' => $request->category,
-            'brand_id' => $brand_id,
+            'brand_id' => $request->brand,
 //            'type' => $request->type,
 //            'ad_condition' => $request->condition,
             'price' => $request->price,
@@ -449,7 +449,7 @@ class AdsController extends Controller
             $resized = Image::make($image)->resize(640, null, function ($constraint) {
                 $constraint->aspectRatio();
             })->stream();
-            $resized_thumb = Image::make($image)->resize(320, 213)->stream();
+            $resized_thumb = Image::make($image)->resize(200, 213)->stream();
 
             $image_name = strtolower(time().str_random(5).'-'.str_slug($file_base_name)).'.' . $image->getClientOriginalExtension();
 //            $imageFileName = 'uploads/images/'.$image_name;
