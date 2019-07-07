@@ -175,10 +175,10 @@
                                         <li><a href="{{ request()->fullUrlWithQuery(['shortBy'=>'latest']) }}">@lang('app.latest')</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="javascript:void(0)" id="showGridView">
-                                        <i class="fa fa-th-large"></i> </a> </li>
-                                <li><a href="javascript:void(0)" id="showListView">
-                                        <i class="fa fa-list"></i> </a> </li>
+                                {{--<li><a href="javascript:void(0)" id="showGridView">--}}
+                                        {{--<i class="fa fa-th-large"></i> </a> </li>--}}
+                                {{--<li><a href="javascript:void(0)" id="showListView">--}}
+                                        {{--<i class="fa fa-list"></i> </a> </li>--}}
                             </ul>
                         </div>
                     </div>
@@ -418,15 +418,15 @@
                     data : { grid_list_view : 'grid',  _token : '{{ csrf_token() }}' },
                 });
             });
-            $('#showListView').click(function(){
-                $('.ad-box-grid-view').hide();
-                $('.ad-box-list-view').show();
-                $.ajax({
-                    type : 'POST',
-                    url : '{{ route('switch_grid_list_view') }}',
-                    data : { grid_list_view : 'list',  _token : '{{ csrf_token() }}' },
-                });
-            });
+            {{--$('#showListView').click(function(){--}}
+                {{--$('.ad-box-grid-view').hide();--}}
+                {{--$('.ad-box-list-view').show();--}}
+                {{--$.ajax({--}}
+                    {{--type : 'POST',--}}
+                    {{--url : '{{ route('switch_grid_list_view') }}',--}}
+                    {{--data : { grid_list_view : 'list',  _token : '{{ csrf_token() }}' },--}}
+                {{--});--}}
+            {{--});--}}
         });
     </script>
 

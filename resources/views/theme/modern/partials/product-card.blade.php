@@ -91,11 +91,15 @@
             {{--<a type="button" href="{{ route('order', [$ad->id]) }}" class="btn btn-info theme-btn btn-xl font-weight-bold text-capitalize">--}}
                 {{--<span>{{ trans('app.order_quickly') }}</span>--}}
             {{--</a>--}}
-            <a type="button" target="_blank" href="https://m.me/xachtayonlinevn.vn/" class="btn btn-info theme-btn btn-xl font-weight-bold text-capitalize">
+            <a type="button" target="_blank" @if($ad->is_out_of_stock) disabled='disabled' @endif href="https://m.me/xachtayonlinevn.vn/" class="btn btn-info theme-btn btn-xl font-weight-bold text-capitalize">
                 <span>{{ trans('app.order_quickly') }}</span>
             </a>
         </div>
-        @if($ad->price_plan == 'premium')
+        @if($ad->is_out_of_stock)
+            <div class="ribbon-wrapper-red">
+                <div class="ribbon-red">{{ trans('app.is_out_of_stock') }}</div>
+            </div>
+        @elseif($ad->price_plan == 'premium')
             <div class="ribbon-wrapper-red">
                 <div class="ribbon-red">HOT</div>
             </div>

@@ -183,8 +183,9 @@ class AdsController extends Controller
             'content' => $request->ad_content,
             'name' => $adName,
             'sku' => $request->sku ?? '',
+            'is_out_of_stock' => $request->is_out_of_stock ?? 0,
         ];
-dd($data);
+
         //Check ads moderation settings
         if (get_option('ads_moderation') == 'direct_publish'){
             $data['status'] = 1;
@@ -325,6 +326,7 @@ dd($data);
             'mark_ad_urgent' => $mark_ad_urgent,
             'content' => $request->ad_content,
             'sku' => $request->sku ?? '',
+            'is_out_of_stock' => $request->is_out_of_stock ?? 0,
         ];
         $updated_ad = $ad->update($data);
 
@@ -449,7 +451,9 @@ dd($data);
             $resized = Image::make($image)->resize(640, null, function ($constraint) {
                 $constraint->aspectRatio();
             })->stream();
-            $resized_thumb = Image::make($image)->resize(200, 213)->stream();
+            $resized_thumb = Image::make($image)->resize(200, null, function ($constraint) {
+                $constraint->aspectRatio();
+            })->stream();
 
             $image_name = strtolower(time().str_random(5).'-'.str_slug($file_base_name)).'.' . $image->getClientOriginalExtension();
 //            $imageFileName = 'uploads/images/'.$image_name;
@@ -735,9 +739,9 @@ dd($data);
         return view($this->theme.'single_ad', compact('ad', 'title', 'related_ads'));
     }
     
-    public function switchGridListView(Request $request){
-        session(['grid_list_view' => $request->grid_list_view]);
-    }
+//    public function switchGridListView(Request $request){
+//        session(['grid_list_view' => $request->grid_list_view]);
+//    }
 
     /**
      * @param Request $request

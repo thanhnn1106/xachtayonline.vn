@@ -45,8 +45,10 @@
         @if($ad->discount_price > 0)
             <h5 class="text-danger">{{ themeqx_price_ng(number_format($ad->discount_price)) }}</h5>
         @endif
-        @if($ad->price_plan == 'premium')
-            <div class="ribbon-green-bar">{{ ucfirst($ad->price_plan) }}</div>
+        @if($ad->is_out_of_stock)
+            <h5 class="ribbon-red-bar">CHÁY HÀNG</h5>
+        @elseif($ad->price_plan == 'premium')
+            <h5 class="ribbon-red-bar">HOT</h5>
         @endif
         @if($ad->mark_ad_urgent == '1')
             <div class="ribbon-red-bar">@lang('app.urgent')</div>
@@ -55,7 +57,7 @@
             {{--<a type="button" href="{{ route('order', [$ad->id]) }}" class="btn btn-info theme-btn btn-xl font-weight-bold text-capitalize">--}}
                 {{--<span>{{ trans('app.order_quickly') }}</span>--}}
             {{--</a>--}}
-            <a type="button" target="_blank" href="https://m.me/xachtayonlinevn.vn/" class="btn btn-info theme-btn btn-xl font-weight-bold text-capitalize">
+            <a type="button" target="_blank" @if($ad->is_out_of_stock) disabled='disabled' @endif href="https://m.me/xachtayonlinevn.vn/" class="btn btn-info theme-btn btn-xl font-weight-bold text-capitalize">
                 <span>{{ trans('app.order_quickly') }}</span>
             </a>
         </div>

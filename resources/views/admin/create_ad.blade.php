@@ -245,6 +245,17 @@
                             </div>
 
                         </div>
+
+                        <div class="form-group offset-8">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4 addon-ad-charge">
+                                <label class="control-label">
+                                    <input type="checkbox" class="" name="is_out_of_stock" value="1" />
+                                    @lang('app.is_out_of_stock')
+                                </label>
+                            </div>
+                        </div>
+
                         <div class="form-group offset-8">
                             <div class="col-md-4"></div>
                             <div class="col-md-4 addon-ad-charge">

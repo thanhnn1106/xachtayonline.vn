@@ -52,6 +52,7 @@ class CreateAdsTable extends Migration
             $table->integer('view');
             $table->integer('max_impression');
             $table->integer('user_id');
+            $table->boolean('is_out_of_stock')->default(0);
             $table->timestamps();
         });
     }

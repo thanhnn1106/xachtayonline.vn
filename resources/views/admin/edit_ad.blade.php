@@ -239,6 +239,16 @@
                             <div class="col-md-4"></div>
                             <div class="col-md-4 addon-ad-charge">
                                 <label class="control-label">
+                                    <input type="checkbox" class="" name="is_out_of_stock" value="1" {{ $ad->is_out_of_stock == '1' ? 'checked':'' }} />
+                                    @lang('app.is_out_of_stock')
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group offset-8">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4 addon-ad-charge">
+                                <label class="control-label">
                                     <input type="checkbox" class="mark_ad_urgent" name="mark_ad_urgent" value="1" data-price="{{ get_option('urgent_ads_price')  }}" {{ $ad->mark_ad_urgent == '1' ? 'checked':'' }} />
                                     @lang('app.mark_as_urgent')
                                 </label>
