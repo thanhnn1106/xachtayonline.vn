@@ -110,7 +110,7 @@
                         </div>
                         <span class="d-inline-block">
                             <h3 class="d-inline-block modern-single-ad-price @if ($ad->discount_price > 0) text-decorate-line-thought text-info @endif">
-                                Giá gốc: {{ themeqx_price_ng(number_format($ad->price)) }}
+                                {{ trans('app.store_price') }}: {{ themeqx_price_ng(number_format($ad->price)) }}
                             </h3>
                             @if ($ad->discount_price > 0)
                                 <h3 class="d-inline-block text-danger">-{{ number_format(100 - ($ad->discount_price / $ad->price * 100)) }}%</h3>
@@ -120,11 +120,11 @@
                         @if ($ad->discount_price > 0)
                             <h3 class="modern-single-ad-price text-danger">Giá gốc: {{ themeqx_price_ng(number_format($ad->discount_price)) }}</h3>
                             <h3  style="color: #00505F;" class="d-inline-block modern-single-ad-price">
-                                Giá xách tay: {{ themeqx_price_ng(number_format($ad->discount_price + $ad->shipping_fee)) }}
+                                {{ trans('app.ship_to_vn_price') }}: {{ themeqx_price_ng(number_format($ad->discount_price + $ad->shipping_fee)) }}
                             </h3>
                         @else
                             <h3 style="color: #00505F;" class="d-inline-block modern-single-ad-price @if ($ad->discount_price > 0) text-decorate-line-thought text-info @endif">
-                                Giá xách tay: {{ themeqx_price_ng(number_format($ad->price + $ad->shipping_fee)) }}
+                                {{ trans('app.ship_to_vn_price') }}: {{ themeqx_price_ng(number_format($ad->price + $ad->shipping_fee)) }}
                             </h3>
                         @endif
 
