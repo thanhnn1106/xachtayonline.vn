@@ -122,6 +122,8 @@ Route::group(['prefix'=>'dashboard', 'middleware' => 'dashboard'], function(){
             Route::post('edit/{id}', ['uses' => 'CategoriesController@update']);
 
             Route::post('delete-categories', ['as'=>'delete_categories', 'uses' => 'CategoriesController@destroy']);
+
+            Route::match(['GET', 'POST'], 'order-categories', ['as'=>'order_categories', 'uses' => 'CategoriesController@orderCategories']);
         });
 
         Route::group(['prefix'=>'brands'], function(){

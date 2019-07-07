@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "545cc089f039c697e3524458b704188c",
+    "content-hash": "a953ab53bc1321a912ea802d34d771d2",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1389,6 +1389,49 @@
                 "twitter"
             ],
             "time": "2016-08-17T00:36:58+00:00"
+        },
+        {
+            "name": "mavinoo/laravel-batch",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mavinoo/laravelBatch.git",
+                "reference": "e42eb9e29297b74d7b4ac598613889219b7ea6eb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mavinoo/laravelBatch/zipball/e42eb9e29297b74d7b4ac598613889219b7ea6eb",
+                "reference": "e42eb9e29297b74d7b4ac598613889219b7ea6eb",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Mavinoo\\LaravelBatch\\LaravelBatchServiceProvider"
+                    ],
+                    "aliases": {
+                        "Batch": "Mavinoo\\LaravelBatch\\LaravelBatchFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Mavinoo\\LaravelBatch\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mohammad Ghanbari",
+                    "email": "wordpress.iran@gmail.com"
+                }
+            ],
+            "description": "Insert and update batch (bulk) in laravel",
+            "time": "2019-04-14T05:31:07+00:00"
         },
         {
             "name": "maximebf/debugbar",
@@ -5312,7 +5355,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "mavinoo/laravel-batch": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

@@ -163,7 +163,8 @@ return [
         //Form and html builder
         'Collective\Html\HtmlServiceProvider',
         Laravel\Socialite\SocialiteServiceProvider::class,
-        Yajra\Datatables\DatatablesServiceProvider::class
+        Yajra\Datatables\DatatablesServiceProvider::class,
+        Mavinoo\LaravelBatch\LaravelBatchServiceProvider::class,
     ],
 
     /*
@@ -219,6 +220,7 @@ return [
         'Html' => 'Collective\Html\HtmlFacade',
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        'Batch' => Mavinoo\LaravelBatch\LaravelBatchFacade::class,
     ],
 
 ];
