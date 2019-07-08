@@ -11,7 +11,7 @@
             <li> <a href="{{ route('profile') }}"><i class="fa fa-user"></i> @lang('app.profile')</a>  </li>
             <li> <a href="{{ route('change_password') }}"><i class="fa fa-lock"></i> @lang('app.change_password')</a>  </li>
             <li>
-                <a href="#"><i class="fa fa-bullhorn"></i>QUẢN LÝ KHÁCH HÀNG<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-users"></i> Quản lý khách hàng<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>  <a href="{{ route('users') }}"><i class="fa fa-users"></i> @lang('app.users_management')</a> </li>
                     <li>  <a href="{{ route('sellers') }}"><i class="fa fa-users"></i> @lang('app.sellers_management')</a> </li>
@@ -29,17 +29,29 @@
                     <li>  <a href="{{ route('favorite_ads') }}">@lang('app.favourite_ads')</a> </li>
                 </ul>
             </li>
-            <li> <a href="{{ route('parent_categories') }}"><i class="fa fa-list"></i> @lang('app.categories')</a>  </li>
-            <li> <a href="{{ route('admin_brands') }}"><i class="fa fa-adjust"></i> @lang('app.brands')</a>  </li>
             <li>
-                <a href="#"><i class="fa fa-bullhorn"></i> @lang('app.ads')<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-list"></i> Quản lý danh mục<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li> <a href="{{ route('parent_categories') }}"><i class="fa fa-list"></i> @lang('app.categories')</a>  </li>
+                    <li> <a href="{{ route('order_categories') }}"><i class="fa fa-list"></i> Sắp xếp danh mục</a>  </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-adjust"></i> Quản lý thương hiệu<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li> <a href="{{ route('admin_brands') }}"><i class="fa fa-adjust"></i> @lang('app.brands')</a>  </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-bullhorn"></i> Quản lý sản phẩm<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>  <a href="{{ route('approved_ads') }}">@lang('app.approved_ads')</a> </li>
                     <li>  <a href="{{ route('admin_pending_ads') }}">@lang('app.pending_for_approval')</a> </li>
                     <li>  <a href="{{ route('admin_blocked_ads') }}">@lang('app.blocked_ads')</a> </li>
+                    <li> <a href="{{ route('ad_reports') }}"><i class="fa fa-exclamation"></i> Sản phẩm bị report</a>  </li>
                 </ul>
             </li>
-            <li> <a href="{{ route('ad_reports') }}"><i class="fa fa-exclamation"></i> @lang('app.ad_reports')</a>  </li>
+
             <li class="parent-menu">
                 <a class="text-center">QUẢN LÝ BÀI VIẾT</a>
             </li>

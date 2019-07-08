@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
+use Mavinoo\LaravelBatch\LaravelBatchFacade;
 
 class CategoriesController extends Controller
 {
@@ -19,7 +18,9 @@ class CategoriesController extends Controller
     public function index()
     {
         $title = trans('app.categories');
-        $categories = Category::where('category_id', 0)->whereIsActive(1)->get();
+        $categories = Category::where('category_id', 0)
+            ->where('is_active', '1')
+            ->get();
 
         return view('admin.categories', compact('title', 'categories'));
     }
@@ -36,7 +37,7 @@ class CategoriesController extends Controller
         $title = trans('app.categories');
         $categories = Category::where('category_id', 0)->get();
 
-        return view('admin.categories', compact('title', 'categories'));
+        return view('admin.categories_management.categories', compact('title', 'categories'));
     }
 
     /**
@@ -164,5 +165,54 @@ class CategoriesController extends Controller
         }
         return ['success' => 0, 'msg' => trans('app.error_msg')];
 
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function orderCategories(Request $request)
+    {
+        $title = trans('app.categories');
+        $categories = Category::where('category_id', 0)
+            ->where('is_active', '1')
+            ->orderBy('ordering')
+            ->get();
+        if ($request->isMethod('GET')) {
+
+            return view('admin.categories_management.order_categories', compact('title', 'categories'));
+        } else {
+            $dataUpdate = $this->prepareDataOdering($request->all());
+            if (!$dataUpdate) {
+
+                return back()->with('error', 'Không được bỏ trống bất kỳ ô nào');
+            }
+            $catInstance = new Category();
+            $column = 'id';
+            LaravelBatchFacade::update($catInstance, $dataUpdate, $column);
+
+            return back()->with('success', 'Cập nhật thành công!');
+        }
+    }
+
+    public function prepareDataOdering($dataForm)
+    {
+        $data = [];
+        unset($dataForm['_token']);
+        foreach ($dataForm as $key => $value) {
+            if (empty($value)) {
+
+                return false;
+            }
+            $item = [
+                'id' => str_replace('-order', '', $key),
+                'ordering' => $value
+            ];
+            array_push($data, $item);
+        }
+
+        return $data;
     }
 }

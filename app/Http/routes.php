@@ -24,7 +24,7 @@ Route::get('blog/{slug}', ['as' => 'blog_single', 'uses'=>'PostController@blogSi
 Route::get('blog/author/{id}', ['as' => 'author_blog_posts', 'uses'=>'PostController@authorPosts']);
 
 
-Route::get('listing', ['as' => 'listing', 'uses'=>'AdsController@listing']);
+Route::get('danh-sach', ['as' => 'listing', 'uses'=>'AdsController@listing']);
 Route::get('san-pham/{slug}', ['as' => 'single_ad', 'uses'=>'AdsController@singleAd']);
 
 Route::post('save-ad-as-favorite', ['as' => 'save_ad_as_favorite', 'uses'=>'UserController@saveAdAsFavorite']);
@@ -122,6 +122,8 @@ Route::group(['prefix'=>'dashboard', 'middleware' => 'dashboard'], function(){
             Route::post('edit/{id}', ['uses' => 'CategoriesController@update']);
 
             Route::post('delete-categories', ['as'=>'delete_categories', 'uses' => 'CategoriesController@destroy']);
+
+            Route::match(['GET', 'POST'], 'order-categories', ['as'=>'order_categories', 'uses' => 'CategoriesController@orderCategories']);
         });
 
         Route::group(['prefix'=>'brands'], function(){

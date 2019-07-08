@@ -3,8 +3,9 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="carousel-header">
-                    <h4><a href="{{ route('listing') }}">
-                            @lang('app.new_premium_ads')
+                    <h4>
+                        <a href="{{ route('listing') }}">
+                            SẢN PHẨM LIÊN QUAN
                         </a>
                     </h4>
                 </div>
@@ -19,3 +20,31 @@
         </div>
     </div>
 @endif
+@section('page-js')
+    <script src="{{ asset('assets/plugins/owl.carousel/owl.carousel.min.js') }}"></script>
+    <script>
+        $(document).ready(function(){
+            $(".themeqx_new_regular_ads_wrap").owlCarousel({
+                loop:true,
+                margin:10,
+                responsiveClass:true,
+                responsive:{
+                    0:{
+                        items:1,
+                        nav:true
+                    },
+                    600:{
+                        items:3,
+                        nav:false
+                    },
+                    1000:{
+                        items:4,
+                        nav:true,
+                        loop:false
+                    }
+                },
+                navText : ['<i class="fa fa-arrow-circle-o-left"></i>','<i class="fa fa-arrow-circle-o-right"></i>']
+            });
+        });
+    </script>
+@endsection

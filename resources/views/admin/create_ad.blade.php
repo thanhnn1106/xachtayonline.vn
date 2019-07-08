@@ -41,7 +41,7 @@
                                         @if($category->sub_categories->count() > 0)
                                             <optgroup label="{{ $category->category_name }}">
                                                 @foreach($category->sub_categories as $sub_category)
-                                                    <option value="{{ $sub_category->id }}" {{ old('category') == $sub_category->id ? 'selected': '' }}>{{ $sub_category->category_name }}</option>
+                                                    <option value="{{ $sub_category->category_slug }}" {{ old('category') == $sub_category->category_slug ? 'selected': '' }}>{{ $sub_category->category_name }}</option>
                                                 @endforeach
                                             </optgroup>
                                         @endif
@@ -131,39 +131,51 @@
 
                         </div>
 
-                        <div class="form-group required {{ $errors->has('type')? 'has-error':'' }}">
-                            <label class="col-md-4 control-label">
-                                @lang('app.add_type') <span class="text-danger"> (*)</span>
-                            </label>
-                            <div class="col-md-8">
-                                <label for="type_private" class="radio-inline">
-                                    <input type="radio" value="personal" id="type_private"
-                                           name="type" {{ old('type') == 'personal'? 'checked="checked"' : '' }}>
-                                    @lang('app.private')
-                                </label>
-                                <label for="type_business" class="radio-inline">
-                                    <input type="radio" checked="checked" value="business" id="type_business"
-                                           name="type" {{ old('type') == 'business'? 'checked="checked"' : '' }}>
+                        {{--<div class="form-group required {{ $errors->has('type')? 'has-error':'' }}">--}}
+                            {{--<label class="col-md-4 control-label">--}}
+                                {{--@lang('app.add_type') <span class="text-danger"> (*)</span>--}}
+                            {{--</label>--}}
+                            {{--<div class="col-md-8">--}}
+                                {{--<label for="type_private" class="radio-inline">--}}
+                                    {{--<input type="radio" value="personal" id="type_private"--}}
+                                           {{--name="type" {{ old('type') == 'personal'? 'checked="checked"' : '' }}>--}}
+                                    {{--@lang('app.private')--}}
+                                {{--</label>--}}
+                                {{--<label for="type_business" class="radio-inline">--}}
+                                    {{--<input type="radio" checked="checked" value="business" id="type_business"--}}
+                                           {{--name="type" {{ old('type') == 'business'? 'checked="checked"' : '' }}>--}}
 
-                                    @lang('app.business')
-                                </label>
-                                {!! $errors->has('type')? '<p class="help-block">'.$errors->first('type').'</p>':'' !!}
-                            </div>
-                        </div>
+                                    {{--@lang('app.business')--}}
+                                {{--</label>--}}
+                                {{--{!! $errors->has('type')? '<p class="help-block">'.$errors->first('type').'</p>':'' !!}--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
 
-                        <div class="form-group {{ $errors->has('condition')? 'has-error':'' }}">
+                        {{--<div class="form-group {{ $errors->has('condition')? 'has-error':'' }}">--}}
+                            {{--<label for="condition" class="col-sm-4 control-label">--}}
+                                {{--@lang('app.condition') <span class="text-danger"> (*)</span>--}}
+                            {{--</label>--}}
+                            {{--<div class="col-sm-8">--}}
+                                {{--<select class="form-control select2NoSearch" name="condition" id="condition">--}}
+                                    {{--<option value="new" {{ old('condition') == 'new' ? 'selected':'' }}>@lang('app.new')</option>--}}
+                                    {{--<option value="used" {{ old('condition') == 'used' ? 'selected':'' }}>@lang('app.used')</option>--}}
+                                {{--</select>--}}
+                                {{--{!! $errors->has('condition')? '<p class="help-block">'.$errors->first('condition').'</p>':'' !!}--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+
+                        <div class="form-group {{ $errors->has('price_plan')? 'has-error':'' }}">
                             <label for="condition" class="col-sm-4 control-label">
-                                @lang('app.condition') <span class="text-danger"> (*)</span>
+                                @lang('app.price_plan') <span class="text-danger"> (*)</span>
                             </label>
                             <div class="col-sm-8">
-                                <select class="form-control select2NoSearch" name="condition" id="condition">
-                                    <option value="new" {{ old('condition') == 'new' ? 'selected':'' }}>@lang('app.new')</option>
-                                    <option value="used" {{ old('condition') == 'used' ? 'selected':'' }}>@lang('app.used')</option>
+                                <select class="form-control select2NoSearch" name="price_plan" id="price_plan">
+                                    <option value="regular" {{ old('price_plan') == 'regular' ? 'selected':'' }}>@lang('app.regular')</option>
+                                    <option value="premium" {{ old('price_plan') == 'premium' ? 'selected':'' }}>@lang('app.premium')</option>
                                 </select>
-                                {!! $errors->has('condition')? '<p class="help-block">'.$errors->first('condition').'</p>':'' !!}
+                                {!! $errors->has('price_plan')? '<p class="help-block">'.$errors->first('price_plan').'</p>':'' !!}
                             </div>
                         </div>
-
 
                         <div class="form-group  {{ $errors->has('price')? 'has-error':'' }}">
                             <label for="price" class="col-md-4 control-label">
@@ -233,6 +245,17 @@
                             </div>
 
                         </div>
+
+                        <div class="form-group offset-8">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4 addon-ad-charge">
+                                <label class="control-label">
+                                    <input type="checkbox" class="" name="is_out_of_stock" value="1" />
+                                    @lang('app.is_out_of_stock')
+                                </label>
+                            </div>
+                        </div>
+
                         <div class="form-group offset-8">
                             <div class="col-md-4"></div>
                             <div class="col-md-4 addon-ad-charge">
@@ -483,7 +506,7 @@
             if (fromLoad === 'category_to_brand') {
                 var option = '';
                 if (jsonData.length > 0) {
-                    option += '<option value="0" selected> <?php echo trans('app.select_a_brand') ?> </option>';
+                    option += '<option value="" selected> <?php echo trans('app.select_a_brand') ?> </option>';
                     for (i in jsonData) {
                         option += '<option value="' + jsonData[i].id + '"> ' + jsonData[i].brand_name + ' </option>';
                     }
@@ -533,34 +556,40 @@
                 toolbar: [
                     ['insert', ['emoji']],
                     ['tool', ['undo', 'redo', 'codeview']],
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['style', ['style', 'bold', 'italic', 'underline', 'clear']],
                     ['font', ['strikethrough', 'superscript', 'subscript']],
                     ['fontsize', ['fontsize']],
                     ['color', ['color']],
                     ['para', ['ul', 'ol', 'paragraph']],
-                    ['height', ['height']]
-                ]
+                    ['height', ['height']],
+                    ['insert', ['link', 'picture', 'hr']],
+                    ['table', ['table']],
+                ],
+                styleTags: ['p', 'h1', 'h2', 'h3', 'h4', 'h5'],
             });
             $('#ad_content').summernote({
                 toolbar: [
                     ['insert', ['emoji']],
                     ['tool', ['undo', 'redo', 'codeview']],
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['style', ['style', 'bold', 'italic', 'underline', 'clear']],
                     ['font', ['strikethrough', 'superscript', 'subscript']],
                     ['fontsize', ['fontsize']],
                     ['color', ['color']],
                     ['para', ['ul', 'ol', 'paragraph']],
-                    ['height', ['height']]
-                ]
+                    ['height', ['height']],
+                    ['insert', ['link', 'picture', 'hr']],
+                    ['table', ['table']],
+                ],
+                styleTags: ['p', 'h1', 'h2', 'h3', 'h4', 'h5'],
             });
             $('[name="category"]').change(function () {
-                var category_id = $(this).val();
+                var category_slug = $(this).val();
                 $('#brand_loader').show();
 
                 $.ajax({
                     type: 'POST',
                     url: '{{ route('get_brand_by_category') }}',
-                    data: {category_id: category_id, _token: '{{ csrf_token() }}'},
+                    data: {category_slug: category_slug, _token: '{{ csrf_token() }}'},
                     success: function (data) {
                         generate_option_from_json(data, 'category_to_brand');
                     }

@@ -17,6 +17,7 @@
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "^5.4.0",
         "league/flysystem-aws-s3-v3": "^1.0",
+        "mavinoo/laravel-batch": "dev-master",
         "stripe/stripe-php": "^6.37",
         "yajra/laravel-datatables-oracle": "^8.13"
     },

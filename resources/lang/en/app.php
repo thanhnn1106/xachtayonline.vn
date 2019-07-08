@@ -545,4 +545,8 @@ return [
     'ad_name_info' => 'Dành cho slug URL. Không thể thay đổi.',
     'sku' => 'Mã sản phẩm',
     'sku_info' => 'Dùng để tra cứu sản phẩm trên web nhà sản xuất. (Nếu có).',
+    'best_seller' => 'SẢN PHẨM ĐƯỢC MUA NHIỀU NHẤT',
+    'is_out_of_stock' => 'CHÁY HÀNG',
+    'store_price' => 'Giá store',
+    'ship_to_vn_price' => 'Giá về VN',
 ];

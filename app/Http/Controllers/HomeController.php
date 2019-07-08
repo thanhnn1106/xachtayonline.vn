@@ -23,19 +23,20 @@ class HomeController extends Controller
         $sliders = Slider::all();
         $countries = Country::whereIn('country_code', ['US', 'JP', 'KR', 'MY', 'SG', 'HK', 'PH', 'TL', 'ID', 'VN'])->get();
         $top_categories = Category::where('category_id', 0)
-            ->orderBy('category_name', 'asc')
+            ->orderBy('ordering')
             ->where('is_active', 1)
             ->get();
-//        $premium_ads = Ad::activePremium()
-//            ->with('category', 'city')
-//            ->limit($limit_premium_ads)
-//            ->orderBy('id', 'desc')
-//            ->get();
+        $premium_ads = Ad::activePremium()
+            ->with('category', 'city')
+            ->limit($limit_premium_ads)
+            ->orderBy('id', 'desc')
+            ->get();
         $regular_ads = Ad::activeRegular()
             ->with('category', 'city')
             ->limit($limit_regular_ads)
             ->orderBy('created_at', 'desc')
             ->get();
+
         $urgent_ads = Ad::activeUrgent()
             ->with('category', 'city')
             ->limit($limit_urgent_ads)

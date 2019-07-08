@@ -1,11 +1,18 @@
 @extends('layout.main')
 @section('title') @if( ! empty($title)) {{ $title }} | @endif @parent @endsection
 
-@section('main')
+<style>
+    /*div.sticky {*/
+        /*position: -webkit-sticky;*/
+        /*position: sticky;*/
+        /*top: 0;*/
+    /*}*/
+</style>
 
+@section('main')
     <div class="container">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-12">
                 <div class="bg-white">
                     <div class="sidebar-filter-wrapper">
 
@@ -15,7 +22,7 @@
 
                         {{ Form::open([ 'method'=>'get', 'id' => 'listingFilterForm']) }}
 
-                        <div class="row">
+                        <div class="">
                             <div class="col-xs-12">
                                 <p class="listingSidebarLeftHeader">@lang('app.filter_ads')
                                     <span id="loaderListingIcon" class="pull-right" style="display: none;"><i class="fa fa-spinner fa-spin"></i></span>
@@ -23,49 +30,46 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group col-md-3 col-xs-12">
                             <input type="text" class="form-control" name="q" value="{{ request('q') }}" placeholder="@lang('app.search___')" />
                         </div>
 
-                        <hr />
-                        <div class="form-group">
+                        <div class="form-group col-md-3 col-xs-12">
                             <select class="form-control" name="category">
                                 <option value="">@lang('app.select_a_category')</option>
                                 @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" {{ request('category') ==  $category->id ? 'selected':'' }}>{{ $category->category_name }}</option>
+                                    <option value="{{ $category->category_slug }}" {{ request('category') ==  $category->category_slug ? 'selected':'' }}>{{ $category->category_name }}</option>
                                 @endforeach
                             </select>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group col-md-3 col-xs-12">
                             <select class="form-control" id="sub_category_select" name="sub_category">
                                 <option value="">@lang('app.select_a_sub_category')</option>
                                 @if($selected_categories)
                                     @foreach($selected_categories->sub_categories as $sub_category)
-                                        <option value="{{ $sub_category->id }}" {{ request('sub_category') ==  $sub_category->id ? 'selected':'' }} >{{ $sub_category->category_name }}</option>
+                                        <option value="{{ $sub_category->category_slug }}" {{ request('sub_category') ==  $sub_category->category_slug ? 'selected':'' }} >{{ $sub_category->category_name }}</option>
                                     @endforeach
                                 @endif
                             </select>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group col-md-3 col-xs-12">
                             <select class="form-control" name="brand" id="brand_select">
                                 <option value=""> @lang('app.select_a_brand') </option>
                                 @if($selected_sub_categories)
                                     @foreach($selected_sub_categories->brands as $brand)
-                                        <option value="{{ $brand->id }}" {{ request('brand') ==  $brand->id ? 'selected':'' }} >{{ $brand->brand_name }}</option>
+                                        <option value="{{ $brand->brand_slug }}" {{ request('brand') ==  $brand->brand_slug ? 'selected':'' }} >{{ $brand->brand_name }}</option>
                                     @endforeach
                                 @endif
                             </select>
                         </div>
-
-                        <hr />
-                        <div class="form-group">
+                        <div class="form-group col-md-3 col-xs-12">
                             <select class="form-control" name="country">
                                 <option value="">@lang('app.select_a_country')</option>
 
                                 @foreach($countries as $country)
-                                    <option value="{{ $country->id }}" {{ request('country') == $country->id ? 'selected' :'' }}>{{ $country->country_name }}</option>
+                                    <option value="{{ $country->country_name }}" {{ request('country') == $country->country_name ? 'selected' :'' }}>{{ $country->country_name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -91,10 +95,8 @@
                                 {{--@endif--}}
                             {{--</select>--}}
                         {{--</div>--}}
-
-                        <hr />
-                        <div class="form-group">
-                            <label>@lang('app.price_min_max')</label>
+                        <div class="form-group col-md-3 col-xs-12">
+                            {{--<label>@lang('app.price_min_max')</label>--}}
 
                             <div class="row">
                                 <div class="col-xs-6">
@@ -105,26 +107,24 @@
                                 </div>
                             </div>
                         </div>
+                        {{--<div class="form-group">--}}
+                            {{--<label>@lang('app.condition')</label>--}}
+                            {{--<div class="checkbox">--}}
+                                {{--<label>--}}
+                                    {{--<input type="radio" name="condition" id="new" value="new" {{ request('condition') == 'new'? 'checked':'' }}>--}}
+                                    {{--@lang('app.new')--}}
+                                {{--</label>--}}
+                            {{--</div>--}}
+                            {{--<div class="checkbox">--}}
+                                {{--<label>--}}
+                                    {{--<input type="radio" name="condition" id="used" value="used" {{ request('condition') == 'used'? 'checked':'' }}>--}}
+                                    {{--@lang('app.used')--}}
+                                {{--</label>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
 
-                        <hr />
-                        <div class="form-group">
-                            <label>@lang('app.condition')</label>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="radio" name="condition" id="new" value="new" {{ request('condition') == 'new'? 'checked':'' }}>
-                                    @lang('app.new')
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="radio" name="condition" id="used" value="used" {{ request('condition') == 'used'? 'checked':'' }}>
-                                    @lang('app.used')
-                                </label>
-                            </div>
-                        </div>
-
-                        <hr />
-                        <div class="form-group">
+                        {{--<hr />--}}
+                        <div class="form-group col-md-3 col-xs-12">
                             <div class="row">
                                 <div class=" col-sm-6 col-xs-12">
                                     <button class="btn btn-primary btn-block"><i class="fa fa-search"></i>  @lang('app.filter')</button>
@@ -147,7 +147,7 @@
                 </div>
             </div>
 
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <div class="row">
                     <div class="col-sm-12">
 
@@ -174,10 +174,10 @@
                                         <li><a href="{{ request()->fullUrlWithQuery(['shortBy'=>'latest']) }}">@lang('app.latest')</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="javascript:void(0)" id="showGridView">
-                                        <i class="fa fa-th-large"></i> </a> </li>
-                                <li><a href="javascript:void(0)" id="showListView">
-                                        <i class="fa fa-list"></i> </a> </li>
+                                {{--<li><a href="javascript:void(0)" id="showGridView">--}}
+                                        {{--<i class="fa fa-th-large"></i> </a> </li>--}}
+                                {{--<li><a href="javascript:void(0)" id="showListView">--}}
+                                        {{--<i class="fa fa-list"></i> </a> </li>--}}
                             </ul>
                         </div>
                     </div>
@@ -210,19 +210,19 @@
                                 </div>
 
 
-                                <div class="ad-box-list-view" style="display: {{ session('grid_list_view') == 'list'? 'block':'none' }};">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <table class="table table-bordered table-responsive">
-                                                @foreach($premium_ads as $ad)
+                                {{--<div class="ad-box-list-view" style="display: {{ session('grid_list_view') == 'list'? 'block':'none' }};">--}}
+                                    {{--<div class="row">--}}
+                                        {{--<div class="col-sm-12">--}}
+                                            {{--<table class="table table-bordered table-responsive">--}}
+                                                {{--@foreach($premium_ads as $ad)--}}
                                                     {{-- */ session('grid_list_view') == 'list'? $ad->increase_impression() :'none' /*--}}
-                                                    @include('theme.modern.partials.product-card-grid-view')
-                                                @endforeach
-                                            </table>
+                                                    {{--@include('theme.modern.partials.product-card-grid-view')--}}
+                                                {{--@endforeach--}}
+                                            {{--</table>--}}
 
-                                        </div>
-                                    </div>
-                                </div>
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
                             @endif
                         @endif
                     @endif
@@ -247,17 +247,17 @@
                             </div>
                         </div>
 
-                        <div class="ad-box-list-view" style="display: {{ session('grid_list_view') == 'list'? 'block':'none' }};">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <table class="table table-bordered table-responsive">
-                                        @foreach($ads as $ad)
-                                            @include('theme.modern.partials.product-card-grid-view')
-                                        @endforeach
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                        {{--<div class="ad-box-list-view" style="display: {{ session('grid_list_view') == 'list'? 'block':'none' }};">--}}
+                            {{--<div class="row">--}}
+                                {{--<div class="col-sm-12">--}}
+                                    {{--<table class="table table-bordered table-responsive">--}}
+                                        {{--@foreach($ads as $ad)--}}
+                                            {{--@include('theme.modern.partials.product-card-grid-view')--}}
+                                        {{--@endforeach--}}
+                                    {{--</table>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
                     @endif
 
                     @if($enable_monetize)
@@ -298,13 +298,13 @@
                 if (jsonData.length > 0) {
                     option += '<option value="" selected> <?php echo trans('app.select_a_sub_category') ?> </option>';
                     for ( i in jsonData){
-                        option += '<option value="'+jsonData[i].id+'"> '+jsonData[i].category_name +' </option>';
+                        option += '<option value="'+jsonData[i].category_slug+'"> '+jsonData[i].category_name +' </option>';
                     }
                     $('#sub_category_select').html(option);
-                    $('#sub_category_select').select2();
+                    // $('#sub_category_select').select2();
                 }else {
                     $('#sub_category_select').html('<option value="">@lang('app.select_a_sub_category')</option>');
-                    $('#sub_category_select').select2();
+                    // $('#sub_category_select').select2();
                 }
                 $('#loaderListingIcon').hide('slow');
             }else if (fromLoad === 'category_to_brand'){
@@ -312,13 +312,13 @@
                 if (jsonData.length > 0) {
                     option += '<option value="" selected> <?php echo trans('app.select_a_brand') ?> </option>';
                     for ( i in jsonData){
-                        option += '<option value="'+jsonData[i].id+'"> '+jsonData[i].brand_name +' </option>';
+                        option += '<option value="'+jsonData[i].brand_slug+'"> '+jsonData[i].brand_name +' </option>';
                     }
                     $('#brand_select').html(option);
-                    $('#brand_select').select2();
+                    // $('#brand_select').select2();
                 }else {
                     $('#brand_select').html('<option value="">@lang('app.select_a_brand')</option>');
-                    $('#brand_select').select2();
+                    // $('#brand_select').select2();
                 }
                 $('#loaderListingIcon').hide('slow');
             }else if(fromLoad === 'country_to_state'){
@@ -326,7 +326,7 @@
                 if (jsonData.length > 0) {
                     option += '<option value="" selected> @lang('app.select_state') </option>';
                     for ( i in jsonData){
-                        option += '<option value="'+jsonData[i].id+'"> '+jsonData[i].state_name +' </option>';
+                        option += '<option value="'+jsonData[i].country_name+'"> '+jsonData[i].state_name +' </option>';
                     }
                     $('#state_select').html(option);
                     $('#state_select').select2();
@@ -355,13 +355,13 @@
 
         $(function(){
             $('[name="category"]').change(function(){
-                var category_id = $(this).val();
+                var category_slug = $(this).val();
                 $('#loaderListingIcon').show();
                 //window.history.pushState("", "", 'newpage');
                 $.ajax({
                     type : 'POST',
                     url : '{{ route('get_sub_category_by_category') }}',
-                    data : { category_id : category_id,  _token : '{{ csrf_token() }}' },
+                    data : { category_slug : category_slug,  _token : '{{ csrf_token() }}' },
                     success : function (data) {
                         generate_option_from_json(data, 'category_to_sub_category');
                     }
@@ -369,13 +369,13 @@
             });
 
             $('[name="sub_category"]').change(function(){
-                var category_id = $(this).val();
+                var category_slug = $(this).val();
                 $('#loaderListingIcon').show();
 
                 $.ajax({
                     type : 'POST',
                     url : '{{ route('get_brand_by_category') }}',
-                    data : { category_id : category_id,  _token : '{{ csrf_token() }}' },
+                    data : { category_slug : category_slug,  _token : '{{ csrf_token() }}' },
                     success : function (data) {
                         generate_option_from_json(data, 'category_to_brand');
                     }
@@ -417,15 +417,15 @@
                     data : { grid_list_view : 'grid',  _token : '{{ csrf_token() }}' },
                 });
             });
-            $('#showListView').click(function(){
-                $('.ad-box-grid-view').hide();
-                $('.ad-box-list-view').show();
-                $.ajax({
-                    type : 'POST',
-                    url : '{{ route('switch_grid_list_view') }}',
-                    data : { grid_list_view : 'list',  _token : '{{ csrf_token() }}' },
-                });
-            });
+            {{--$('#showListView').click(function(){--}}
+                {{--$('.ad-box-grid-view').hide();--}}
+                {{--$('.ad-box-list-view').show();--}}
+                {{--$.ajax({--}}
+                    {{--type : 'POST',--}}
+                    {{--url : '{{ route('switch_grid_list_view') }}',--}}
+                    {{--data : { grid_list_view : 'list',  _token : '{{ csrf_token() }}' },--}}
+                {{--});--}}
+            {{--});--}}
         });
     </script>
 

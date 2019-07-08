@@ -27,6 +27,7 @@ class CreateCategoriesTable extends Migration
             $table->boolean('is_active');
 
             $table->integer('product_count');
+            $table->integer('ordering');
             $table->timestamps();
         });
     }

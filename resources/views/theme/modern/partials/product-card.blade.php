@@ -1,11 +1,11 @@
-<div class="@if ($pageType !== 'home') col-md-4 col-sm-6 col-xs-12 owl-carousel @endif">
-    <div itemscope itemtype="http://schema.org/Product" class="ads-item-thumbnail ad-box-{{$ad->price_plan}}">
+<div class="@if ($pageType !== 'home') col-md-3 col-sm-6 col-xs-12 owl-carousel @endif">
+    <div itemscope itemtype="http://schema.org/Product" class="ads-item-thumbnail ad-box-regular">
 
         <meta itemprop="name" content="{{$ad->title}}" />
         <meta itemprop="description" content="{{strip_tags($ad->description)}}" />
 
         <div class="ads-thumbnail @if ($pageType !== 'home') owl-item @endif">
-            <a href="{{ route('single_ad', $ad->slug) }}">
+            <a href="{{ route('single_ad', $ad->slug) }}" rel="follow">
                 <img itemprop="image" src="{{ media_url($ad->feature_img) }}" class="img-responsive"
                      alt="{{ $ad->title }}">
 
@@ -35,20 +35,20 @@
                 </a>
             </h4>
             <p>
-                <a class="price text-muted" href="{{ route('listing', ['category' => $ad->category->id]) }}">
+                <a class="price text-muted" href="{{ route('listing', ['category' => $ad->category->category_slug]) }}" rel="follow">
                     <i class="fa fa-folder-o"></i>
                     {{ $ad->category->category_name }}
                 </a>
 
                 @if($ad->country)
-                    <a class="location text-muted" href="{{ route('listing', ['country' => $ad->country->id]) }}">
+                    <a class="location text-muted" href="{{ route('listing', ['country' => $ad->country->country_name]) }}" rel="follow">
                         <i class="fa fa-location-arrow"></i>
                         {{ $ad->country->country_name }}
                     </a>
                 @endif
             </p>
             <p class="text-muted">
-                <a href="{{ route('listing', ['user_id' => $ad->user_id]) }}">{{ $ad->seller_name }}</a>
+                <a href="{{ route('listing', ['user_id' => $ad->user_id]) }}" rel="follow">{{ $ad->seller_name }}</a>
             </p>
             <p class="date-posted text-muted hidden">
                 <i class="fa fa-clock-o"></i>
@@ -88,13 +88,20 @@
             <meta itemprop="name" content="{{$ad->brand->brand_name}}" />
         </div>
         <div class="caption btn-order">
-            <a type="button" href="{{ route('order', [$ad->id]) }}" class="btn btn-info theme-btn btn-xl font-weight-bold text-capitalize">
+            {{--<a type="button" href="{{ route('order', [$ad->id]) }}" class="btn btn-info theme-btn btn-xl font-weight-bold text-capitalize">--}}
+                {{--<span>{{ trans('app.order_quickly') }}</span>--}}
+            {{--</a>--}}
+            <a type="button" target="_blank" @if($ad->is_out_of_stock) disabled='disabled' @endif href="https://m.me/xachtayonlinevn.vn/" class="btn btn-info theme-btn btn-xl font-weight-bold text-capitalize">
                 <span>{{ trans('app.order_quickly') }}</span>
             </a>
         </div>
-        @if($ad->price_plan == 'premium')
-            <div class="ribbon-wrapper-green">
-                <div class="ribbon-green">{{ ucfirst($ad->price_plan) }}</div>
+        @if($ad->is_out_of_stock)
+            <div class="ribbon-wrapper-red">
+                <div class="ribbon-red">{{ trans('app.is_out_of_stock') }}</div>
+            </div>
+        @elseif($ad->price_plan == 'premium')
+            <div class="ribbon-wrapper-red">
+                <div class="ribbon-red">HOT</div>
             </div>
         @endif
         @if($ad->mark_ad_urgent == '1')
