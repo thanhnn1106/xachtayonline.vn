@@ -549,7 +549,7 @@ class AdsController extends Controller
 
     public function listing(Request $request)
     {
-        $ads = Ad::active();
+        $ads = Ad::active()->where('price_plan', 'regular');
         $business_ads_count = Ad::active()->business();
         $personal_ads_count = Ad::active()->personal();
         $premium_ads = Ad::activePremium();

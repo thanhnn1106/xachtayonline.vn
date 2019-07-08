@@ -210,19 +210,19 @@
                                 </div>
 
 
-                                <div class="ad-box-list-view" style="display: {{ session('grid_list_view') == 'list'? 'block':'none' }};">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <table class="table table-bordered table-responsive">
-                                                @foreach($premium_ads as $ad)
+                                {{--<div class="ad-box-list-view" style="display: {{ session('grid_list_view') == 'list'? 'block':'none' }};">--}}
+                                    {{--<div class="row">--}}
+                                        {{--<div class="col-sm-12">--}}
+                                            {{--<table class="table table-bordered table-responsive">--}}
+                                                {{--@foreach($premium_ads as $ad)--}}
                                                     {{-- */ session('grid_list_view') == 'list'? $ad->increase_impression() :'none' /*--}}
-                                                    @include('theme.modern.partials.product-card-grid-view')
-                                                @endforeach
-                                            </table>
+                                                    {{--@include('theme.modern.partials.product-card-grid-view')--}}
+                                                {{--@endforeach--}}
+                                            {{--</table>--}}
 
-                                        </div>
-                                    </div>
-                                </div>
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
                             @endif
                         @endif
                     @endif
@@ -247,17 +247,17 @@
                             </div>
                         </div>
 
-                        <div class="ad-box-list-view" style="display: {{ session('grid_list_view') == 'list'? 'block':'none' }};">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <table class="table table-bordered table-responsive">
-                                        @foreach($ads as $ad)
-                                            @include('theme.modern.partials.product-card-grid-view')
-                                        @endforeach
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                        {{--<div class="ad-box-list-view" style="display: {{ session('grid_list_view') == 'list'? 'block':'none' }};">--}}
+                            {{--<div class="row">--}}
+                                {{--<div class="col-sm-12">--}}
+                                    {{--<table class="table table-bordered table-responsive">--}}
+                                        {{--@foreach($ads as $ad)--}}
+                                            {{--@include('theme.modern.partials.product-card-grid-view')--}}
+                                        {{--@endforeach--}}
+                                    {{--</table>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
                     @endif
 
                     @if($enable_monetize)
@@ -301,10 +301,10 @@
                         option += '<option value="'+jsonData[i].category_slug+'"> '+jsonData[i].category_name +' </option>';
                     }
                     $('#sub_category_select').html(option);
-                    $('#sub_category_select').select2();
+                    // $('#sub_category_select').select2();
                 }else {
                     $('#sub_category_select').html('<option value="">@lang('app.select_a_sub_category')</option>');
-                    $('#sub_category_select').select2();
+                    // $('#sub_category_select').select2();
                 }
                 $('#loaderListingIcon').hide('slow');
             }else if (fromLoad === 'category_to_brand'){
@@ -315,10 +315,10 @@
                         option += '<option value="'+jsonData[i].brand_slug+'"> '+jsonData[i].brand_name +' </option>';
                     }
                     $('#brand_select').html(option);
-                    $('#brand_select').select2();
+                    // $('#brand_select').select2();
                 }else {
                     $('#brand_select').html('<option value="">@lang('app.select_a_brand')</option>');
-                    $('#brand_select').select2();
+                    // $('#brand_select').select2();
                 }
                 $('#loaderListingIcon').hide('slow');
             }else if(fromLoad === 'country_to_state'){
