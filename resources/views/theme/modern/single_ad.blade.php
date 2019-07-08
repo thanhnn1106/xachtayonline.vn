@@ -75,10 +75,10 @@
                             @else
 
                                 <div class="ads-gallery">
-                                    <div class="fotorama"  data-nav="thumbs" data-allowfullscreen="true" data-width="100%">
-                                        @foreach($ad->media_img as $img)
-                                            <img src="{{ media_url($img, true) }}" alt="{{ $ad->title }}">
-                                        @endforeach
+                                    <div class="fotorama" data-nav="thumbs">
+                                    @foreach($ad->media_img as $img)
+                                        <img class="img-responsive" src="{{ media_url($img, true) }}" alt="{{ $ad->title }}">
+                                    @endforeach
                                     </div>
                                 </div>
 
@@ -272,15 +272,11 @@
             </div>
         </div>
     </div>
-
-
-
-
 @endsection
-
 @section('page-js')
     <script src="{{ asset('assets/plugins/fotorama-4.6.4/fotorama.js') }}"></script>
     <script src="{{ asset('assets/plugins/SocialShare/SocialShare.js') }}"></script>
+    <script src="{{ asset('assets/plugins/owl.carousel/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/form-validator/form-validator.min.js') }}"></script>
 
     <script>
@@ -302,6 +298,33 @@
     <script>
         $.validate();
     </script>
+    <script>
+        $(document).ready(function(){
+            $(".themeqx_new_regular_ads_wrap").owlCarousel({
+                loop:true,
+                margin:10,
+                responsiveClass:true,
+                responsive:{
+                    0:{
+                        items:1,
+                        nav:true
+                    },
+                    600:{
+                        items:3,
+                        nav:false
+                    },
+                    1000:{
+                        items:4,
+                        nav:true,
+                        loop:false
+                    }
+                },
+                navText : ['<i class="fa fa-arrow-circle-o-left"></i>','<i class="fa fa-arrow-circle-o-right"></i>']
+            });
+
+        });
+    </script>
+
     <script>
         $(function(){
             $('#onClickShowPhone').click(function(){

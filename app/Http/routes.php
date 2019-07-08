@@ -167,7 +167,8 @@ Route::group(['prefix'=>'dashboard', 'middleware' => 'dashboard'], function(){
             Route::post('update-caption', ['as'=>'update_slider_caption', 'uses' => 'SliderController@update']);
         });
 
-        Route::get('approved', ['as'=>'approved_ads', 'uses' => 'AdsController@index']);
+        Route::get('all-ads', ['as'=>'all_ads', 'uses' => 'AdsController@index']);
+        Route::get('approved', ['as'=>'approved_ads', 'uses' => 'AdsController@adminApprovedAds']);
         Route::get('pending', ['as'=>'admin_pending_ads', 'uses' => 'AdsController@adminPendingAds']);
         Route::get('blocked', ['as'=>'admin_blocked_ads', 'uses' => 'AdsController@adminBlockedAds']);
         Route::post('status-change', ['as'=>'ads_status_change', 'uses' => 'AdsController@adStatusChange']);

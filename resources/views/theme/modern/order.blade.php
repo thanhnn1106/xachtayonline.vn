@@ -210,21 +210,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-sm-8 col-xs-12">
-                <div class="ads-detail bg-white">
-                    <h4 class="ads-detail-title">Thông tin chuyển khoản</h4>
-                    <div class="col-sm-3 col-xs-12">
-                        <img src="{{ asset('uploads/logo/dongabank.jpeg') }}" class="img-circle img-responsive">
-                    </div>
-                    <p> Chủ tài khoản: NGUYỄN NGỌC THANH </p>
-                    <p> Số tài khoản: 0108419464 </p>
-                    <p> Ngân hàng: Đông Á </p>
-
-                    @if($enable_monetize)
-                        {!! get_option('monetize_code_below_ad_description') !!}
-                    @endif
-                </div>
-            </div>
+            @include('theme.modern.partials.ad_description')
 
             @include('theme.modern.partials.seller_info')
         </div>

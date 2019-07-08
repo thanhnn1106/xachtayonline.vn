@@ -27,15 +27,84 @@ class AdsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $searchCat = '';
+        $searchSubCat = '';
+        $categories = Category::where('category_id', 0)->where('is_active', 1)->get();
+        $countries = Country::whereIn('country_code', ['US', 'JP', 'KOR', 'MY', 'SG', 'HK', 'PH', 'TL', 'ID', 'VN'])->get();
         $title = trans('app.all_ads');
+        $ads = Ad::with('city', 'country', 'state');
+
+        if ($request->q) {
+            $ads = $ads->where(function ($ads) use ($request) {
+                $ads->where('title', 'like', "%{$request->q}%")->orWhere('description', 'like', "%{$request->q}%");
+            });
+        }
+
+        if($request->category) {
+            $searchCat = Category::where('category_slug', $request->category)->first()->id;
+            if ($searchCat) {
+                $ads = $ads->where('category_id', $searchCat);
+            }
+        }
+
+        if($request->sub_category) {
+            $searchSubCat = Category::where('category_slug', $request->sub_category)->first()->id;
+            if ($searchSubCat) {
+                $ads = $ads->where('sub_category_id', $searchSubCat);
+            }
+        }
+
+        if($request->brand) {
+            $searchBrand = Brand::where('brand_slug', $request->brand)->first()->id;
+            if ($searchBrand) {
+                $ads = $ads->where('brand_id', $searchBrand);
+            }
+        }
+
+        if($request->country) {
+            $searchCountry = Country::where('country_name', $request->country)->first()->id;
+            $ads = $ads->where('country_id', $searchCountry);
+        }
+
+        if ($request->min_price){
+            $ads = $ads->where('price', '>=', $request->min_price);
+        }
+        if ($request->max_price){
+            $ads = $ads->where('price', '<=', $request->max_price);
+        }
+
+        $ads = $ads->orderBy('id', 'desc')->paginate(1000);
+
+        $selected_categories = $request->category ?? '';
+        $selected_sub_categories = $searchCat ? Category::where('category_id', $searchCat)->get() : '';
+        $selected_brands = $searchSubCat ? Brand::where('category_id', $searchSubCat)->get() : '';
+//        dd($selected_brands);
+
+
+        return view('admin.ads_management.all_ads_search',
+            compact(
+                'title',
+                'ads',
+                'categories',
+                'countries',
+                'selected_categories',
+                'selected_sub_categories',
+                'selected_brands',
+                'selected_countries',
+            ''));
+    }
+
+    public function adminApprovedAds()
+    {
+        $title = 'Sản phảm đã được duyệt';
         $ads = Ad::with('city', 'country', 'state')
             ->where('status', '1')
             ->orderBy('id', 'desc')
             ->paginate(20);
 
-        return view('admin.all_ads', compact('title', 'ads'));
+        return view('admin.ads_management.all_ads', compact('title', 'ads'));
     }
 
     public function adminPendingAds()
@@ -46,7 +115,7 @@ class AdsController extends Controller
             ->orderBy('id', 'desc')
             ->paginate(20);
 
-        return view('admin.all_ads', compact('title', 'ads'));
+        return view('admin.ads_management.all_ads', compact('title', 'ads'));
     }
     public function adminBlockedAds()
     {
@@ -56,7 +125,7 @@ class AdsController extends Controller
             ->orderBy('id', 'desc')
             ->paginate(20);
 
-        return view('admin.all_ads', compact('title', 'ads'));
+        return view('admin.ads_management.all_ads', compact('title', 'ads'));
     }
     
     public function myAds()
@@ -66,7 +135,7 @@ class AdsController extends Controller
         $user = Auth::user();
         $ads = $user->ads()->with('city', 'country', 'state')->orderBy('id', 'desc')->paginate(20);
         
-        return view('admin.my_ads', compact('title', 'ads'));
+        return view('admin.ads_management.my_ads', compact('title', 'ads'));
     }
 
     public function pendingAds()
@@ -78,7 +147,7 @@ class AdsController extends Controller
             ->with('city', 'country', 'state')
             ->orderBy('id', 'desc')->paginate(20);
 
-        return view('admin.pending_ads', compact('title', 'ads'));
+        return view('admin.ads_management.pending_ads', compact('title', 'ads'));
     }
 
     public function favoriteAds(){
@@ -110,7 +179,7 @@ class AdsController extends Controller
         $previous_cities = City::where('state_id', old('state'))->get();
 
 
-        return view('admin.create_ad', compact('title', 'categories', 'countries', 'ads_images', 'previous_brands', 'previous_states', 'previous_cities'));
+        return view('admin.ads_management.create_ad', compact('title', 'categories', 'countries', 'ads_images', 'previous_brands', 'previous_states', 'previous_cities'));
     }
 
     /**
@@ -203,7 +272,7 @@ class AdsController extends Controller
                 ->where('ref', 'ad')
                 ->update(['ad_id' => $created_ad->id]);
 
-            return redirect(route('pending_ads'))->with('success', trans('app.ad_created_msg'));
+            return redirect(route('admin_pending_ads'))->with('success', trans('app.ad_created_msg'));
         }
         return redirect(route('create_ad'))->with('error', trans('app.ad_created_msg_failed'));
     }
@@ -250,7 +319,7 @@ class AdsController extends Controller
         $previous_states = State::where('country_id', $ad->country_id)->get();
         $previous_cities = City::where('state_id', $ad->state_id)->get();
         
-        return view('admin.edit_ad', compact('title', 'categories', 'countries', 'ads_images', 'ad', 'previous_brands', 'previous_states', 'previous_cities'));
+        return view('admin.ads_management.edit_ad', compact('title', 'categories', 'countries', 'ads_images', 'ad', 'previous_brands', 'previous_states', 'previous_cities'));
 
     }
 

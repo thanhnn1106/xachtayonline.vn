@@ -18,10 +18,10 @@
         </div>
 
         <div class="sidebar-user-link">
-            <button class="btn btn-block" id="onClickShowPhone">
-                <strong> <span id="ShowPhoneWrap"></span> </strong> <br />
-                <span class="text-muted">@lang('app.click_to_show_phone_number')</span>
-            </button>
+            {{--<button class="btn btn-block" id="onClickShowPhone">--}}
+                {{--<strong> <span id="ShowPhoneWrap"></span> </strong> <br />--}}
+                {{--<span class="text-muted">@lang('app.click_to_show_phone_number')</span>--}}
+            {{--</button>--}}
 
             {{--@if($ad->user->email)--}}
                 {{--<button class="btn btn-block" data-toggle="modal" data-target="#replyByEmail">--}}
@@ -47,6 +47,25 @@
             {!! get_option('monetize_code_below_seller_info') !!}
         @endif
 
+    </div>
+
+</div>
+<div class="col-sm-4 col-xs-12">
+    <div class="sidebar-widget">
+        <h3>THÔNG TIN CHUYỂN KHOẢN</h3>
+        <div class="sidebar-user-info">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="col-sm-12 col-xs-12">
+                        <img src="{{ asset('uploads/logo/dongabank.jpeg') }}" class="img-circle img-responsive">
+                    </div>
+                    <p><strong>NGÂN HÀNG</strong>: ĐÔNG Á BANK</p>
+                    <p><strong>SỐ TÀI KHOẢN</strong>: 0108419464</p>
+                    <p><strong>CHỦ TÀI KHOẢN</strong>: NGUYỄN NGỌC THANH</p>
+                    <p><strong>NỘI DUNG</strong>: [TÊN] - [SỐ ĐIỆN THOẠI]</p>
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>
