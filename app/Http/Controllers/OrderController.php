@@ -22,7 +22,7 @@ class OrderController extends Controller
     public function order($adId)
     {
         $limit_regular_ads = get_option('number_of_free_ads_in_home');
-        $ad = Ad::where('id', $adId)->first();
+        $ad = Ad::where('slug', $adId)->first();
         $userId = Auth::user() ? Auth::user()->id : '';
         $related_ads = Ad::active()
             ->where('category_id', $ad->category_id)

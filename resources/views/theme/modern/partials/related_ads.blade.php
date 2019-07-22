@@ -19,9 +19,6 @@
 
         </div>
     </div>
-@endif
-@section('page-js')
-    <script src="{{ asset('assets/plugins/owl.carousel/owl.carousel.min.js') }}"></script>
     <script>
         $(document).ready(function(){
             $(".themeqx_new_regular_ads_wrap").owlCarousel({
@@ -47,4 +44,4 @@
             });
         });
     </script>
-@endsection
+@endif

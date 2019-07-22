@@ -45,6 +45,7 @@
             <li>
                 <a href="#"><i class="fa fa-bullhorn"></i> Quản lý sản phẩm<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
+                    <li>  <a href="{{ route('all_ads') }}">Tất cả sản phẩm</a> </li>
                     <li>  <a href="{{ route('approved_ads') }}">@lang('app.approved_ads')</a> </li>
                     <li>  <a href="{{ route('admin_pending_ads') }}">@lang('app.pending_for_approval')</a> </li>
                     <li>  <a href="{{ route('admin_blocked_ads') }}">@lang('app.blocked_ads')</a> </li>
