@@ -10,9 +10,9 @@ class Category extends Model
     
     public function sub_categories(){
         if (strpos(url()->current(), 'dashboard')) {
-            return $this->hasMany('App\Sub_Category');
+            return $this->hasMany('App\Sub_Category')->orderBy('ordering');
         }
-        return $this->hasMany('App\Sub_Category')->where('is_active', '1');
+        return $this->hasMany('App\Sub_Category')->where('is_active', '1')->orderBy('ordering');
     }
 
     public function brands(){

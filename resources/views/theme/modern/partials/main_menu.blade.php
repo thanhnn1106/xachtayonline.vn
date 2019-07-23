@@ -83,19 +83,7 @@
                                 @endforeach
                                 <li class="dropdown">
                                     <a href="#" data-toggle="dropdown" class="dropdown-toggle">
-                                        <i class="fa fa-life-ring"></i> Sự kiện
-                                    </a>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li>
-                                            <a href="#">
-                                                <i class="fa fa-angle-right"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown">
-                                    <a href="#" data-toggle="dropdown" class="dropdown-toggle">
-                                        <i class="fa fa-life-ring"></i> Top người bán
+                                        <i class="fa fa-life-ring"></i> HOT SALE
                                     </a>
                                     <ul class="dropdown-menu" role="menu">
                                         <li>

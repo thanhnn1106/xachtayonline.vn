@@ -110,7 +110,7 @@ class CategoriesController extends Controller
         if ( ! $edit_category)
             return redirect(route('parent_categories'))->with('error', trans('app.request_url_not_found'));
 
-        return view('admin.edit_category', compact('title', 'categories', 'edit_category'));
+        return view('admin.categories_management.edit_category', compact('title', 'categories', 'edit_category'));
 
     }
 
