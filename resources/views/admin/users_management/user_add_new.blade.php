@@ -73,6 +73,14 @@
                             </div>
                         </div>
 
+                        <div class="form-group {{ $errors->has('mobile')? 'has-error':'' }}">
+                            <label for="mobile" class="col-sm-4 control-label">@lang('app.mobile')</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="phone" value="{{ old('mobile') ? old('mobile') : '' }}" name="mobile" placeholder="@lang('app.mobile')">
+                                {!! $errors->has('mobile')? '<p class="help-block">'.$errors->first('mobile').'</p>':'' !!}
+                            </div>
+                        </div>
+
                         <div class="form-group {{ $errors->has('phone')? 'has-error':'' }}">
                             <label for="phone" class="col-sm-4 control-label">@lang('app.phone')</label>
                             <div class="col-sm-8">

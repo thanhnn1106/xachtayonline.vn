@@ -36,7 +36,7 @@
                                 <tr>
                                     <th>@lang('app.name')</th>
                                     <th>@lang('app.email')</th>
-                                    <th>@lang('app.phone')</th>
+                                    <th>@lang('app.mobile')</th>
                                     <th>@lang('app.created_at')</th>
                                     <th>@lang('app.actions')</th>
                                 </tr>

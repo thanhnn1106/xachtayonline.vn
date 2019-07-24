@@ -8,7 +8,7 @@
             <li> <a href="{{ route('profile') }}"><i class="fa fa-user"></i> @lang('app.profile')</a>  </li>
             <li> <a href="{{ route('change_password') }}"><i class="fa fa-lock"></i> @lang('app.change_password')</a>  </li>
 
-            <li> <a href="{{ route('users') }}"><i class="fa fa-users"></i> @lang('app.users_management')</a>  </li>
+{{--            <li> <a href="{{ route('users') }}"><i class="fa fa-users"></i> @lang('app.users_management')</a>  </li>--}}
             <li class="parent-menu">
                 <a class="text-center">QUẢN LÝ SẢN PHẨM</a>
             </li>

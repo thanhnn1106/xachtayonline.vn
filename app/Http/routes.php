@@ -176,7 +176,8 @@ Route::group(['prefix'=>'dashboard', 'middleware' => 'dashboard'], function(){
         Route::post('delete-reports', ['as'=>'delete_report', 'uses' => 'AdsController@deleteReports']);
 
         Route::get('users', ['as'=>'users', 'uses' => 'UserController@index']);
-        Route::get('seller', ['as'=>'sellers', 'uses' => 'UserController@index']);
+        Route::get('seller', ['as'=>'sellers', 'uses' => 'UserController@index']);;
+        Route::match(['GET', 'POST'], 'users/profile/edit', ['as'=>'users_info_edit', 'uses' => 'UserController@userInfoEdit']);
         Route::get('users/add-new', ['as'=>'users_add_new', 'uses' => 'UserController@addNew']);
         Route::post('users/admin/add-new', ['as'=>'users_admin_add_new', 'uses' => 'UserController@adminAddNewUser']);
         Route::get('users-data/{userType}', ['as'=>'get_users_data', 'uses' => 'UserController@usersData']);

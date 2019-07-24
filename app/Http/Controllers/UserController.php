@@ -42,23 +42,14 @@ class UserController extends Controller
         }
     }
 
-    public function addNew(Request $request)
-    {
-        $userType = $request->get('userType');
-        $title = trans('app.add_new');
-        $countries = Country::whereIn('country_code', ['US', 'JP', 'KR', 'MY', 'SG', 'HK', 'PH', 'TL', 'ID', 'VN'])->get();
-
-        return view('admin.users_management.user_add_new', compact('title', 'countries', 'userType'));
-    }
-
     public function usersData($userType)
     {
         if ($userType == 'users') {
-            $users = User::select('id', 'name', 'email', 'phone', 'active_status', 'created_at')
+            $users = User::select('id', 'name', 'email', 'mobile', 'active_status', 'created_at')
                 ->where('user_type', 'user')
                 ->get();
         } else {
-            $users = User::select('id', 'name', 'email', 'phone', 'active_status', 'created_at')
+            $users = User::select('id', 'name', 'email', 'mobile', 'active_status', 'created_at')
                 ->where('user_type', 'seller')
                 ->get();
         }
@@ -71,8 +62,8 @@ class UserController extends Controller
             ->editColumn('email', function ($users) {
                 return $users->email;
             })
-            ->editColumn('phone', function ($users) {
-                return $users->phone;
+            ->editColumn('mobile', function ($users) {
+                return $users->mobile;
             })
             ->editColumn('created_at', function ($users) {
                 return $users->signed_up_datetime();
@@ -94,6 +85,15 @@ class UserController extends Controller
             ->make(false);
     }
 
+    public function addNew(Request $request)
+    {
+        $userType = $request->get('userType');
+        $title = trans('app.add_new');
+        $countries = Country::whereIn('country_code', ['US', 'JP', 'KR', 'MY', 'SG', 'HK', 'PH', 'TL', 'ID', 'VN'])->get();
+
+        return view('admin.users_management.user_add_new', compact('title', 'countries', 'userType'));
+    }
+
     public function userInfo($id)
     {
         $title = trans('app.user_info');
@@ -106,6 +106,64 @@ class UserController extends Controller
 
         return view('admin.users_management.user_info', compact('title', 'user', 'ads'));
 
+    }
+
+    public function userInfoEdit(Request $request)
+    {
+        if ($request->isMethod('GET')) {
+            $title = trans('app.profile_edit');
+            $user = User::find($request->userId);
+            $countries = Country::whereIn('country_code',
+                ['US', 'JP', 'KR', 'MY', 'SG', 'HK', 'PH', 'TL', 'ID', 'VN'])->get();
+
+            return view('admin.users_management.user_info_edit', compact('title', 'user', 'countries'));
+        } else {
+            $user = User::find($request->userId);
+            //Validating
+//            $rules = [
+//                'phone' => 'required|email|unique:users,email,' . $user->id,
+//            ];
+//            $this->validate($request, $rules);
+
+            $inputs = array_except($request->input(), ['_token', 'photo', 'userId']);
+            $user->update($inputs);
+
+            if ($request->hasFile('photo')) {
+                $rules = ['photo' => 'mimes:jpeg,jpg,png'];
+                $this->validate($request, $rules);
+
+                $image = $request->file('photo');
+                $file_base_name = str_replace('.' . $image->getClientOriginalExtension(), '',
+                    $image->getClientOriginalName());
+                $resized_thumb = Image::make($image)->resize(300, 300)->stream();
+
+                $image_name = strtolower(time() . str_random(5) . '-' . str_slug($file_base_name)) . '.' . $image->getClientOriginalExtension();
+
+                $imageFileName = 'uploads/avatar/' . $image_name;
+
+                //Upload original image
+                $is_uploaded = current_disk()->put($imageFileName, $resized_thumb->__toString(), 'public');
+
+                if ($is_uploaded) {
+                    $previous_photo = $user->photo;
+                    $previous_photo_storage = $user->photo_storage;
+
+                    $user->photo = $image_name;
+                    $user->photo_storage = get_option('default_storage');
+                    $user->save();
+
+                    if ($previous_photo) {
+                        $previous_photo_path = 'uploads/avatar/' . $previous_photo;
+                        $storage = Storage::disk($previous_photo_storage);
+                        if ($storage->has($previous_photo_path)) {
+                            $storage->delete($previous_photo_path);
+                        }
+                    }
+                }
+            }
+
+            return redirect(route('user_info', ['id' => $request->userId]))->with('success', trans('app.profile_edit_success_msg'));
+        }
     }
 
     /**
@@ -135,7 +193,7 @@ class UserController extends Controller
             'email' => 'required|email',
             'password' => 'required',
             'country' => 'required',
-            'phone' => 'required',
+            'mobile' => 'required',
             'gender' => 'required',
             'address' => 'required',
             'website' => 'required',
@@ -148,7 +206,10 @@ class UserController extends Controller
             'name' => $request->first_name . ' ' . $request->last_name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'phone' => $request->phone,
+            'phone' => $request->phone ?? '',
+            'mobile' => $request->mobile ?? '',
+            'website' => $request->website ?? '',
+            'address' => $request->address ?? '',
             'user_type' => $request->user_type,
             'active_status' => '1',
             'is_email_verified' => '1',
@@ -157,9 +218,9 @@ class UserController extends Controller
 
         $user_create = User::create($data);
 
-        $userType = $request->user_type . 's';
+        $userType = $request->user_type;
         if ($user_create) {
-            return redirect(route($userType))
+            return redirect(route($userType.'s'))
                 ->with('success', 'Thêm tài khoản ' . $userType . ' thành công');
 
         } else {

@@ -158,7 +158,7 @@
                         <div class="row t-5">
                             <div class="t-5 col-sm-8 col-xs-12">
                                 {{--<a type="button" href="{{ route('order', [$ad->id]) }}" class="btn btn-info btn-lg theme-btn">{{ trans('app.order') }}</a>--}}
-                                <a type="button" target="_blank" href="https://m.me/xachtayonlinevn.vn/"" class="btn btn-info btn-lg theme-btn">{{ trans('app.order') }}</a>
+                                <a type="button" target="_blank" href="https://m.me/xachtayonline.vn.Store/" class="btn btn-info btn-lg theme-btn">{{ trans('app.order') }}</a>
                             </div>
                         </div>
                     </div>

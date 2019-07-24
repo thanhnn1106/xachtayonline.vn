@@ -36,6 +36,10 @@
                                 <td>{{ ucfirst($user->gender) }}</td>
                             </tr>
                             <tr>
+                                <th>@lang('app.mobile')</th>
+                                <td>{{ $user->mobile }}</td>
+                            </tr>
+                            <tr>
                                 <th>@lang('app.phone')</th>
                                 <td>{{ $user->phone }}</td>
                             </tr>
@@ -67,7 +71,7 @@
 
                     </div>
                 </div>
-
+                <a href="{{ route('users_info_edit', ['userId' => $user->id]) }}"><i class="fa fa-pencil-square-o"></i> @lang('app.edit') </a>
                 @if($ads->total() > 0)
                     <div class="row">
                         <div class="col-xs-12">
