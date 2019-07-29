@@ -73,7 +73,7 @@
                             </div>
 
                             <div class="col-md-12">
-                                <button type="submit" class="btn btn-primary pull-right" id="btnContactUs"> @lang('app.send_message')</button>
+                                <button type="submit" class="btn btn-primary pull-right theme-btn" id="btnContactUs"> @lang('app.send_message')</button>
                             </div>
                         </div>
                     </form>

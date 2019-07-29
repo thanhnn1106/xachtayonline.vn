@@ -18,9 +18,8 @@ class BrandsController extends Controller
     public function index()
     {
         $title = trans('app.brands');
-        $brands = Brand::all();
-        $categories = Category::where('category_id', 0)->get();
-
+        $brands = Brand::orderBy('category_id')->get();
+        $categories = Category::where('category_id', 0)->whereIsActive(1)->get();
 
         return view('admin.brands', compact('title', 'brands', 'categories'));
     }
@@ -49,7 +48,7 @@ class BrandsController extends Controller
         ];
         $this->validate($request, $rules);
 
-        $slug = str_slug($request->brand_name);
+        $slug = unique_slug($request->brand_name, 'Brand', 'brand_slug');
         $duplicate = Brand::where('brand_slug', $slug)->count();
         if ($duplicate > 0){
             return back()->with('error', trans('app.brand_exists_in_db'));
@@ -81,7 +80,7 @@ class BrandsController extends Controller
         $title = trans('app.edit_brand');
         $edit_brand = Brand::find($id);
 
-        $categories = Category::where('category_id', 0)->get();
+        $categories = Category::where('category_id', 0)->whereIsActive(1)->get();
 
         if ( ! $edit_brand)
             return redirect(route('parent_categories'))->with('error', trans('app.request_url_not_found'));

@@ -1,7 +1,12 @@
 @extends('layout.main')
 @section('title') @if( ! empty($title)) {{ $title }} | @endif @parent @endsection
 
+@section('data-structure-json')
+    @include('theme.modern.partials.data-structure-json', ['ad' => $ad])
+@endsection
+
 @section('social-meta')
+    <meta name="robots" content="index, follow" class="next-head">
     <meta property="og:title" content="{{ $ad->title }}">
     <meta property="og:description" content="{{ substr(trim(preg_replace('/\s\s+/', ' ',strip_tags($ad->description) )),0,160) }}">
     @if($ad->media_img->first())
@@ -30,10 +35,10 @@
                     <div class="modern-single-ad-breadcrumb">
                         <ol class="breadcrumb">
                             <li><a href="{{ route('home') }}">@lang('app.home')</a></li>
-                            <li><a href="{{ route('listing', ['category' => $ad->category->id]) }}">  {{ $ad->category->category_name }} </a> </li>
+                            <li><a href="{{ route('listing', ['category' => $ad->category->category_slug]) }}">  {{ $ad->category->category_name }} </a></li>
                             <li>{{ $ad->title }}</li>
                         </ol><!-- breadcrumb -->
-                        <h2 class="modern-single-ad-top-title">{{ $ad->title }}</h2>
+                        <h1 class="modern-single-ad-top-title h1-custom">{{ $ad->title }}</h1>
                     </div>
                 </div>
             </div>
@@ -70,10 +75,10 @@
                             @else
 
                                 <div class="ads-gallery">
-                                    <div class="fotorama"  data-nav="thumbs" data-allowfullscreen="true" data-width="100%">
-                                        @foreach($ad->media_img as $img)
-                                            <img src="{{ media_url($img, true) }}" alt="{{ $ad->title }}">
-                                        @endforeach
+                                    <div class="fotorama" data-nav="thumbs">
+                                    @foreach($ad->media_img as $img)
+                                        <img class="img-responsive" src="{{ media_url($img, true) }}" alt="{{ $ad->title }}">
+                                    @endforeach
                                     </div>
                                 </div>
 
@@ -85,18 +90,44 @@
                     </div>
 
                     <div class="col-sm-5 col-xs-12">
-                        <h2 class="ad-title"><a href="{{ route('single_ad', $ad->slug) }}">{{ $ad->title }}</a>  </h2>
+                        <h1 class="h1-custom">
+                            <strong>{{ $ad->title }}</strong>
+                        </h1>
                         <div class="ads-detail-meta">
                             <p class="text-muted">
-                                <i class="fa fa-folder-o"></i><a href="{{ route('listing', ['category' => $ad->category->id]) }}">  {{ $ad->category->category_name }} </a> |
+                                <i class="fa fa-folder-o"></i><a href="{{ route('listing', ['category' => $ad->category->category_slug]) }}">  {{ $ad->category->category_name }} </a> |
 
                                 @if($ad->brand)
-                                    <i class="fa fa-industry"></i><a href="{{ route('listing', ['brand' => $ad->brand->id]) }}">  {{ $ad->brand->brand_name }} </a> |
+                                    <i class="fa fa-industry"></i><a href="{{ route('listing', ['brand' => $ad->brand->brand_slug]) }}">  {{ $ad->brand->brand_name }} </a> |
                                 @endif
+
+                                <i class="fa fa-eye"></i> Đã xem: {{ $ad->view }}
+                                @if ($ad->sku) | SKU: {{ $ad->sku }} @endif
                             </p>
                         </div>
+                        <div class="ads-detail-meta">
+                            <span class="modern-single-ad-price text-danger">Thời gian giao hàng dự kiến: {{ $ad->shipping_days }} ngày</span>
+                        </div>
+                        <span class="d-inline-block">
+                            <h3 class="d-inline-block modern-single-ad-price @if ($ad->discount_price > 0) text-decorate-line-thought text-info @endif">
+                                {{ trans('app.store_price') }}: {{ themeqx_price_ng(number_format($ad->price)) }}
+                            </h3>
+                            @if ($ad->discount_price > 0)
+                                <h3 class="d-inline-block text-danger">-{{ number_format(100 - ($ad->discount_price / $ad->price * 100)) }}%</h3>
+                            @endif
+                        </span>
 
-                        <h2 class="modern-single-ad-price">{{ themeqx_price_ng($ad->price) }}</h2>
+                        @if ($ad->discount_price > 0)
+                            <h3 class="modern-single-ad-price text-danger">Giá gốc: {{ themeqx_price_ng(number_format($ad->discount_price)) }}</h3>
+                            <h3  style="color: #00505F;" class="d-inline-block modern-single-ad-price">
+                                {{ trans('app.ship_to_vn_price') }}: {{ themeqx_price_ng(number_format($ad->discount_price + $ad->shipping_fee)) }}
+                            </h3>
+                        @else
+                            <h3 style="color: #00505F;" class="d-inline-block modern-single-ad-price @if ($ad->discount_price > 0) text-decorate-line-thought text-info @endif">
+                                {{ trans('app.ship_to_vn_price') }}: {{ themeqx_price_ng(number_format($ad->price + $ad->shipping_fee)) }}
+                            </h3>
+                        @endif
+
 
                         @if($enable_monetize)
                             {!! get_option('monetize_code_below_ad_title') !!}
@@ -107,10 +138,10 @@
                             {!! get_option('monetize_code_above_general_info') !!}
                         @endif
 
-                        <h3>@lang('app.general_info')</h3>
-                        <p><strong><i class="fa fa-money"></i> @lang('app.price')</strong> {{ themeqx_price_ng($ad->price) }} </p>
-                        <p><strong><i class="fa fa-map-marker"></i>  @lang('app.location') </strong> {!! $ad->full_address() !!} </p>
-                        <p><strong><i class="fa fa-check-circle-o"></i> @lang('app.condition')</strong> {{ $ad->ad_condition }} </p>
+                        {{--<h3>@lang('app.general_info')</h3>--}}
+                        {{--<p><strong><i class="fa fa-money"></i> @lang('app.price')</strong> {{ themeqx_price_ng($ad->price) }} </p>--}}
+                        {{--<p><strong><i class="fa fa-map-marker"></i>  @lang('app.location') </strong> {!! $ad->full_address() !!} </p>--}}
+                        {{--<p><strong><i class="fa fa-check-circle-o"></i> @lang('app.condition')</strong> {{ $ad->ad_condition }} </p>--}}
 
                         @if($enable_monetize)
                             {!! get_option('monetize_code_below_general_info') !!}
@@ -123,7 +154,13 @@
                             <a href="#" class="btn btn-default share s_twitter"><i class="fa fa-twitter"></i> </a>
                             <a href="#" class="btn btn-default share s_linkedin"><i class="fa fa-linkedin"></i> </a>
                         </div>
-
+                        <br>
+                        <div class="row t-5">
+                            <div class="t-5 col-sm-8 col-xs-12">
+                                {{--<a type="button" href="{{ route('order', [$ad->id]) }}" class="btn btn-info btn-lg theme-btn">{{ trans('app.order') }}</a>--}}
+                                <a type="button" target="_blank" href="https://m.me/xachtayonlinevn.vn/"" class="btn btn-info btn-lg theme-btn">{{ trans('app.order') }}</a>
+                            </div>
+                        </div>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -135,142 +172,15 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-sm-8 col-xs-12">
-                <div class="ads-detail bg-white">
-                    <h4 class="ads-detail-title">@lang('app.description')</h4>
-                    <p> {!! nl2br($ad->description) !!} </p>
+            @include('theme.modern.partials.ad_description')
 
-                    @if($enable_monetize)
-                        {!! get_option('monetize_code_below_ad_description') !!}
-                    @endif
-                </div>
-            </div>
-
-            <div class="col-sm-4 col-xs-12">
-                <div class="sidebar-widget">
-                    @if($enable_monetize)
-                        {!! get_option('monetize_code_above_seller_info') !!}
-                    @endif
-
-                    <h3>@lang('app.seller_info')</h3>
-                    <div class="sidebar-user-info">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <img src="{{ $ad->user->get_gravatar() }}" class="img-circle img-responsive" />
-                            </div>
-                            <div class="col-xs-9">
-                                <h5>{{ $ad->user->name }}</h5>
-                                <p class="text-muted"><i class="fa fa-map-marker"></i> {{ $ad->user->get_address()}}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="sidebar-user-link">
-                        <button class="btn btn-block" id="onClickShowPhone">
-                            <strong> <span id="ShowPhoneWrap"></span> </strong> <br />
-                            <span class="text-muted">@lang('app.click_to_show_phone_number')</span>
-                        </button>
-
-                        @if($ad->user->email)
-                            <button class="btn btn-block" data-toggle="modal" data-target="#replyByEmail">
-                                <i class="fa fa-envelope-o"> @lang('app.reply_by_email')</i>
-                            </button>
-                        @endif
-
-                        <ul class="ad-action-list">
-                            <li><a href="{{ route('listing', ['user_id'=>$ad->user_id]) }}"><i class="fa fa-user"></i> @lang('app.more_ads_by_this_seller')</a></li>
-                            <li><a href="javascript:;" id="save_as_favorite" data-slug="{{ $ad->slug }}">
-                                    @if( ! $ad->is_my_favorite())
-                                        <i class="fa fa-star-o"></i> @lang('app.save_ad_as_favorite')
-                                    @else
-                                        <i class="fa fa-star"></i> @lang('app.remove_from_favorite')
-                                    @endif
-                                </a></li>
-                            <li><a href="#" data-toggle="modal" data-target="#reportAdModal"><i class="fa fa-ban"></i> @lang('app.report_this_ad')</a></li>
-                        </ul>
-
-                    </div>
-
-                    @if($enable_monetize)
-                        {!! get_option('monetize_code_below_seller_info') !!}
-                    @endif
-
-                </div>
-
-            </div>
+            @include('theme.modern.partials.seller_info')
         </div>
     </div>
 
+    @include('theme.modern.partials.related_ads', ["related_ads" => $related_ads])
 
-
-    @if($related_ads->count() > 0 && get_option('enable_related_ads') == 1)
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="carousel-header">
-                        <h4><a href="{{ route('listing') }}">
-                                @lang('app.new_premium_ads')
-                            </a>
-                        </h4>
-                    </div>
-                    <hr />
-                    <div class="themeqx_new_regular_ads_wrap themeqx-carousel-ads">
-                        @foreach($related_ads as $rad)
-                            <div>
-                                <div itemscope itemtype="http://schema.org/Product" class="ads-item-thumbnail ad-box-{{$rad->price_plan}}">
-                                    <div class="ads-thumbnail">
-                                        <a href="{{ route('single_ad', $rad->slug) }}">
-                                            <img itemprop="image"  src="{{ media_url($rad->feature_img) }}" class="img-responsive" alt="{{ $rad->title }}">
-                                             <span class="modern-img-indicator">
-                                                @if(! empty($rad->video_url))
-                                                     <i class="fa fa-file-video-o"></i>
-                                                 @else
-                                                     <i class="fa fa-file-image-o"> {{ $rad->media_img->count() }}</i>
-                                                 @endif
-                                            </span>
-                                        </a>
-                                    </div>
-                                    <div class="caption">
-                                        <h4><a href="{{ route('single_ad', $rad->slug) }}" title="{{ $rad->title }}"><span itemprop="name">{{ str_limit($rad->title, 40) }} </span></a></h4>
-                                        <a class="price text-muted" href="{{ route('listing', ['category' => $rad->category->id]) }}"> <i class="fa fa-folder-o"></i> {{ $rad->category->category_name }} </a>
-
-                                        @if($rad->city)
-                                            <a class="location text-muted" href="{{ route('listing', ['city' => $rad->city->id]) }}"> <i class="fa fa-location-arrow"></i> {{ $rad->city->city_name }} </a>
-                                        @endif
-                                        <p class="date-posted text-muted"> <i class="fa fa-clock-o"></i> {{ $rad->created_at->diffForHumans() }}</p>
-                                        <p class="price"> <span itemprop="price" content="{{$rad->price}}"> {{ themeqx_price_ng($rad->price, $rad->is_negotiable) }} </span></p>
-                                        <link itemprop="availability" href="http://schema.org/InStock" />
-                                    </div>
-
-                                    @if($rad->price_plan == 'premium')
-                                        <div class="ribbon-wrapper-green"><div class="ribbon-green">{{ ucfirst($rad->price_plan) }}</div></div>
-                                    @endif
-                                    @if($rad->mark_ad_urgent == '1')
-                                        <div class="ribbon-wrapper-red"><div class="ribbon-red">@lang('app.urgent')</div></div>
-                                    @endif
-
-
-                                </div>
-                            </div>
-                        @endforeach
-                    </div> <!-- themeqx_new_premium_ads_wrap -->
-                </div>
-
-            </div>
-        </div>
-    @endif
-
-    <div class="modern-post-ad-call-to-cation">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <h1>@lang('app.want_something_sell_quickly')</h1>
-                    <p>@lang('app.post_your_ad_quicly')</p>
-                    <a href="{{route('create_ad')}}" class="btn btn-info btn-lg">@lang('app.post_an_ad')</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('theme.modern.partials.contact_us_section')
 
     <div class="modal fade" id="reportAdModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -362,12 +272,7 @@
             </div>
         </div>
     </div>
-
-
-
-
 @endsection
-
 @section('page-js')
     <script src="{{ asset('assets/plugins/fotorama-4.6.4/fotorama.js') }}"></script>
     <script src="{{ asset('assets/plugins/SocialShare/SocialShare.js') }}"></script>
@@ -416,12 +321,14 @@
                 },
                 navText : ['<i class="fa fa-arrow-circle-o-left"></i>','<i class="fa fa-arrow-circle-o-right"></i>']
             });
+
         });
     </script>
+
     <script>
         $(function(){
             $('#onClickShowPhone').click(function(){
-                $('#ShowPhoneWrap').html('<i class="fa fa-phone"></i> {{ $ad->seller_phone }}');
+                $('#ShowPhoneWrap').html('<i class="fa fa-phone"></i> <a href="tel:{{ $ad->seller_phone }}"> {{ $ad->seller_phone }} </a>');
             });
 
             $('#save_as_favorite').click(function(){

@@ -36,33 +36,41 @@ class Ad extends Model
     }
 
     public function scopeActivePremium($query){
-        return $query->whereStatus(1)->wherePricePlan('premium');
+        return $query->where('status', '1')
+            ->where('price_plan', 'premium')
+            ->whereIn('country_id', ['98', '102', '109', '116', '132', '173', '196', '217', '231', '238']);
     }
 
     public function scopeActiveRegular($query){
-        return $query->whereStatus(1)->wherePricePlan('regular');
+        return $query->where('status', '1')
+            ->where('price_plan', 'regular')
+            ->whereIn('country_id', ['98', '102', '109', '116', '132', '173', '196', '217', '231', '238']);
     }
     public function scopeActiveUrgent($query){
-        return $query->whereStatus(1)->whereMarkAdUrgent(1);
+        return $query->where('status', '1')
+            ->whereIn('country_id', ['98', '102', '109', '116', '132', '173', '196', '217', '231', '238']);
     }
     public function scopeActive($query){
-        return $query->whereStatus(1);
+        return $query->where('status', '1')
+            ->whereIn('country_id', ['98', '102', '109', '116', '132', '173', '196', '217', '231', '238']);
     }
     public function scopeBusiness($query){
-        return $query->whereType('business');
+        return $query->where('type', 'business')
+            ->whereIn('country_id', ['98', '102', '109', '116', '132', '173', '196', '217', '231', '238']);
     }
     public function scopePersonal($query){
-        return $query->whereType('personal');
+        return $query->where('type', 'personal')
+            ->whereIn('country_id', ['98', '102', '109', '116', '132', '173', '196', '217', '231', '238']);
     }
     public function feature_img(){
-        $feature_img = $this->hasOne(Media::class)->whereIsFeature(1);
-        if (! $feature_img){
+        $feature_img = $this->hasOne(Media::class)->where('is_feature', 1);
+        if (!$feature_img){
             $feature_img = $this->hasOne(Media::class)->first();
         }
         return $this->hasOne(Media::class);
     }
     public function media_img(){
-        return $this->hasMany(Media::class)->whereType('image');
+        return $this->hasMany(Media::class)->where('type', 'image');
     }
 
     /**
@@ -70,7 +78,7 @@ class Ad extends Model
      */
     
     public function is_published(){
-        if ($this->status == 1)
+        if ($this->status === '1')
             return true;
         return false;
     }
@@ -116,7 +124,7 @@ class Ad extends Model
             return false;
         $user = Auth::user();
 
-        $favorite = Favorite::whereUserId($user->id)->whereAdId($this->id)->first();
+        $favorite = Favorite::where('user_id', $user->id)->where('ad_id', $this->id)->first();
         if ($favorite){
             return true;
         }else{

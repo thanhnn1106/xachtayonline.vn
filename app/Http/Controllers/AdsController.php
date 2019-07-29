@@ -27,45 +27,127 @@ class AdsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $searchCat = '';
+        $searchSubCat = '';
+        $categories = Category::where('category_id', 0)->where('is_active', 1)->get();
+        $countries = Country::whereIn('country_code', ['US', 'JP', 'KOR', 'MY', 'SG', 'HK', 'PH', 'TL', 'ID', 'VN'])->get();
         $title = trans('app.all_ads');
-        $ads = Ad::with('city', 'country', 'state')->whereStatus(1)->orderBy('id', 'desc')->paginate(20);
+        $ads = Ad::with('city', 'country', 'state');
 
-        return view('admin.all_ads', compact('title', 'ads'));
+        if ($request->q) {
+            $ads = $ads->where(function ($ads) use ($request) {
+                $ads->where('title', 'like', "%{$request->q}%")->orWhere('description', 'like', "%{$request->q}%");
+            });
+        }
+
+        if($request->category) {
+            $searchCat = Category::where('category_slug', $request->category)->first()->id;
+            if ($searchCat) {
+                $ads = $ads->where('category_id', $searchCat);
+            }
+        }
+
+        if($request->sub_category) {
+            $searchSubCat = Category::where('category_slug', $request->sub_category)->first()->id;
+            if ($searchSubCat) {
+                $ads = $ads->where('sub_category_id', $searchSubCat);
+            }
+        }
+
+        if($request->brand) {
+            $searchBrand = Brand::where('brand_slug', $request->brand)->first()->id;
+            if ($searchBrand) {
+                $ads = $ads->where('brand_id', $searchBrand);
+            }
+        }
+
+        if($request->country) {
+            $searchCountry = Country::where('country_name', $request->country)->first()->id;
+            $ads = $ads->where('country_id', $searchCountry);
+        }
+
+        if ($request->min_price){
+            $ads = $ads->where('price', '>=', $request->min_price);
+        }
+        if ($request->max_price){
+            $ads = $ads->where('price', '<=', $request->max_price);
+        }
+
+        $ads = $ads->orderBy('id', 'desc')->paginate(1000);
+
+        $selected_categories = $request->category ?? '';
+        $selected_sub_categories = $searchCat ? Category::where('category_id', $searchCat)->get() : '';
+        $selected_brands = $searchSubCat ? Brand::where('category_id', $searchSubCat)->get() : '';
+//        dd($selected_brands);
+
+
+        return view('admin.ads_management.all_ads_search',
+            compact(
+                'title',
+                'ads',
+                'categories',
+                'countries',
+                'selected_categories',
+                'selected_sub_categories',
+                'selected_brands',
+                'selected_countries',
+            ''));
+    }
+
+    public function adminApprovedAds()
+    {
+        $title = 'Sản phảm đã được duyệt';
+        $ads = Ad::with('city', 'country', 'state')
+            ->where('status', '1')
+            ->orderBy('id', 'desc')
+            ->paginate(20);
+
+        return view('admin.ads_management.all_ads', compact('title', 'ads'));
     }
 
     public function adminPendingAds()
     {
         $title = trans('app.pending_ads');
-        $ads = Ad::with('city', 'country', 'state')->whereStatus(0)->orderBy('id', 'desc')->paginate(20);
+        $ads = Ad::with('city', 'country', 'state')
+            ->where('status', '0')
+            ->orderBy('id', 'desc')
+            ->paginate(20);
 
-        return view('admin.all_ads', compact('title', 'ads'));
+        return view('admin.ads_management.all_ads', compact('title', 'ads'));
     }
     public function adminBlockedAds()
     {
         $title = trans('app.blocked_ads');
-        $ads = Ad::with('city', 'country', 'state')->whereStatus(2)->orderBy('id', 'desc')->paginate(20);
+        $ads = Ad::with('city', 'country', 'state')
+            ->where('status', '2')
+            ->orderBy('id', 'desc')
+            ->paginate(20);
 
-        return view('admin.all_ads', compact('title', 'ads'));
+        return view('admin.ads_management.all_ads', compact('title', 'ads'));
     }
     
-    public function myAds(){
+    public function myAds()
+    {
         $title = trans('app.my_ads');
 
         $user = Auth::user();
         $ads = $user->ads()->with('city', 'country', 'state')->orderBy('id', 'desc')->paginate(20);
         
-        return view('admin.my_ads', compact('title', 'ads'));
+        return view('admin.ads_management.my_ads', compact('title', 'ads'));
     }
 
-    public function pendingAds(){
+    public function pendingAds()
+    {
         $title = trans('app.my_ads');
 
         $user = Auth::user();
-        $ads = $user->ads()->whereStatus(0)->with('city', 'country', 'state')->orderBy('id', 'desc')->paginate(20);
+        $ads = $user->ads()->where('status', '0')
+            ->with('city', 'country', 'state')
+            ->orderBy('id', 'desc')->paginate(20);
 
-        return view('admin.pending_ads', compact('title', 'ads'));
+        return view('admin.ads_management.pending_ads', compact('title', 'ads'));
     }
 
     public function favoriteAds(){
@@ -88,16 +170,16 @@ class AdsController extends Controller
     {
         $user_id = Auth::user()->id;
         $title = trans('app.post_an_ad');
-        $categories = Category::where('category_id', 0)->get();
-        $countries = Country::all();
-        $ads_images = Media::whereUserId($user_id)->whereAdId(0)->whereRef('ad')->get();
+        $categories = Category::where('category_id', 0)->where('is_active', 1)->get();
+        $countries = Country::whereIn('country_code', ['US', 'JP', 'KR', 'MY', 'SG', 'HK', 'PH', 'TL', 'ID', 'VN'])->get();
+        $ads_images = Media::where('user_id' , $user_id)->where('ad_id' , 0)->where('ref' , 'ad')->get();
         
         $previous_brands = Brand::where('category_id', old('category'))->get();
         $previous_states = State::where('country_id', old('country'))->get();
         $previous_cities = City::where('state_id', old('state'))->get();
 
 
-        return view('admin.create_ad', compact('title', 'categories', 'countries', 'ads_images', 'previous_brands', 'previous_states', 'previous_cities'));
+        return view('admin.ads_management.create_ad', compact('title', 'categories', 'countries', 'ads_images', 'previous_brands', 'previous_states', 'previous_cities'));
     }
 
     /**
@@ -109,36 +191,36 @@ class AdsController extends Controller
     public function store(Request $request)
     {
         $user_id = Auth::user()->id;
-        $ads_price_plan = get_option('ads_price_plan');
-
 
         $rules = [
             'category'  => 'required',
+            'brand'  => 'required',
             'ad_title'  => 'required',
             'ad_description'  => 'required',
-            'type'  => 'required',
-            'condition'  => 'required',
+//            'type'  => 'required',
+//            'condition'  => 'required',
             'country'  => 'required',
             'seller_name'  => 'required',
             'seller_email'  => 'required',
             'seller_phone'  => 'required',
             'address'  => 'required',
+            'price_plan'  => 'required',
+            'price'  => 'required',
+            'discount_price'  => 'required',
+            'shipping_fee'  => 'required',
+            'shipping_days'  => 'required|min:1',
+            'ad_content'  => 'required',
+            'ad_name'  => 'required',
         ];
-
-        if( $ads_price_plan != 'all_ads_free'){
-            $rules['price_plan'] = 'required';
-        }
 
         $this->validate($request, $rules);
 
-        $title = $request->ad_title;
-        $slug = unique_slug($title);
-       
+        $adName = $request->ad_name;
+        $slug = unique_slug($adName, 'Ad', 'slug');
 
-        $sub_category = Category::find($request->category);
+        $subCatId = Category::select('id')->where('category_slug', $request->category)->first()->id;
+        $sub_category = Category::find($subCatId);
 
-        $is_negotialble = $request->negotiable ? $request->negotiable : 0;
-        $brand_id = $request->brand ? $request->brand : 0;
         $mark_ad_urgent = $request->mark_ad_urgent ? $request->mark_ad_urgent : 0;
         $video_url = $request->video_url ? $request->video_url : '';
 
@@ -147,13 +229,14 @@ class AdsController extends Controller
             'slug' => $slug,
             'description' => $request->ad_description,
             'category_id' => $sub_category->category_id,
-            'sub_category_id' => $request->category,
-            'brand_id' => $brand_id,
-            'type' => $request->type,
-            'ad_condition' => $request->condition,
+            'sub_category_id' => $subCatId,
+            'brand_id' => $request->brand,
+//            'type' => $request->type,
+//            'ad_condition' => $request->condition,
             'price' => $request->price,
-            'is_negotiable' => $is_negotialble,
-
+            'discount_price'  => number_format($request->discount_price),
+            'shipping_fee'  => $request->shipping_fee,
+            'shipping_days'  => $request->shipping_days,
             'seller_name' => $request->seller_name,
             'seller_email' => $request->seller_email,
             'seller_phone' => $request->seller_phone,
@@ -164,18 +247,17 @@ class AdsController extends Controller
             'video_url' => $video_url,
             'price_plan' => $request->price_plan,
             'mark_ad_urgent' => $mark_ad_urgent,
-            'status' => 0,
+            'status' => '0',
             'user_id' => $user_id,
+            'content' => $request->ad_content,
+            'name' => $adName,
+            'sku' => $request->sku ?? '',
+            'is_out_of_stock' => $request->is_out_of_stock ?? 0,
         ];
 
         //Check ads moderation settings
         if (get_option('ads_moderation') == 'direct_publish'){
             $data['status'] = 1;
-        }
-
-        //if price_plan not in post data, then set a default value, although mysql will save it as enum first value
-        if ( ! $request->price_plan){
-            $data['price_plan'] = 'regular';
         }
 
         $created_ad = Ad::create($data);
@@ -185,47 +267,14 @@ class AdsController extends Controller
          */
         if ($created_ad){
             //Attach all unused media with this ad
-            Media::whereUserId($user_id)->whereAdId(0)->whereRef('ad')->update(['ad_id'=>$created_ad->id]);
+            Media::where('user_id', $user_id)
+                ->where('ad_id', 0)
+                ->where('ref', 'ad')
+                ->update(['ad_id' => $created_ad->id]);
 
-            /**
-             * Payment transaction login here
-             */
-            $ads_price = get_ads_price($created_ad->price_plan);
-            if ($mark_ad_urgent){
-                $ads_price = $ads_price + get_option('urgent_ads_price');
-            }
-
-            if ($ads_price){
-                //Insert checkout Logic
-
-                $transaction_id = 'tran_'.time().str_random(6);
-                // get unique recharge transaction id
-                while( ( Payment::whereLocalTransactionId($transaction_id)->count() ) > 0) {
-                    $transaction_id = 'reid'.time().str_random(5);
-                }
-                $transaction_id = strtoupper($transaction_id);
-
-                $currency = get_option('currency_sign');
-                $payments_data = [
-                    'ad_id'     => $created_ad->id,
-                    'user_id'   => $user_id,
-                    'amount'    => $ads_price,
-                    'payment_method'    => $request->payment_method,
-                    'status'    => 'initial',
-                    'currency'  => $currency,
-                    'local_transaction_id'  => $transaction_id
-                ];
-                $created_payment = Payment::create($payments_data);
-
-                return redirect(route('payment_checkout', $created_payment->local_transaction_id));
-            }
-
-            return redirect(route('pending_ads'))->with('success', trans('app.ad_created_msg'));
-
+            return redirect(route('admin_pending_ads'))->with('success', trans('app.ad_created_msg'));
         }
-        
-
-        //dd($request->input());
+        return redirect(route('create_ad'))->with('error', trans('app.ad_created_msg_failed'));
     }
 
     /**
@@ -263,14 +312,14 @@ class AdsController extends Controller
         }
         
         $categories = Category::where('category_id', 0)->get();
-        $countries = Country::all();
-        $ads_images = Media::whereUserId($user_id)->whereAdId(0)->whereRef('ad')->get();
+        $countries = Country::whereIn('country_code', ['US', 'JP', 'KR', 'MY', 'SG', 'HK', 'PH', 'TL', 'ID', 'VN'])->get();
+        $ads_images = Media::where('user_id' , $user_id)->where('ad_id' , 0)->where('ref' , 'ad')->get();
 
         $previous_brands = Brand::where('category_id', $ad->sub_category_id)->get();
         $previous_states = State::where('country_id', $ad->country_id)->get();
         $previous_cities = City::where('state_id', $ad->state_id)->get();
         
-        return view('admin.edit_ad', compact('title', 'categories', 'countries', 'ads_images', 'ad', 'previous_brands', 'previous_states', 'previous_cities'));
+        return view('admin.ads_management.edit_ad', compact('title', 'categories', 'countries', 'ads_images', 'ad', 'previous_brands', 'previous_states', 'previous_cities'));
 
     }
 
@@ -296,25 +345,28 @@ class AdsController extends Controller
 
         $rules = [
             'category'  => 'required',
+            'brand'  => 'required',
             'ad_title'  => 'required',
             'ad_description'  => 'required',
-            'type'  => 'required',
-            'condition'  => 'required',
+//            'type'  => 'required',
+//            'condition'  => 'required',
             'country'  => 'required',
             'seller_name'  => 'required',
             'seller_email'  => 'required',
             'seller_phone'  => 'required',
             'address'  => 'required',
+            'price_plan'  => 'required',
+            'price'  => 'required',
+            'discount_price'  => 'required',
+            'shipping_fee'  => 'required',
+            'shipping_days'  => 'required|min:1',
+            'ad_content'  => 'required',
         ];
 
         $this->validate($request, $rules);
-
-        $title = $request->ad_title;
-        //$slug = unique_slug($title);
         
         $sub_category = Category::find($request->category);
         $is_negotialble = $request->negotiable ? $request->negotiable : 0;
-        $brand_id = $request->brand ? $request->brand : 0;
         $video_url = $request->video_url ? $request->video_url : '';
 
         $data = [
@@ -322,10 +374,13 @@ class AdsController extends Controller
             'description' => $request->ad_description,
             'category_id' => $sub_category->category_id,
             'sub_category_id' => $request->category,
-            'brand_id' => $brand_id,
-            'type' => $request->type,
-            'ad_condition' => $request->condition,
+            'brand_id' => $request->brand,
+//            'type' => $request->type,
+//            'ad_condition' => $request->condition,
             'price' => $request->price,
+            'discount_price'  => $request->discount_price,
+            'shipping_fee'  => $request->shipping_fee,
+            'shipping_days'  => $request->shipping_days,
             'is_negotiable' => $is_negotialble,
 
             'seller_name' => $request->seller_name,
@@ -338,9 +393,10 @@ class AdsController extends Controller
             'video_url' => $video_url,
             'price_plan' => $request->price_plan,
             'mark_ad_urgent' => $mark_ad_urgent,
-
+            'content' => $request->ad_content,
+            'sku' => $request->sku ?? '',
+            'is_out_of_stock' => $request->is_out_of_stock ?? 0,
         ];
-        
         $updated_ad = $ad->update($data);
 
         /**
@@ -348,7 +404,10 @@ class AdsController extends Controller
          */
         if ($updated_ad){
             //Attach all unused media with this ad
-            Media::whereUserId($user_id)->whereAdId(0)->whereRef('ad')->update(['ad_id'=>$ad->id]);
+            Media::where('user_id' , $user_id)
+                ->where('ad_id' , 0)
+                ->where('ref' , 'ad')
+                ->update(['ad_id'=>$ad->id]);
         }
 
         return redirect()->back()->with('success', trans('app.ad_updated'));
@@ -357,7 +416,7 @@ class AdsController extends Controller
 
     public function adStatusChange(Request $request){
         $slug = $request->slug;
-        $ad = Ad::whereSlug($slug)->first();
+        $ad = Ad::where('slug', $slug)->first();
         if ($ad){
             $value = $request->value;
             /*
@@ -386,9 +445,9 @@ class AdsController extends Controller
     public function destroy(Request $request)
     {
         $slug = $request->slug;
-        $ad = Ad::whereSlug($slug)->first();
+        $ad = Ad::where('slug', $slug)->first();
         if ($ad){
-            $media = Media::whereAdId($ad->id)->get();
+            $media = Media::where('ad_id', $ad->id)->get();
             if ($media->count() > 0){
                 foreach($media as $m){
                     $storage = Storage::disk($m->storage);
@@ -409,27 +468,32 @@ class AdsController extends Controller
         return ['success'=>0, 'msg' => trans('app.error_msg')];
     }
 
-    public function getSubCategoryByCategory(Request $request){
-        $category_id = $request->category_id;
-        $brands = Sub_Category::whereCategoryId($category_id)->select('id', 'category_name', 'category_slug')->get();
+    public function getSubCategoryByCategory(Request $request)
+    {
+        $catId = Category::select('id')->where('category_slug', $request->category_slug)->first()->id;
+        $brands = Sub_Category::where('category_id', $catId)
+            ->select('id', 'category_name', 'category_slug')->get();
         return $brands;
     }
 
-    public function getBrandByCategory(Request $request){
-        $category_id = $request->category_id;
-        $brands = Brand::whereCategoryId($category_id)->select('id', 'brand_name')->get();
+    public function getBrandByCategory(Request $request)
+    {
+        $catId = Category::select('id')->where('category_slug', $request->category_slug)->first()->id;
+        $brands = Brand::where('category_id', $catId)
+            ->select('id', 'brand_name', 'brand_slug')->get();
         return $brands;
     }
 
-    public function getStateByCountry(Request $request){
+    public function getStateByCountry(Request $request)
+    {
         $country_id = $request->country_id;
-        $states = State::whereCountryId($country_id)->select('id', 'state_name')->get();
+        $states = State::where('country_id', $country_id)->select('id', 'state_name')->get();
         return $states;
     }
 
     public function getCityByState(Request $request){
         $state_id = $request->state_id;
-        $cities = City::whereStateId($state_id)->select('id', 'city_name')->get();
+        $cities = City::where('state_id', $state_id)->select('id', 'city_name')->get();
         return $cities;
     }
 
@@ -456,23 +520,36 @@ class AdsController extends Controller
             $resized = Image::make($image)->resize(640, null, function ($constraint) {
                 $constraint->aspectRatio();
             })->stream();
-            $resized_thumb = Image::make($image)->resize(320, 213)->stream();
+            $resized_thumb = Image::make($image)->resize(200, null, function ($constraint) {
+                $constraint->aspectRatio();
+            })->stream();
 
             $image_name = strtolower(time().str_random(5).'-'.str_slug($file_base_name)).'.' . $image->getClientOriginalExtension();
-
-            $imageFileName = 'uploads/images/'.$image_name;
-            $imageThumbName = 'uploads/images/thumbs/'.$image_name;
+//            $imageFileName = 'uploads/images/'.$image_name;
+//            $imageThumbName = 'uploads/images/thumbs/'.$image_name;
 
             try{
+                $filePath = 'product_images/' . $image_name;
                 //Upload original image
-                $is_uploaded = current_disk()->put($imageFileName, $resized->__toString(), 'public');
+//                $is_uploaded = current_disk()->put($imageFileName, $resized->__toString(), 'public');
+                $is_uploaded = Storage::disk('s3')->put($filePath, $resized->__toString(), 'public');
 
                 if ($is_uploaded) {
                     //Save image name into db
-                    $created_img_db = Media::create(['user_id' => $user_id, 'media_name'=>$image_name, 'type'=>'image', 'storage' => get_option('default_storage'), 'ref'=>'ad']);
+                    $created_img_db = Media::create(
+                        [
+                            'user_id' => $user_id,
+                            'media_name'=>$image_name,
+                            'type'=>'image',
+                            'storage' => get_option('default_storage'),
+                            'ref'=>'ad'
+                        ]
+                    );
 
                     //upload thumb image
-                    current_disk()->put($imageThumbName, $resized_thumb->__toString(), 'public');
+                    $filePath = 'product_images/thumb/' . $image_name;
+//                    current_disk()->put($filePath, $resized_thumb->__toString(), 'public');
+                    Storage::disk('s3')->put($filePath, $resized_thumb->__toString(), 'public');
                     $img_url = media_url($created_img_db, false);
                     return ['success' => 1, 'img_url' => $img_url];
                 } else {
@@ -494,13 +571,13 @@ class AdsController extends Controller
         $media = Media::find($media_id);
 
         $storage = Storage::disk($media->storage);
-        if ($storage->has('uploads/images/'.$media->media_name)){
-            $storage->delete('uploads/images/'.$media->media_name);
+        if ($storage->has('product_images/' . $media->media_name)){
+            $storage->delete('product_images/' . $media->media_name);
         }
 
         if ($media->type == 'image'){
-            if ($storage->has('uploads/images/thumbs/'.$media->media_name)){
-                $storage->delete('uploads/images/thumbs/'.$media->media_name);
+            if ($storage->has('product_images/thumb/' . $media->media_name)){
+                $storage->delete('product_images/thumb/' . $media->media_name);
             }
         }
 
@@ -516,7 +593,7 @@ class AdsController extends Controller
         $user_id = Auth::user()->id;
         $media_id = $request->media_id;
 
-        Media::whereUserId($user_id)->whereAdId(0)->whereRef('ad')->update(['is_feature'=>0]);
+        Media::where('user_id' , $user_id)->where('ad_id' , 0)->where('ref' , 'ad')->update(['is_feature'=>0]);
         Media::whereId($media_id)->update(['is_feature'=>1]);
 
         return ['success'=>1, 'msg'=>trans('app.media_featured_msg')];
@@ -528,7 +605,9 @@ class AdsController extends Controller
     
     public function appendMediaImage(){
         $user_id = Auth::user()->id;
-        $ads_images = Media::whereUserId($user_id)->whereAdId(0)->whereRef('ad')->get();
+        $ads_images = Media::where('user_id' , $user_id)
+            ->where('ad_id' , 0)
+            ->where('ref' , 'ad')->get();
 
         return view('admin.append_media', compact('ads_images'));
     }
@@ -537,18 +616,18 @@ class AdsController extends Controller
      * Listing
      */
 
-    public function listing(Request $request){
-        $ads = Ad::active();
+    public function listing(Request $request)
+    {
+        $ads = Ad::active()->where('price_plan', 'regular');
         $business_ads_count = Ad::active()->business();
         $personal_ads_count = Ad::active()->personal();
-
         $premium_ads = Ad::activePremium();
 
         if ($request->q){
             $ads = $ads->where(function($ads) use($request){
                 $ads->where('title','like', "%{$request->q}%")->orWhere('description','like', "%{$request->q}%");
             });
-            
+
             $business_ads_count = $business_ads_count->where(function($business_ads_count) use($request){
                 $business_ads_count->where('title','like', "%{$request->q}%")->orWhere('description','like', "%{$request->q}%");
             });
@@ -557,50 +636,54 @@ class AdsController extends Controller
                 $personal_ads_count->where('title','like', "%{$request->q}%")->orWhere('description','like', "%{$request->q}%");
             });
         }
-        if ($request->category){
-            $ads = $ads->whereCategoryId($request->category);
-            $business_ads_count = $business_ads_count->whereCategoryId($request->category);
-            $personal_ads_count = $personal_ads_count->whereCategoryId($request->category);
+        if ($request->category) {
+            $catId = Category::select('id')->where('category_slug', $request->category)->first()->id;
+            $ads = $ads->where('category_id', $catId);
+            $business_ads_count = $business_ads_count->where('category_id', $catId);
+            $personal_ads_count = $personal_ads_count->where('category_id', $catId);
 
-            $premium_ads = $premium_ads->whereCategoryId($request->category);
+            $premium_ads = $premium_ads->where('category_id', $catId);
         }
-        if ($request->sub_category){
-            $ads = $ads->whereSubCategoryId($request->sub_category);
-            $business_ads_count = $business_ads_count->whereSubCategoryId($request->sub_category);
-            $personal_ads_count = $personal_ads_count->whereSubCategoryId($request->sub_category);
+        if ($request->sub_category) {
+            $subCatId = Category::select('id')->where('category_slug', $request->sub_category)->first()->id;
+            $ads = $ads->where('sub_category_id', $subCatId);
+            $business_ads_count = $business_ads_count->where('sub_category_id', $subCatId);
+            $personal_ads_count = $personal_ads_count->where('sub_category_id', $subCatId);
 
-            $premium_ads = $premium_ads->whereSubCategoryId($request->sub_category);
+            $premium_ads = $premium_ads->where('sub_category_id', $subCatId);
         }
-        if ($request->brand){
-            $ads = $ads->whereBrandId($request->brand);
-            $business_ads_count = $business_ads_count->whereBrandId($request->brand);
-            $personal_ads_count = $personal_ads_count->whereBrandId($request->brand);
+        if ($request->brand) {
+            $brandId = Brand::select('id')->where('brand_slug', $request->brand)->first()->id;
+            $ads = $ads->where('brand_id', $brandId);
+            $business_ads_count = $business_ads_count->where('brand_id', $brandId);
+            $personal_ads_count = $personal_ads_count->where('brand_id', $brandId);
         }
-        if ($request->condition){
-            $ads = $ads->whereAdCondition($request->condition);
-            $business_ads_count = $business_ads_count->whereAdCondition($request->condition);
-            $personal_ads_count = $personal_ads_count->whereAdCondition($request->condition);
-        }
-        if ($request->type){
-            $ads = $ads->whereType($request->type);
-            $business_ads_count = $business_ads_count->whereType($request->type);
-            $personal_ads_count = $personal_ads_count->whereType($request->type);
-        }
+//        if ($request->condition){
+//            $ads = $ads->where('ad_condition', $request->condition);
+//            $business_ads_count = $business_ads_count->where('ad_condition', $request->condition);
+//            $personal_ads_count = $personal_ads_count->where('ad_condition', $request->condition);
+//        }
+//        if ($request->type){
+//            $ads = $ads->where('type', $request->type);
+//            $business_ads_count = $business_ads_count->where('type', $request->type);
+//            $personal_ads_count = $personal_ads_count->where('type', $request->type);
+//        }
         if ($request->country){
-            $ads = $ads->whereCountryId($request->country);
-            $business_ads_count = $business_ads_count->whereCountryId($request->country);
-            $personal_ads_count = $personal_ads_count->whereCountryId($request->country);
+            $countryId = Country::select('id')->where('country_name', $request->country)->first()->id;
+            $ads = $ads->where('country_id', $countryId);
+            $business_ads_count = $business_ads_count->where('country_id', $countryId);
+            $personal_ads_count = $personal_ads_count->where('country_id', $countryId);
         }
-        if ($request->state){
-            $ads = $ads->whereStateId($request->state);
-            $business_ads_count = $business_ads_count->whereStateId($request->state);
-            $personal_ads_count = $personal_ads_count->whereStateId($request->state);
-        }
-        if ($request->city){
-            $ads = $ads->whereCityId($request->city);
-            $business_ads_count = $business_ads_count->whereCityId($request->city);
-            $personal_ads_count = $personal_ads_count->whereCityId($request->city);
-        }
+//        if ($request->state){
+//            $ads = $ads->where('state_id', $request->state);
+//            $business_ads_count = $business_ads_count->where('state_id', $request->state);
+//            $personal_ads_count = $personal_ads_count->where('state_id', $request->state);
+//        }
+//        if ($request->city){
+//            $ads = $ads->whereCityId($request->city);
+//            $business_ads_count = $business_ads_count->whereCityId($request->city);
+//            $personal_ads_count = $personal_ads_count->whereCityId($request->city);
+//        }
         if ($request->min_price){
             $ads = $ads->where('price', '>=', $request->min_price);
             $business_ads_count = $business_ads_count->where('price', '>=', $request->min_price);
@@ -611,17 +694,17 @@ class AdsController extends Controller
             $business_ads_count = $business_ads_count->where('price', '<=', $request->max_price);
             $personal_ads_count = $personal_ads_count->where('price', '<=', $request->max_price);
         }
-        if ($request->adType){
-            if ($request->adType == 'business') {
-                $ads = $ads->business();
-            }elseif ($request->adType == 'personal'){
-                $ads = $ads->personal();
-            }
-        }
+//        if ($request->adType){
+//            if ($request->adType == 'business') {
+//                $ads = $ads->business();
+//            }elseif ($request->adType == 'personal'){
+//                $ads = $ads->personal();
+//            }
+//        }
         if ($request->user_id){
-            $ads = $ads->whereUserId($request->user_id);
-            $business_ads_count = $business_ads_count->whereUserId($request->user_id);
-            $personal_ads_count = $personal_ads_count->whereUserId($request->user_id);
+            $ads = $ads->where('user_id', $request->user_id);
+            $business_ads_count = $business_ads_count->where('user_id', $request->user_id);
+            $personal_ads_count = $personal_ads_count->where('user_id', $request->user_id);
         }
         if ($request->shortBy){
             switch ($request->shortBy){
@@ -672,14 +755,14 @@ class AdsController extends Controller
         $personal_ads_count = $personal_ads_count->count();
 
         $title = trans('app.post_an_ad');
-        $categories = Category::where('category_id', 0)->get();
-        $countries = Country::all();
+        $categories = Category::where('category_id', 0)->where('is_active', 1)->get();
+        $countries = Country::whereIn('country_code', ['US', 'JP', 'KOR', 'MY', 'SG', 'HK', 'PH', 'TL', 'ID', 'VN'])->get();
 
-        $selected_categories = Category::find($request->category);
-        $selected_sub_categories = Category::find($request->sub_category);
+        $selected_categories = Category::find($catId ?? '');
+        $selected_sub_categories = Category::find($subCatId ?? '');
 
-        $selected_countries = Country::find($request->country);
-        $selected_states = State::find($request->state);
+        $selected_countries = Country::find($countryId ?? '');
+//        $selected_states = State::find($request->state);
         //dd($selected_countries->states);
 
         return view($this->theme.'listing', compact('top_categories', 'ads', 'title', 'categories', 'countries', 'selected_categories', 'selected_sub_categories', 'selected_countries', 'selected_states', 'personal_ads_count', 'business_ads_count', 'premium_ads'));
@@ -691,13 +774,13 @@ class AdsController extends Controller
      */
     public function singleAd($slug){
         $limit_regular_ads = get_option('number_of_free_ads_in_home');
-        $ad = Ad::whereSlug($slug)->first();
+        $ad = Ad::where('slug', $slug)->first();
 
-        if (! $ad){
+        if (!$ad){
             return view('theme.error_404');
         }
         
-        if ( ! $ad->is_published()){
+        if (!$ad->is_published()){
             if (Auth::check()){
                 $user_id = Auth::user()->id;
                 if ($user_id != $ad->user_id){
@@ -713,22 +796,28 @@ class AdsController extends Controller
 
         $title = $ad->title;
 
-        //Get Related Ads, add [->whereCountryId($ad->country_id)] for more specific results
-        $related_ads = Ad::active()->whereCategoryId($ad->category_id)->where('id', '!=',$ad->id)->with('category', 'city')->limit($limit_regular_ads)->orderByRaw('RAND()')->get();
+        //Get Related Ads, add [->where('country_id', $ad->country_id)] for more specific results
+        $related_ads = Ad::active()
+            ->where('category_id', $ad->category_id)
+            ->where('id', '!=',$ad->id)
+            ->with('category', 'city')
+            ->limit($limit_regular_ads)
+            ->orderByRaw('RAND()')
+            ->get();
         
         return view($this->theme.'single_ad', compact('ad', 'title', 'related_ads'));
     }
     
-    public function switchGridListView(Request $request){
-        session(['grid_list_view' => $request->grid_list_view]);
-    }
+//    public function switchGridListView(Request $request){
+//        session(['grid_list_view' => $request->grid_list_view]);
+//    }
 
     /**
      * @param Request $request
      * @return array
      */
     public function reportAds(Request $request){
-        $ad = Ad::whereSlug($request->slug)->first();
+        $ad = Ad::where('slug', $request->slug)->first();
         if ($ad) {
             $data = [
                 'ad_id' => $ad->id,
@@ -759,9 +848,9 @@ class AdsController extends Controller
         $user = Auth::user();
 
         if ($user->is_admin()){
-            $ad = Ad::whereSlug($slug)->first();
+            $ad = Ad::where('slug', $slug)->first();
         }else{
-            $ad = Ad::whereSlug($slug)->whereUserId($user->id)->first();
+            $ad = Ad::where('slug', $slug)->where('user_id', $user->id)->first();
         }
 
         if (! $ad){

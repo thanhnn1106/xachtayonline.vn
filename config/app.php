@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'vn',
 
     /*
     |--------------------------------------------------------------------------
@@ -78,7 +78,7 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'vn',
 
     /*
     |--------------------------------------------------------------------------
@@ -163,7 +163,8 @@ return [
         //Form and html builder
         'Collective\Html\HtmlServiceProvider',
         Laravel\Socialite\SocialiteServiceProvider::class,
-        Yajra\Datatables\DatatablesServiceProvider::class
+        Yajra\Datatables\DatatablesServiceProvider::class,
+        Mavinoo\LaravelBatch\LaravelBatchServiceProvider::class,
     ],
 
     /*
@@ -218,6 +219,8 @@ return [
         'Form' => 'Collective\Html\FormFacade',
         'Html' => 'Collective\Html\HtmlFacade',
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        'Batch' => Mavinoo\LaravelBatch\LaravelBatchFacade::class,
     ],
 
 ];

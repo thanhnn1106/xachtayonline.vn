@@ -1,4 +1,71 @@
+<style>
+    #button {
+        display: inline-block;
+        background-color: #FF9800;
+        width: 50px;
+        height: 50px;
+        text-align: center;
+        border-radius: 4px;
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        transition: background-color .3s,
+        opacity .5s, visibility .5s;
+        opacity: 0;
+        visibility: hidden;
+        z-index: 1000;
+    }
+    #button::after {
+        content: "\f077";
+        font-family: FontAwesome;
+        font-weight: normal;
+        font-style: normal;
+        font-size: 2em;
+        line-height: 50px;
+        color: #fff;
+    }
+    #button:hover {
+        cursor: pointer;
+        background-color: #333;
+    }
+    #button:active {
+        background-color: #555;
+    }
+    #button.show {
+        opacity: 1;
+        visibility: visible;
+    }
 
+    /* Styles for the content section */
+
+    .content {
+        width: 77%;
+        margin: 50px auto;
+        font-family: 'Merriweather', serif;
+        font-size: 17px;
+        color: #6c767a;
+        line-height: 1.9;
+    }
+    @media (min-width: 500px) {
+        .content {
+            width: 43%;
+        }
+        #button {
+            margin: 30px;
+        }
+    }
+    .content h1 {
+        margin-bottom: -10px;
+        color: #03a9f4;
+        line-height: 1.5;
+    }
+    .content h3 {
+        font-style: italic;
+        color: #96a2a7;
+    }
+</style>
+<!-- Back to top button -->
+<a id="button"></a>
 <div class="footer">
     <div class="footer-top">
         <div class="container">
@@ -6,7 +73,7 @@
 
                 <div class="col-sm-4 col-xs-12">
                     <div class="footer-widget">
-                        <h4>About Us</h4>
+                        <h4>Về chúng tôi</h4>
                         <p>{{ get_option('footer_about_us') }}</p>
                         <p>{!! get_option('footer_about_us_read_more_text') !!}</p>
                     </div>
@@ -40,8 +107,8 @@
 
                 <div class="col-sm-4 col-xs-12">
                     <div class="footer-widget">
-                        <h4>Quick Link</h4>
-                        <ul class="footer-menu">
+                        <h4>Liên kết nhanh</h4>
+                        <ul class="footer-menu col-md-12">
                             @if($show_in_footer_menu->count() > 0)
                                 @foreach($show_in_footer_menu as $page)
                                     <li><a href="{{ route('single_page', $page->slug) }}">{{ $page->title }} </a></li>
@@ -54,26 +121,26 @@
                             <li><a href="{{ route('contact_us_page') }}">@lang('app.contact_us')</a></li>
                         </ul>
 
-                        <div class="social-icons">
+                        <div class="social-icons col-md-12">
                             <ul class="social-ul">
                                 @if(get_option('facebook_url'))
-                                    <li><a href="{{ get_option('facebook_url') }}" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a href="{{ get_option('facebook_url') }}" target="_blank"><i class="fa fa-facebook btn-default"></i></a></li>
                                 @endif
 
                                 @if(get_option('twitter_url'))
-                                    <li><a href="{{ get_option('twitter_url') }}" target="_blank"><i class="fa fa-twitter"></i></a></li>
+                                    <li><a href="{{ get_option('twitter_url') }}" target="_blank"><i class="fa fa-twitter btn-default"></i></a></li>
                                 @endif
                                 @if(get_option('linked_in_url'))
-                                    <li><a href="{{ get_option('linked_in_url') }}" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+                                    <li><a href="{{ get_option('linked_in_url') }}" target="_blank"><i class="fa fa-linkedin btn-default"></i></a></li>
                                 @endif
                                 @if(get_option('dribble_url'))
-                                    <li><a href="{{ get_option('dribble_url') }}" target="_blank"><i class="fa fa-dribbble"></i></a></li>
+                                    <li><a href="{{ get_option('dribble_url') }}" target="_blank"><i class="fa fa-dribbble btn-default"></i></a></li>
                                 @endif
                                 @if(get_option('google_plus_url'))
-                                    <li><a href="{{ get_option('google_plus_url') }}" target="_blank"><i class="fa fa-google-plus"></i></a></li>
+                                    <li><a href="{{ get_option('google_plus_url') }}" target="_blank"><i class="fa fa-google-plus btn-default"></i></a></li>
                                 @endif
                                 @if(get_option('youtube_url'))
-                                    <li><a href="{{ get_option('youtube_url') }}" target="_blank"><i class="fa fa-youtube"></i></a></li>
+                                    <li><a href="{{ get_option('youtube_url') }}" target="_blank"><i class="fa fa-youtube btn-default"></i></a></li>
                                 @endif
 
                             </ul>
@@ -136,6 +203,20 @@
 <script>
     $(document).on('click', '.ghuranti', function(){
         $('.themeqx-demo-chooser-wrap').toggleClass('open');
+    });
+    var btn = $('#button');
+
+    $(window).scroll(function() {
+        if ($(window).scrollTop() > 300) {
+            btn.addClass('show');
+        } else {
+            btn.removeClass('show');
+        }
+    });
+
+    btn.on('click', function(e) {
+        e.preventDefault();
+        $('html, body').animate({scrollTop:0}, '300');
     });
 </script>
 

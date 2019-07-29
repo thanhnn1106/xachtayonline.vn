@@ -16,15 +16,15 @@ function media_url($img = '', $full_size = false){
         if ($img->type == 'image'){
             if ($img->storage == 'public'){
                 if ($full_size){
-                    $url_path = asset('uploads/images/'.$img->media_name);
+                    $url_path = asset('uploads/images/' . $img->media_name);
                 }else{
-                    $url_path = asset('uploads/images/thumbs/'.$img->media_name);
+                    $url_path = asset('uploads/images/thumbs/' . $img->media_name);
                 }
             }elseif ($img->storage == 's3'){
                 if ($full_size){
-                    $url_path = \Illuminate\Support\Facades\Storage::disk('s3')->url('uploads/images/'.$img->media_name);
+                    $url_path = \Illuminate\Support\Facades\Storage::disk('s3')->url('product_images/' . $img->media_name);
                 }else{
-                    $url_path = \Illuminate\Support\Facades\Storage::disk('s3')->url('uploads/images/thumbs/'.$img->media_name);
+                    $url_path = \Illuminate\Support\Facades\Storage::disk('s3')->url('product_images/thumb/' . $img->media_name);
                 }
 
             }
@@ -121,14 +121,15 @@ function get_text_tpl($text = ''){
  * @return string
  */
 
-function unique_slug($title = '', $model = 'Ad'){
+function unique_slug($title = '', $model, $column)
+{
     $slug = str_slug($title);
     //get unique slug...
     $nSlug = $slug;
     $i = 0;
 
     $model = str_replace(' ','',"\App\ ".$model);
-    while( ($model::whereSlug($nSlug)->count()) > 0){
+    while( ($model::where($column, $nSlug)->count()) > 0){
         $i++;
         $nSlug = $slug.'-'.$i;
     }
@@ -268,6 +269,26 @@ function themeqx_price($price = 0){
     return get_option('currency_sign').' '.$price;
 }
 
+function get_image_url($imagesPath)
+{
+    return 'https://' . getenv('AWS_BUCKET') . '.s3-' . getenv('AWS_DEFAULT_REGION') . '.amazonaws.com/' . $imagesPath;
+}
+
+function get_gender($type)
+{
+    switch ($type) {
+        case 1:
+            return 'Nam';
+            break;
+        case 2:
+            return 'Nữ';
+            break;
+        default:
+            return 'Khác';
+            break;
+    }
+}
+
 /**
  * @param int $price
  * @param int $negotiable
@@ -278,7 +299,13 @@ function themeqx_price_ng($price = 0, $negotiable = 0){
     $ng = $negotiable ? ' ('.trans('app.negotiable').') ' : '';
     $show_price = '';
     if ($price > 0){
-        $show_price = get_option('currency_sign').' '.$price;
+        $countryCurrSign = get_option('currency_sign');
+        if ($countryCurrSign === 'VND')
+        {
+            $show_price = $price . ' ' . get_option('currency_sign');
+        } else {
+            $show_price = get_option('currency_sign').' '.$price;
+        }
     }
     return $show_price.$ng;
 }
@@ -288,8 +315,6 @@ function update_option($key, $value){
     $option -> option_value = $value;
     return $option->save();
 }
-
-
 
 function themeqx_classifieds_currencies(){
     return array(
@@ -454,5 +479,22 @@ function themeqx_classifieds_currencies(){
         'ZAR' => 'South African rand',
         'ZMW' => 'Zambian kwacha',
     );
-    
+    function getOrderStatus($status)
+    {
+        switch ($status) {
+            case 0:
+                return tran('app.waiting_for_confirm');
+                break;
+            case 1:
+                return tran('app.processing');
+                break;
+            case 2:
+                return tran('app.shipping');
+                break;
+            default:
+                return tran('app.done');
+                break;
+        }
+    }
+
 }

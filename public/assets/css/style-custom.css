@@ -1,0 +1,165 @@
+.text-decorate-line-thought {
+    text-decoration: line-through;
+}
+
+.ads-item-thumbnail {
+    min-height: 340px;
+}
+
+.btn-order {
+    width: 100%;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.btn-order-grid {
+    width: 100%;
+    position: inherit;
+    right: 0;
+    bottom: 0;
+}
+
+.btn-order span {
+    color: white;
+    font-weight: bold;
+}
+
+.owl-item {
+    margin-bottom: 15px;
+}
+
+.owl-carousel .owl-item img {
+    width: 160px;
+    height: 160px;
+    display: block;
+    margin: auto;
+}
+
+.parent-menu {
+    background-color: #5AC0DE;
+    color: #FFF;
+}
+
+.parent-menu a {
+    font-weight: bold;
+    color: #FFF;
+}
+
+.sidebar ul li a {
+    color: unset;
+}
+
+/*New layout*/
+.header-nav-top {
+    background: #00505F;
+}
+
+.footer-bottom {
+    background: #00505F;
+}
+
+.footer-top {
+    background: #f5f5f5;
+}
+
+.theme-btn {
+    background: #ea9b27;
+}
+
+.modern-top-intoduce-section {
+    position: relative;
+    background-attachment: unset;
+    background-size: 100% 100%;
+}
+
+.modern-post-ad-call-to-cation {
+    background-image: url("../img/banner-footer.jpg");
+    background-attachment: unset;
+    background-repeat: no-repeat;
+    position: inherit;
+    background-size: 100% 100%;
+}
+.modern-post-ad-call-to-cation::before {
+    background-image: url("../img/banner-footer.jpg");
+    background-attachment: unset;
+    background-repeat: no-repeat;
+    position: inherit;
+    background-size: 100% 100%;
+}
+
+.footer-widget {
+    color: #01505E;
+}
+
+.footer-widget.footer-address a {
+    color: #01505E;
+}
+
+.footer-top ul.footer-menu li a {
+    color: #01505E;
+}
+
+.social-ul a {
+    color: #29ABD2;
+}
+
+.btn {
+    border-radius: 5px;
+    border: 0px;
+}
+
+.btn:hover {
+    background: #00505F;
+}
+
+.themeqx-carousel-ads .owl-controls, .themeqx-carousel-blog-post .owl-controls {
+    position: absolute;
+    top: 59px;
+    right: 0;
+}
+
+.text-muted {
+    color: #01505E;
+}
+
+.text-muted a {
+    color: #01505E;
+}
+
+.ads-item-thumbnail .caption a {
+    color: #01505E;
+}
+.h1-custom, .h2-custom {
+    color: #01505E;
+}
+.modern-single-ad-price {
+    color: #0c0c0c;
+}
+
+/*End new layout*/
+
+.navbar-brand img {
+    width: 220px;
+}
+.ads-item-thumbnail .caption .price , .ads-item-thumbnail .caption .location {
+    display: inline;
+}
+
+.d-inline-block {
+    display: inline-block;
+}
+
+.btn-default {
+    color: #fff;
+    background: #01505E;
+}
+
+/* New Menu */
+.animatedParent {
+    width: 59%;
+}
+
+.loginBar a {
+    color: #fff
+}

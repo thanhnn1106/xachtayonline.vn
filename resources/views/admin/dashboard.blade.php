@@ -98,26 +98,26 @@
                         <div class="panel-heading">
                             <div class="row">
                                 <div class="col-xs-12">
-                                    <div class="huge">{{ $total_payments }}</div>
-                                    <div>@lang('app.success_payments')</div>
+                                    <div class="huge">{{ $total_orders }}</div>
+                                    <div>@lang('app.total_order')</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="huge">{{ $total_orders_amount }}</div>
+                                    <div>@lang('app.total_order_amount')</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-lg-3 col-md-6">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="huge">  {{ $total_payments_amount }} <sup>{{ get_option('currency_sign') }}</sup></div>
-                                    <div>@lang('app.total_payment')</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 @endif
 
             </div>

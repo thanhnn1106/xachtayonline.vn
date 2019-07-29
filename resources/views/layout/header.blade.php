@@ -7,22 +7,29 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>@section('title') {{ get_option('site_title') }} @show</title>
-    <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    @yield('data-structure-json')
     @section('social-meta')
-        <meta property="og:title" content="{{ get_option('site_title') }}">
-        <meta property="og:description" content="{{ get_option('meta_description') }}">
-        <meta property="og:image" content="http://euro-travel-example.com/thumbnail.jpg">
-        <meta property="og:url" content="{{ route('home') }}">
+        <meta name="robots" content="index, follow" class="next-head">
+        <meta name="description" content="{{ get_option('meta_description') }}" class="next-head">
+        <meta property="og:title" content="{{ get_option('site_title') }}" class="next-head">
+        <meta property="og:description" content="{{ get_option('meta_description') }}" class="next-head">
+        <meta property="og:image" content="https://xachtayonline-vn.s3-ap-southeast-1.amazonaws.com/uploads/images/xachtayonline-vn.jpeg" class="next-head">
+        <meta property="og:url" content="{{ route('home') }}" class="next-head">
         <meta name="twitter:card" content="summary_large_image">
         <!--  Non-Essential, But Recommended -->
-        <meta name="og:site_name" content="{{ get_option('site_name') }}">
+        <meta name="og:site_name" content="{{ get_option('site_name') }}" class="next-head">
     @show
-
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-5D8NNFX');</script>
+    <!-- End Google Tag Manager -->
     <!-- bootstrap css -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-theme.min.css') }}">
+    {{--<link rel="stylesheet" href="{{ asset('assets/css/bootstrap-theme.min.css') }}">--}}
     <!-- Font awesome 4.4.0 -->
     <link rel="stylesheet" href="{{ asset('assets/font-awesome-4.4.0/css/font-awesome.min.css') }}">
     <!-- load page specific css -->
@@ -34,32 +41,41 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/nprogress/nprogress.css') }}">
 
     <!-- Conditional page load script -->
-    @if(request()->segment(1) === 'dashboard')
+@if(request()->segment(1) === 'dashboard')
         <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/plugins/metisMenu/dist/metisMenu.min.css') }}">
-        @endif
+    @endif
 
-                <!-- main style.css -->
+    <!-- main style.css -->
 
-        <?php
+<?php
             $default_style = get_option('default_style');
             $default_style = 'blue';
         ?>
-        @if($default_style == 'default')
-            <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-        @else
-            <link rel="stylesheet" href="{{ asset("assets/css/style-{$default_style}.css") }}">
+    @if($default_style == 'default')
+        <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    @else
+        <link rel="stylesheet" href="{{ asset("assets/css/style-{$default_style}.css") }}">
+    @endif
+    @yield('page-css')
+
+@if(get_option('additional_css'))
         @endif
+    <style type="text/css">
+        {{ get_option('additional_css') }}
+    </style>
 
-        @yield('page-css')
+    <script src="{{ asset('assets/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js') }}"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-141776126-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-        @if(get_option('additional_css'))
-            <style type="text/css">
-                {{ get_option('additional_css') }}
-            </style>
-        @endif
-
-        <script src="{{ asset('assets/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js') }}"></script>
+        gtag('config', 'UA-141776126-1');
+    </script>
+    <link rel="stylesheet" href="{{ asset('assets/css/style-custom.css') }}">
 </head>
 <body>
 <!--[if lt IE 8]>
@@ -74,7 +90,7 @@
                     <ul class="nav nav-pills">
                         @if(get_option('site_phone_number'))
                             <li>
-                                <a href="callto://+{{get_option('site_phone_number')}}">
+                                <a href="tel:{{get_option('site_phone_number')}}">
                                     <i class="fa fa-phone"></i>
                                     +{{ get_option('site_phone_number') }}
                                 </a>
@@ -103,11 +119,13 @@
                                     <i class="fa fa-user"></i>
                                     @lang('app.hi'), {{ $logged_user->name }} </a>
                             </li>
+                            @if($lUser->is_admin())
                             <li>
                                 <a href="{{ route('dashboard') }}">
                                     <i class="fa fa-dashboard"></i>
                                     Dashboard </a>
                             </li>
+                            @endif
                             <li>
                                 <a href="{{ route('logout') }}">
                                     <i class="fa fa-sign-out"></i>
@@ -119,17 +137,35 @@
 
                 @else
 
-                    {{ Form::open(['route'=>'login','class'=> 'navbar-form navbar-right', 'role'=> 'form']) }}
-                    <div class="form-group">
-                        <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="email address">
-                    </div>
-                    <div class="form-group">
-                        <input  type="password" class="form-control" name="password" placeholder="Password">
-                    </div>
-                    <button type="submit" class="btn btn-success">@lang('app.sign_in')</button>
-                    {{ Form::close() }}
+                    {{--{{ Form::open(['route'=>'login','class'=> 'navbar-form navbar-right', 'role'=> 'form']) }}--}}
+                    {{--<div class="form-group">--}}
+                        {{--<input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="{{ trans('app.email_address') }}">--}}
+                    {{--</div>--}}
+                    {{--<div class="form-group">--}}
+                        {{--<input  type="password" class="form-control" name="password" placeholder="{{ trans('app.password') }}">--}}
+                    {{--</div>--}}
+                    {{--<button type="submit" class="btn btn-success theme-btn">@lang('app.login')</button>--}}
+                    {{--{{ Form::close() }}--}}
                 @endif
+                <ul class="nav nav-pills pull-right loginBar">
+                    @if($header_menu_pages->count() > 0)
+                        @foreach($header_menu_pages as $page)
+                            <li><a class="text-white" href="{{ route('single_page', $page->slug) }}">{{ $page->title }} </a></li>
+                        @endforeach
+                    @endif
 
+                    @if( ! Auth::check())
+                        <li><a href="{{ route('login') }}"> <i class="fa fa-lock"></i>  {{ trans('app.login') }}  </a>  </li>
+                        <li><a href="{{ route('user.create') }}"> <i class="fa fa-save"></i>  {{ trans('app.register') }}</a></li>
+                    @endif
+                    @if(Auth::check() && $lUser->is_admin())
+                        <li><a href="{{ route('create_ad') }}"> <i class="fa fa-tag"></i> @lang('app.post_an_ad')</a></li>
+                    @endif
+                    @if(get_option('show_blog_in_header'))
+                        <li><a href="{{ route('blog') }}"> <i class="fa fa-rss"></i> @lang('app.blog')</a></li>
+                    @endif
+                    <li><a href="{{ route('contact_us_page') }}"> <i class="fa fa-mail-forward"></i>@lang('app.contact_us')</a></li>
+                </ul>
             </div>
         </div>
     </div>
@@ -139,12 +175,6 @@
 <nav class="navbar navbar-default" role="navigation">
     <div class="container">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
             <a class="navbar-brand" href="{{ route('home') }}">
                 @if(get_option('logo_settings') == 'show_site_name')
                     {{ get_option('site_name') }}
@@ -158,41 +188,15 @@
 
             </a>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-
-            <ul class="nav navbar-nav navbar-right">
-
-                @if($header_menu_pages->count() > 0)
-                    @foreach($header_menu_pages as $page)
-                        <li><a href="{{ route('single_page', $page->slug) }}">{{ $page->title }} </a></li>
-                    @endforeach
-                @endif
-
-                @if( ! Auth::check())
-                    <li><a href="{{ route('login') }}"> <i class="fa fa-lock"></i>  {{ trans('app.login') }}  </a>  </li>
-                    <li><a href="{{ route('user.create') }}"> <i class="fa fa-save"></i>  {{ trans('app.register') }}</a></li>
-                @endif
-
-                <li><a href="{{ route('create_ad') }}"> <i class="fa fa-tag"></i> @lang('app.post_an_ad')</a></li>
-                @if(get_option('show_blog_in_header'))
-                    <li><a href="{{ route('blog') }}"> <i class="fa fa-rss"></i> @lang('app.blog')</a></li>
-                @endif
-                <li><a href="{{ route('contact_us_page') }}"> <i class="fa fa-mail-forward"></i>@lang('app.contact_us')</a></li>
-
-                    @if(get_option('enable_language_switcher') == 1)
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Language <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{{ route('switch_language', 'en') }}">English</a></li>
-                                @foreach(get_languages() as $lang)
-                                    <li><a href="{{ route('switch_language', $lang->language_code) }}">{{ $lang->language_name }}</a></li>
-                                @endforeach
-                            </ul>
-                        </li>
-                    @endif
-            </ul>
-
-
-        </div><!--/.navbar-collapse -->
+        @if (\Request::route()->getName() == 'home')
+        <div class="navbar-form navbar-right">
+            <form class="form-inline-block" action="{{ route('listing') }}" method="get">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="searchTerms" name="q" value="{{ request('q') }}" placeholder="@lang('app.search___')" />
+                </div>
+                <button type="submit" class="btn theme-btn"> <i class="fa fa-search"></i> @lang('app.search_product')</button>
+            </form>
+        </div>
+        @endif
     </div>
 </nav>

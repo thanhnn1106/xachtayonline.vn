@@ -23,10 +23,10 @@ class AppServiceProvider extends ServiceProvider
             'filesystems.disks.s3' =>
                 [
                     'driver' => 's3',
-                    'key' => get_option('amazon_key'),
-                    'secret' => get_option('amazon_secret'),
-                    'region' => get_option('amazon_region'),
-                    'bucket' => get_option('bucket'),
+                    'key' => getenv('AWS_ACCESS_KEY_ID'),
+                    'secret' => getenv('AWS_SECRET_ACCESS_KEY'),
+                    'region' => getenv('AWS_DEFAULT_REGION'),
+                    'bucket' => getenv('AWS_BUCKET'),
                 ]
         ];
         $facebookConfig = [
@@ -51,8 +51,8 @@ class AppServiceProvider extends ServiceProvider
 
         view()->composer('*', function($view)
         {
-            $header_menu_pages = Post::whereStatus(1)->where('show_in_header_menu', 1)->get();
-            $show_in_footer_menu = Post::whereStatus(1)->where('show_in_footer_menu', 1)->get();
+            $header_menu_pages = Post::where('status',1)->where('show_in_header_menu', 1)->get();
+            $show_in_footer_menu = Post::where('status',1)->where('show_in_footer_menu', 1)->get();
             
             $enable_monetize = get_option('enable_monetize');
             $loggedUser = null;

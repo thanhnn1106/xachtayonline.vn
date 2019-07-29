@@ -14,22 +14,29 @@ class CreateAdsTable extends Migration
     {
         Schema::create('ads', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('sku')->nullable();
+            $table->string('name');
             $table->string('title');
             $table->string('slug');
             $table->text('description');
+            $table->text('content');
 
             $table->integer('category_id');
             $table->integer('sub_category_id');
             $table->integer('brand_id');
-            $table->enum('type', ['personal', 'business']);
-            $table->enum('ad_condition', ['new', 'used']);
+            $table->enum('type', ['personal', 'business'])->nullable();
+            $table->enum('ad_condition', ['new', 'used'])->nullable();
             $table->string('model');
             $table->decimal('price', 12,2);
+            $table->decimal('discount_price', 12,2);
             $table->enum('is_negotiable', [0,1]);
 
             $table->string('seller_name');
             $table->string('seller_email');
             $table->string('seller_phone');
+
+            $table->integer('shipping_day');
+            $table->decimal('shipping_fee');
 
             $table->integer('country_id');
             $table->integer('state_id');
@@ -45,6 +52,7 @@ class CreateAdsTable extends Migration
             $table->integer('view');
             $table->integer('max_impression');
             $table->integer('user_id');
+            $table->boolean('is_out_of_stock')->default(0);
             $table->timestamps();
         });
     }

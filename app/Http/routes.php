@@ -24,12 +24,14 @@ Route::get('blog/{slug}', ['as' => 'blog_single', 'uses'=>'PostController@blogSi
 Route::get('blog/author/{id}', ['as' => 'author_blog_posts', 'uses'=>'PostController@authorPosts']);
 
 
-Route::get('listing', ['as' => 'listing', 'uses'=>'AdsController@listing']);
-Route::get('ad/{slug}', ['as' => 'single_ad', 'uses'=>'AdsController@singleAd']);
+Route::get('danh-sach', ['as' => 'listing', 'uses'=>'AdsController@listing']);
+Route::get('san-pham/{slug}', ['as' => 'single_ad', 'uses'=>'AdsController@singleAd']);
 
 Route::post('save-ad-as-favorite', ['as' => 'save_ad_as_favorite', 'uses'=>'UserController@saveAdAsFavorite']);
 Route::post('report-post', ['as' => 'report_ads_pos', 'uses'=>'AdsController@reportAds']);
 Route::post('reply-by-email', ['as' => 'reply_by_email_post', 'uses'=>'UserController@replyByEmailPost']);
+
+Route::get('verify/{email}/{activation_code}/{id}', ['as' => 'verify_email', 'uses'=>'UserController@verifyEmail']);
 
 // Password reset routes...
 Route::post('send-password-reset-link', ['as' => 'send_reset_link', 'uses'=>'Auth\PasswordController@postEmail']);
@@ -42,6 +44,11 @@ Route::post('get-category-info', ['as'=>'get_category_info', 'uses' => 'AdsContr
 Route::post('get-state-by-country', ['as'=>'get_state_by_country', 'uses' => 'AdsController@getStateByCountry']);
 Route::post('get-city-by-state', ['as'=>'get_city_by_state', 'uses' => 'AdsController@getCityByState']);
 Route::post('switch/product-view', ['as'=>'switch_grid_list_view', 'uses' => 'AdsController@switchGridListView']);
+
+
+// Order
+Route::get('dat-hang/{ad_id}', ['as' => 'order', 'uses'=>'OrderController@order']);
+Route::post('dat-hang/luu', ['as' => 'submit_order', 'uses'=>'OrderController@submitOrder']);
 
 
 
@@ -108,13 +115,15 @@ Route::group(['prefix'=>'dashboard', 'middleware' => 'dashboard'], function(){
         });
 
         Route::group(['prefix'=>'categories'], function(){
-            Route::get('/', ['as'=>'parent_categories', 'uses' => 'CategoriesController@index']);
+            Route::get('/', ['as'=>'parent_categories', 'uses' => 'CategoriesController@index_admin']);
             Route::post('/', ['uses' => 'CategoriesController@store']);
 
             Route::get('edit/{id}', ['as'=>'edit_categories', 'uses' => 'CategoriesController@edit']);
             Route::post('edit/{id}', ['uses' => 'CategoriesController@update']);
 
             Route::post('delete-categories', ['as'=>'delete_categories', 'uses' => 'CategoriesController@destroy']);
+
+            Route::match(['GET', 'POST'], 'order-categories', ['as'=>'order_categories', 'uses' => 'CategoriesController@orderCategories']);
         });
 
         Route::group(['prefix'=>'brands'], function(){
@@ -158,16 +167,23 @@ Route::group(['prefix'=>'dashboard', 'middleware' => 'dashboard'], function(){
             Route::post('update-caption', ['as'=>'update_slider_caption', 'uses' => 'SliderController@update']);
         });
 
-        Route::get('approved', ['as'=>'approved_ads', 'uses' => 'AdsController@index']);
+        Route::get('all-ads', ['as'=>'all_ads', 'uses' => 'AdsController@index']);
+        Route::get('approved', ['as'=>'approved_ads', 'uses' => 'AdsController@adminApprovedAds']);
         Route::get('pending', ['as'=>'admin_pending_ads', 'uses' => 'AdsController@adminPendingAds']);
         Route::get('blocked', ['as'=>'admin_blocked_ads', 'uses' => 'AdsController@adminBlockedAds']);
         Route::post('status-change', ['as'=>'ads_status_change', 'uses' => 'AdsController@adStatusChange']);
-
         Route::get('ad-reports', ['as'=>'ad_reports', 'uses' => 'AdsController@reports']);
-        Route::get('users', ['as'=>'users', 'uses' => 'UserController@index']);
-        Route::get('users-data', ['as'=>'get_users_data', 'uses' => 'UserController@usersData']);
-        Route::get('users-info/{id}', ['as'=>'user_info', 'uses' => 'UserController@userInfo']);
         Route::post('delete-reports', ['as'=>'delete_report', 'uses' => 'AdsController@deleteReports']);
+
+        Route::get('users', ['as'=>'users', 'uses' => 'UserController@index']);
+        Route::get('seller', ['as'=>'sellers', 'uses' => 'UserController@index']);
+        Route::get('users/add-new', ['as'=>'users_add_new', 'uses' => 'UserController@addNew']);
+        Route::post('users/admin/add-new', ['as'=>'users_admin_add_new', 'uses' => 'UserController@adminAddNewUser']);
+        Route::get('users-data/{userType}', ['as'=>'get_users_data', 'uses' => 'UserController@usersData']);
+        Route::get('users-info/{id}', ['as'=>'user_info', 'uses' => 'UserController@userInfo']);
+        Route::post('user-status-change', ['as'=>'update_user_status', 'uses' => 'UserController@userStatusChange']);
+        Route::post('delete', ['as'=>'delete_user', 'uses' => 'UserController@destroy']);
+
 
         Route::get('contact-messages', ['as'=>'contact_messages', 'uses' => 'HomeController@contactMessages']);
         Route::get('contact-messages-data', ['as'=>'contact_messages_data', 'uses' => 'HomeController@contactMessagesData']);
@@ -224,7 +240,7 @@ Route::group(['prefix'=>'dashboard', 'middleware' => 'dashboard'], function(){
             Route::post('profile/edit', ['uses' => 'UserController@profileEditPost']);
             Route::get('profile/change-avatar', ['as'=>'change_avatar', 'uses' => 'UserController@changeAvatar']);
             Route::post('upload-avatar', ['as'=>'upload_avatar',  'uses' => 'UserController@uploadAvatar']);
-
+            Route::get('profile/change-avatar', ['as'=>'change_avatar', 'uses' => 'UserController@changeAvatar']);
             /**
              * Change Password route
              */
@@ -233,7 +249,11 @@ Route::group(['prefix'=>'dashboard', 'middleware' => 'dashboard'], function(){
                 Route::post('change-password', 'UserController@changePasswordPost');
             });
 
-
+            Route::group(['prefix' => 'orders'], function() {
+                Route::get('history', ['as' => 'order_history', 'uses' => 'OrderController@orderHistory']);
+                Route::get('order-history-data', ['as'=>'get_order_history_data', 'uses' => 'OrderController@orderHistoryData']);
+                Route::get('order-info/{order_id}', ['as'=>'order_info', 'uses' => 'OrderController@orderInfo']);
+            });
         });
     });
 

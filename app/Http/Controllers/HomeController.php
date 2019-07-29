@@ -21,13 +21,31 @@ class HomeController extends Controller
         $limit_urgent_ads = get_option('number_of_urgent_ads_in_home');
 
         $sliders = Slider::all();
-        $countries = Country::all();
-        $top_categories = Category::whereCategoryId(0)->orderBy('category_name', 'asc')->get();
-        $premium_ads = Ad::activePremium()->with('category', 'city')->limit($limit_premium_ads)->orderBy('id', 'desc')->get();
-        $regular_ads = Ad::activeRegular()->with('category', 'city')->limit($limit_regular_ads)->orderBy('id', 'desc')->get();
-        $urgent_ads = Ad::activeUrgent()->with('category', 'city')->limit($limit_urgent_ads)->orderBy('id', 'desc')->get();
+        $countries = Country::whereIn('country_code', ['US', 'JP', 'KR', 'MY', 'SG', 'HK', 'PH', 'TL', 'ID', 'VN'])->get();
+        $top_categories = Category::where('category_id', 0)
+            ->orderBy('ordering')
+            ->where('is_active', 1)
+            ->get();
+        $premium_ads = Ad::activePremium()
+            ->with('category', 'city')
+            ->limit($limit_premium_ads)
+            ->orderBy('id', 'desc')
+            ->get();
+        $regular_ads = Ad::activeRegular()
+            ->with('category', 'city')
+            ->limit($limit_regular_ads)
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-        $posts = Post::whereType('post')->whereStatus(1)->limit(get_option('blog_post_amount_in_homepage'))->get();
+        $urgent_ads = Ad::activeUrgent()
+            ->with('category', 'city')
+            ->limit($limit_urgent_ads)
+            ->orderBy('view', 'desc')
+            ->get();
+
+        $posts = Post::where('type', 'post')->where('status', '1')
+            ->limit(get_option('blog_post_amount_in_homepage'))
+            ->get();
 
         return view($this->theme.'index', compact('top_categories', 'premium_ads', 'regular_ads','urgent_ads', 'countries', 'sliders', 'posts'));
     }

@@ -71,6 +71,7 @@ class User extends Authenticatable
     public function ads(){
         return $this->hasMany(Ad::class);
     }
+
     public function favourite_ads(){
         return $this->belongsToMany(Ad::class, 'favorites');
     }
@@ -105,4 +106,10 @@ class User extends Authenticatable
         return false;
     }
 
+    public function is_seller(){
+        if ($this->user_type == 'seller'){
+            return true;
+        }
+        return false;
+    }
 }
