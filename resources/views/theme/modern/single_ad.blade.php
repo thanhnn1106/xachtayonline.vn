@@ -127,6 +127,7 @@
                                 {{ trans('app.ship_to_vn_price') }}: {{ themeqx_price_ng(number_format($ad->price + $ad->shipping_fee)) }}
                             </h3>
                         @endif
+                        <h5 class="text-danger">Giá trên có thể giảm vì những chương trình SALE LIÊN TỤC VÀ BẤT NGỜ mỗi ngày mà shop chưa kịp cập nhật. Các bạn vui lòng nhấn vào nút "Đặt hàng" hoặc theo dõi FANPAGE trên facebook để nhân viên shop mình báo giá tốt nhất nhé. </h5>
 
 
                         @if($enable_monetize)

@@ -226,7 +226,7 @@
                     <div class="carousel-header">
                         <h4>
                             <a href="{{ route('blog') }}">
-                                @lang('app.latest_post_from_blog')
+                                @lang('app.new_trend')
                             </a>
                         </h4>
                     </div>
@@ -234,11 +234,11 @@
 
                     <div class="home-latest-blog themeqx-carousel-blog-post">
                         @foreach($posts as $post)
-                            <div>
+                            <div class="ads-item-thumbnail" style="text-align: left;">
                                 <div class="image">
                                     <a href="{{ route('blog_single', $post->slug) }}">
                                         @if($post->feature_img)
-                                            <img alt="{{ $post->title }}" src="{{ media_url($post->feature_img) }}">
+                                            <img style="width: 100%;" alt="{{ $post->title }}" src="{{ media_url($post->feature_img, false, 'blog-images') }}">
                                         @else
                                             <img  alt="{{ $post->title }}" src="{{ asset('uploads/placeholder.png') }}">
                                         @endif
@@ -256,7 +256,8 @@
                                     </span>
                                     <div class="clearfix"></div>
                                 </div>
-                                <p class="intro"> {{ str_limit(strip_tags($post->post_content), 80) }}</p>
+                                <p><i class="fa fa-eye"></i> Đã xem: {{ $post->viewed }}</p>
+                                <p class="intro"> {!! str_limit(strip_tags($post->post_content), 80) !!}</p>
                                 <a class="btn btn-default" href="{{ route('blog_single', $post->slug) }}" >@lang('app.continue_reading')  <i class="fa fa-external-link"></i> </a>
 
                             </div>

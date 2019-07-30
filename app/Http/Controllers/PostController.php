@@ -45,8 +45,8 @@ class PostController extends Controller
 
     public function posts()
     {
-        $title = trans('app.posts');
-        return view('admin.posts', compact('title'));
+        $title = trans('app.trend');
+        return view('admin.posts_management.posts', compact('title'));
     }
 
     public function postsData(){
@@ -63,16 +63,20 @@ class PostController extends Controller
                 return $button;
             })
             ->removeColumn('id', 'slug')
-            ->make();
+            ->escapeColumns(['*'])
+            ->make(false);
     }
 
     public function createPost()
     {
         $user_id = Auth::user()->id;
         $title = trans('app.create_new_post');
-        $ads_images = Media::where('user_id',$user_id)->wherePostId(0)->whereRef('blog')->get();
+        $ads_images = Media::where('user_id', $user_id)
+            ->where('post_id', 0)
+            ->where('ref', 'blog')
+            ->get();
 
-        return view('admin.post_create', compact('title', 'ads_images'));
+        return view('admin.posts_management.post_create', compact('title', 'ads_images'));
     }
 
     /**
@@ -98,13 +102,17 @@ class PostController extends Controller
             'slug'                  => $slug,
             'post_content'          => $request->post_content,
             'type'                  => 'post',
-            'status'                => 1,
+            'status'                => '1',
+            'viewed'                => 0,
         ];
 
         $post_created = Post::create($data);
 
         if ($post_created){
-            Media::where('user_id',$user_id)->wherePostId(0)->whereRef('blog')->update(['post_id'=>$post_created->id]);
+            Media::where('user_id',$user_id)
+                ->where('post_id', 0)
+                ->where('ref', 'blog')
+                ->update(['post_id'=>$post_created->id]);
 
             return redirect(route('posts'))->with('success', trans('app.post_has_been_created'));
         }
@@ -116,9 +124,13 @@ class PostController extends Controller
     {
         $user_id = Auth::user()->id;
         $title = trans('app.edit_post');
-        $post = Post::whereSlug($slug)->first();
+        $post = Post::where('slug', $slug)->first();
+        $ads_images = Media::where('user_id', $user_id)
+            ->where('post_id', $post->id)
+            ->where('ref', 'blog')
+            ->get();
 
-        return view('admin.edit_post', compact('title', 'post'));
+        return view('admin.posts_management.edit_post', compact('title', 'post', 'ads_images'));
     }
 
     public function updatePost(Request $request, $slug){
@@ -128,7 +140,7 @@ class PostController extends Controller
             'post_content'   => 'required',
         ];
         $this->validate($request, $rules);
-        $page = Post::whereSlug($slug)->first();
+        $page = Post::where('slug', $slug)->first();
 
         $data = [
             'title'                 => $request->title,
@@ -138,7 +150,10 @@ class PostController extends Controller
         $post_update = $page->update($data);
         if ($post_update){
             if (! $page->feature_img){
-                Media::where('user_id',$user_id)->wherePostId(0)->whereRef('blog')->update(['post_id'=>$page->id]);
+                Media::where('user_id',$user_id)
+                    ->where('post_id', 0)
+                    ->where('ref', 'blog')
+                    ->update(['post_id'=>$page->id]);
             }
 
             return redirect()->back()->with('success', trans('app.post_has_been_updated'));
@@ -151,11 +166,17 @@ class PostController extends Controller
         $post_id = $request->post_id ? $request->post_id : 0 ;
 
         //Check is this post belongs with any image
-        $attachedPostMediaCount = Media::where('user_id',$user_id)->wherePostId($post_id)->whereRef('blog')->count();
+        $attachedPostMediaCount = Media::where('user_id',$user_id)
+            ->where("post_id", $post_id)
+            ->where('ref', 'blog')
+            ->count();
         if ($attachedPostMediaCount > 0){
             return ['success' => 0, 'msg' => trans('app.max_image_uploaded_msg')];
         }else{
-            $postMediaCount = Media::where('user_id',$user_id)->wherePostId(0)->whereRef('blog')->count();
+            $postMediaCount = Media::where('user_id',$user_id)
+                ->where('post_id', 0)
+                ->where('ref', 'blog')
+                ->count();
             if ($postMediaCount > 0){
                 return ['success' => 0, 'msg'=> trans('app.max_image_uploaded_msg')];
             }
@@ -171,15 +192,15 @@ class PostController extends Controller
 
             $file_base_name = str_replace('.'.$image->getClientOriginalExtension(), '', $image->getClientOriginalName());
 
-            $resized = Image::make($image)->resize(null, 200, function ($constraint) {
+            $resized = Image::make($image)->resize(640, null, function ($constraint) {
                 $constraint->aspectRatio();
             })->stream();
             $resized_thumb = Image::make($image)->resize(320, 213)->stream();
 
-            $image_name = strtolower(time().str_random(5).'-'.str_slug($file_base_name)).'.' . $image->getClientOriginalExtension();
+            $image_name = strtolower(time().'-'.str_slug($file_base_name)).'.' . $image->getClientOriginalExtension();
 
-            $imageFileName = 'uploads/images/'.$image_name;
-            $imageThumbName = 'uploads/images/thumbs/'.$image_name;
+            $imageFileName = 'blog-images/'.$image_name;
+            $imageThumbName = 'blog-images/thumb/'.$image_name;
 
             //Upload original image
             $is_uploaded = current_disk()->put($imageFileName, $resized->__toString(), 'public');
@@ -199,11 +220,15 @@ class PostController extends Controller
     }
 
 
-    public function appendPostMediaImage(){
+    public function appendPostMediaImage()
+    {
         $user_id = Auth::user()->id;
-        $ads_images = Media::where('user_id',$user_id)->wherePostId(0)->whereRef('blog')->get();
+        $ads_images = Media::where('user_id',$user_id)
+            ->where('post_id', 0)
+            ->where('ref', 'blog')
+            ->get();
 
-        return view('admin.append_media', compact('ads_images'));
+        return view('admin.posts_management.append_media', compact('ads_images'));
     }
 
 
@@ -243,7 +268,7 @@ class PostController extends Controller
             'slug'                  => $slug,
             'post_content'          => $request->post_content,
             'type'                  => 'page',
-            'status'                => 1,
+            'status'                => '1',
             'show_in_header_menu'   => $show_in_header_menu,
             'show_in_footer_menu'   => $show_in_footer_menu,
         ];
@@ -276,7 +301,7 @@ class PostController extends Controller
     public function edit($slug)
     {
         $title = trans('app.edit_page');
-        $page = Post::whereSlug($slug)->first();
+        $page = Post::where('slug', $slug)->first();
         return view('admin.edit_page', compact('title', 'page'));
     }
 
@@ -286,7 +311,7 @@ class PostController extends Controller
             'post_content'   => 'required',
         ];
         $this->validate($request, $rules);
-        $page = Post::whereSlug($slug)->first();
+        $page = Post::where('slug', $slug)->first();
 
         $show_in_header_menu = $request->show_in_header_menu ? 1:0;
         $show_in_footer_menu = $request->show_in_footer_menu ? 1:0;
@@ -307,7 +332,7 @@ class PostController extends Controller
     }
     
     public function showPage($slug){
-        $page = Post::whereSlug($slug)->first();
+        $page = Post::where('slug', $slug)->first();
 
         if (! $page){
             return view('theme.error_404');
@@ -318,13 +343,15 @@ class PostController extends Controller
 
 
     public function blogIndex(){
-        $posts = Post::whereType('post')->where('status',1)->paginate(20);
-        $title = trans('app.blog');
+        $posts = Post::where('type', 'post')->where('status', '1')->paginate(20);
+        $title = trans('app.trend');
         return view('theme.blog', compact('title', 'posts'));
     }
 
     public function blogSingle($slug){
-        $post = Post::whereSlug($slug)->first();
+        $post = Post::where('slug', $slug)->first();
+        $post->viewed = $post->viewed + 1;
+        $post->save();
         $title = $post->title;
         
         $enable_discuss = get_option('enable_disqus_comment_in_blog');
@@ -332,7 +359,7 @@ class PostController extends Controller
     }
 
     public function authorPosts($id){
-        $posts = Post::whereType('post')->where('user_id',$id)->where('status',1)->paginate(20);
+        $posts = Post::where('type', 'post')->where('user_id',$id)->where('status',1)->paginate(20);
         $user = User::find($id);
         $title = $user->name."'s ".trans('app.blog');
         return view('theme.blog', compact('title', 'posts'));
@@ -360,7 +387,7 @@ class PostController extends Controller
     public function destroy(Request $request)
     {
         $slug = $request->slug;
-        $page = Post::whereSlug($slug)->first();
+        $page = Post::where('slug', $slug)->first();
         if ($page){
             $page->delete();
             return ['success' => 1, 'msg' => trans('app.operation_success')];

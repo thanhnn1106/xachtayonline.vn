@@ -594,7 +594,7 @@ class AdsController extends Controller
         $media_id = $request->media_id;
 
         Media::where('user_id' , $user_id)->where('ad_id' , 0)->where('ref' , 'ad')->update(['is_feature'=>0]);
-        Media::whereId($media_id)->update(['is_feature'=>1]);
+        Media::where('id', $media_id)->update(['is_feature'=>1]);
 
         return ['success'=>1, 'msg'=>trans('app.media_featured_msg')];
     }

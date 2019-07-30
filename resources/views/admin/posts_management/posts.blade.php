@@ -57,8 +57,11 @@
         $(document).ready(function() {
             $('#jDataTable').DataTable({
                 processing: true,
-                serverSide: true,
+                serverSide: false,
                 ajax: '{{ route('posts_data') }}',
+                language: {
+                    url : '//cdn.datatables.net/plug-ins/1.10.10/i18n/Vietnamese.json'
+                },
                 "aaSorting": []
             });
         });

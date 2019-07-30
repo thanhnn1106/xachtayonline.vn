@@ -9,9 +9,8 @@
  * @param bool $full_size
  * @return \Illuminate\Contracts\Routing\UrlGenerator|string
  */
-function media_url($img = '', $full_size = false){
+function media_url($img = '', $full_size = false, $root_folder = 'product_images'){
     $url_path = '';
-
     if ($img){
         if ($img->type == 'image'){
             if ($img->storage == 'public'){
@@ -22,9 +21,9 @@ function media_url($img = '', $full_size = false){
                 }
             }elseif ($img->storage == 's3'){
                 if ($full_size){
-                    $url_path = \Illuminate\Support\Facades\Storage::disk('s3')->url('product_images/' . $img->media_name);
+                    $url_path = \Illuminate\Support\Facades\Storage::disk('s3')->url($root_folder . '/' . $img->media_name);
                 }else{
-                    $url_path = \Illuminate\Support\Facades\Storage::disk('s3')->url('product_images/thumb/' . $img->media_name);
+                    $url_path = \Illuminate\Support\Facades\Storage::disk('s3')->url($root_folder . '/thumb/' . $img->media_name);
                 }
 
             }

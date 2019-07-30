@@ -10,10 +10,7 @@
                 @if( ! empty($title))
                     <div class="row">
                         <div class="col-lg-12">
-                            <h1 class="page-header"> {{ $title }}
-                                <a href="{{ route('create_new_post') }}" class="btn btn-info pull-right"> <i class="fa fa-floppy-o"></i> @lang('app.create_new_post')</a>
-
-                            </h1>
+                            <h1 class="page-header"> {{ $title }}  </h1>
                         </div> <!-- /.col-lg-12 -->
                     </div> <!-- /.row -->
                 @endif
@@ -27,33 +24,33 @@
 
                         <div class="form-group {{ $errors->has('title')? 'has-error':'' }}">
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" id="title" value="{{ old('title')?old('title'): $post->title }}" name="title" placeholder="@lang('app.title')">
+                                <input type="text" class="form-control" id="title" value="{{ old('title') }}" name="title" placeholder="@lang('app.title')">
                                 {!! $errors->has('title')? '<p class="help-block">'.$errors->first('title').'</p>':'' !!}
                             </div>
                         </div>
 
                         <div class="form-group {{ $errors->has('post_content')? 'has-error':'' }}">
                             <div class="col-sm-12">
-                                <textarea name="post_content" id="post_content" class="form-control">{!!  old('post_content')? old('post_content'): $post->post_content !!}</textarea>
+                                <textarea name="post_content" id="post_content" class="form-control" rows="6">{{ old('post_content') }}</textarea>
                                 {!! $errors->has('post_content')? '<p class="help-block">'.$errors->first('post_content').'</p>':'' !!}
                             </div>
                         </div>
+
 
                         <div class="form-group {{ $errors->has('images')? 'has-error':'' }}">
                             <div class="col-sm-12">
 
                                 <div id="uploaded-ads-image-wrap">
-                                    @if($post->feature_img)
-
-                                        {{-- */$img = $post->feature_img /* --}}
-                                        <div class="creating-ads-img-wrap">
-                                            <img src="{{ media_url($img, false) }}" class="img-responsive" />
-                                            <div class="img-action-wrap" id="{{ $img->id }}">
-                                                <a href="javascript:;" class="imgDeleteBtn"><i class="fa fa-trash-o"></i> </a>
-                                                <a href="javascript:;" class="imgFeatureBtn"><i class="fa fa-star{{ $img->is_feature ==1 ? '':'-o' }}"></i> </a>
+                                    @if($ads_images->count() > 0)
+                                        @foreach($ads_images as $img)
+                                            <div class="creating-ads-img-wrap">
+                                                <img src="{{ media_url($img, false, 'blog-images') }}" class="img-responsive" />
+                                                <div class="img-action-wrap" id="{{ $img->id }}">
+                                                    <a href="javascript:;" class="imgDeleteBtn"><i class="fa fa-trash-o"></i> </a>
+                                                    <a href="javascript:;" class="imgFeatureBtn"><i class="fa fa-star{{ $img->is_feature ==1 ? '':'-o' }}"></i> </a>
+                                                </div>
                                             </div>
-                                        </div>
-
+                                        @endforeach
                                     @endif
                                 </div>
 
@@ -66,17 +63,17 @@
                                     </label>
                                 </div>
 
-                                <div class="clearfix"></div>
-                                <p class="text-info">@lang('app.post_img_resize_info')</p>
                                 {!! $errors->has('images')? '<p class="help-block">'.$errors->first('images').'</p>':'' !!}
                             </div>
                         </div>
 
+                        <div class="clearfix"></div>
+                        <p class="text-info">@lang('app.post_img_resize_info')</p>
+
 
                         <div class="form-group">
                             <div class="col-sm-9">
-                                <button type="submit" class="btn btn-primary">@lang('app.update_post')</button>
-                                <input type="hidden" name="post_id" value="{{ $post->id }}" />
+                                <button type="submit" class="btn btn-primary">@lang('app.create_new_post')</button>
                             </div>
                         </div>
                         {{ Form::close() }}
@@ -104,6 +101,7 @@
         // instance, using default configuration.
         CKEDITOR.replace( 'post_content' );
     </script>
+
     <script>
         $(document).ready(function() {
             $("#images").change(function () {
@@ -147,4 +145,7 @@
             });
         });
     </script>
+
+
+
 @endsection

@@ -3,31 +3,25 @@
 
 @section('main')
 
-    <div class="jumbotron jumbotron-xs">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h2>{{ $title }}</h2>
-                </div>
-                <div class="col-md-6">
-                    <div class="blog-breadcrumb">
-                        <ul class="breadcrumb">
-                            <li>
-                                <a href="{{ route('home') }}">@lang('app.home')</a>
-                            </li>
-                            <li>
-                                <span>@lang('app.blog')</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+    <div class="container">
+        <div class="row">
+            <div class="blog-breadcrumb pull-left">
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="{{ route('home') }}">@lang('app.home')</a>
+                    </li>
+                    <li>
+                        <span>@lang('app.trend')</span>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
 
     <div class="container">
+        <h2>{{ $title }}</h2>
         <div class="row">
-            <div id="blog-listing" class="col-md-10 col-sm-12 col-md-offset-1">
+            <div id="blog-listing" class="col-md-10 col-sm-12">
                 @foreach($posts as $post)
 
                     <section class="post">
@@ -38,7 +32,7 @@
                                     <div class="image" style="height: 196px;">
                                         <a href="{{ route('blog_single', $post->slug) }}">
                                             @if($post->feature_img)
-                                                <img class="img-responsive" alt="{{ $post->title }}" src="{{ media_url($post->feature_img) }}">
+                                                <img class="img-responsive" alt="{{ $post->title }}" src="{{ media_url($post->feature_img, false, 'blog-images') }}">
                                             @else
                                                 <img class="img-responsive" alt="{{ $post->title }}" src="{{ asset('uploads/placeholder.png') }}">
                                             @endif
@@ -49,10 +43,12 @@
                                     <h2 itemprop="headline"><a href="{{ route('blog_single', $post->slug) }}" class="blog-title">{{ $post->title }}</a></h2>
                                     <div class="clearfix">
                                         @if($post->author)
-                                            <p class="author-category"  itemprop="author" itemscope itemtype="https://schema.org/Person">By <a href="{{ route('author_blog_posts', $post->author->id) }}"  itemprop="name">{{ $post->author->name }}</a></p>
+                                            <p class="author-category"  itemprop="author" itemscope itemtype="https://schema.org/Person">By <a href="{{ route('author_blog_posts', $post->author->id) }}"  itemprop="name">{{ $post->author->name }}</a>
+                                            </p>
                                         @endif
                                         <p class="date-comments">
-                                            <i class="fa fa-calendar"></i> {{ $post->created_at_datetime() }}
+                                            <i class="fa fa-eye"></i> Đã xem: {{ $post->viewed }}  -
+                                            <i class="fa fa-calendar"></i>   {{ $post->created_at_datetime() }}
                                         </p>
                                     </div>
                                     <p class="intro" itemprop="description"> {{ str_limit(strip_tags($post->post_content), 250) }} </p>

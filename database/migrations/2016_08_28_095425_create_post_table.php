@@ -21,6 +21,7 @@ class CreatePostTable extends Migration
             $table->string('feature_image');
             $table->enum('type', ['post', 'page'])->default(null);
             $table->enum('status', [0,1,2])->default(0);
+            $table->integer('viewed')->default(0);
             $table->tinyInteger('show_in_header_menu');
             $table->tinyInteger('show_in_footer_menu');
             $table->timestamps();
