@@ -24,7 +24,7 @@ class HomeController extends Controller
         $countries = Country::whereIn('country_code', ['US', 'JP', 'KR', 'MY', 'SG', 'HK', 'PH', 'TL', 'ID', 'VN'])->get();
         $top_categories = Category::where('category_id', 0)
             ->orderBy('ordering')
-            ->where('is_active', 1)
+            ->where('is_active', '1')
             ->get();
         $premium_ads = Ad::activePremium()
             ->with('category', 'city')
