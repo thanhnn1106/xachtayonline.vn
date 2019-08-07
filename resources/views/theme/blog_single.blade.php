@@ -3,8 +3,9 @@
 
 
 @section('social-meta')
+    <meta name="robots" content="index, follow">
     <meta property="og:title" content="{{ $post->title }}">
-    <meta property="og:description" content="{{ substr(trim(preg_replace('/\s\s+/', ' ',strip_tags($post->post_content) )),0,160) }}">
+    <meta property="og:description" content="{!! substr(trim(preg_replace('/\s\s+/', ' ',strip_tags($post->post_content) )),0,160) !!}">
     @if($post->feature_img)
         <meta property="og:image" content="{{ media_url($post->feature_img, true, 'blog-images') }}">
     @else

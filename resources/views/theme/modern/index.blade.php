@@ -236,7 +236,7 @@
                         @foreach($posts as $post)
                             <div class="ads-item-thumbnail" style="text-align: left;">
                                 <div class="image">
-                                    <a href="{{ route('blog_single', $post->slug) }}">
+                                    <a href="{{ route('blog_single', $post->slug) }}" rel="follow">
                                         @if($post->feature_img)
                                             <img style="width: 100%;" alt="{{ $post->title }}" src="{{ media_url($post->feature_img, false, 'blog-images') }}">
                                         @else
@@ -245,11 +245,11 @@
                                     </a>
                                 </div>
 
-                                <h2><a href="{{ route('blog_single', $post->slug) }}" class="blog-title">{{ $post->title }}</a></h2>
+                                <h2><a href="{{ route('blog_single', $post->slug) }}" class="blog-title" rel="follow">{{ $post->title }}</a></h2>
 
                                 <div class="blog-post-carousel-meta-info">
                                     @if($post->author)
-                                        <span class="pull-left">By <a href="{{ route('author_blog_posts', $post->author->id) }}">{{ $post->author->name }}</a></span>
+                                        <span class="pull-left">By <a href="{{ route('author_blog_posts', $post->author->id) }}" rel="follow">{{ $post->author->name }}</a></span>
                                     @endif
                                     <span class="pull-right">
                                         <i class="fa fa-calendar"></i> {{ $post->created_at_datetime() }}
@@ -257,8 +257,8 @@
                                     <div class="clearfix"></div>
                                 </div>
                                 <p><i class="fa fa-eye"></i> Đã xem: {{ $post->viewed }}</p>
-                                <p class="intro"> {!! str_limit(strip_tags($post->post_content), 80) !!}</p>
-                                <a class="btn btn-default" href="{{ route('blog_single', $post->slug) }}" >@lang('app.continue_reading')  <i class="fa fa-external-link"></i> </a>
+                                <p class="intro"> {!! words_limit(strip_tags($post->post_content), 15) !!}</p>
+                                <a class="btn btn-info theme-btn" style="color: white; font-weight: bold;display: flex;align-items: center;justify-content: center;" href="{{ route('blog_single', $post->slug) }}" rel="follow">@lang('app.continue_reading')  <i class="fa fa-external-link"></i> </a>
 
                             </div>
                         @endforeach

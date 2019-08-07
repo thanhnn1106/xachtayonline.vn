@@ -1,4 +1,21 @@
 <?php
+
+use Illuminate\Support\Str;
+
+
+/**
+ * Limit the number of characters in a string.
+ *
+ * @param  string  $value
+ * @param  int     $limit
+ * @param  string  $end
+ * @return string
+ */
+function words_limit($value, $limit = 100, $end = '...')
+{
+    return Str::words($value, $limit, $end);
+}
+
 /**
  * @return mixed
  * Custom functions made by themeqx

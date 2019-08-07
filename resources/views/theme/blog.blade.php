@@ -30,7 +30,7 @@
                             <div itemscope itemtype="http://schema.org/NewsArticle">
                                 <div class="col-md-4">
                                     <div class="image" style="height: 196px;">
-                                        <a href="{{ route('blog_single', $post->slug) }}">
+                                        <a href="{{ route('blog_single', $post->slug) }}" rel="follow">
                                             @if($post->feature_img)
                                                 <img class="img-responsive" alt="{{ $post->title }}" src="{{ media_url($post->feature_img, false, 'blog-images') }}">
                                             @else
@@ -40,10 +40,10 @@
                                     </div>
                                 </div>
                                 <div class="col-md-8">
-                                    <h2 itemprop="headline"><a href="{{ route('blog_single', $post->slug) }}" class="blog-title">{{ $post->title }}</a></h2>
+                                    <h2 itemprop="headline"><a href="{{ route('blog_single', $post->slug) }}" class="blog-title" rel="follow">{{ $post->title }}</a></h2>
                                     <div class="clearfix">
                                         @if($post->author)
-                                            <p class="author-category"  itemprop="author" itemscope itemtype="https://schema.org/Person">By <a href="{{ route('author_blog_posts', $post->author->id) }}"  itemprop="name">{{ $post->author->name }}</a>
+                                            <p class="author-category"  itemprop="author" itemscope itemtype="https://schema.org/Person">By <a href="{{ route('author_blog_posts', $post->author->id) }}"  itemprop="name" rel="follow">{{ $post->author->name }}</a>
                                             </p>
                                         @endif
                                         <p class="date-comments">
@@ -51,8 +51,8 @@
                                             <i class="fa fa-calendar"></i>   {{ $post->created_at_datetime() }}
                                         </p>
                                     </div>
-                                    <p class="intro" itemprop="description"> {{ str_limit(strip_tags($post->post_content), 250) }} </p>
-                                    <p class="read-more"><a href="{{ route('blog_single', $post->slug) }}" class="btn btn-template-main">@lang('app.continue_reading')</a></p>
+                                    <p class="intro" itemprop="description"> {{ words_limit(strip_tags($post->post_content), 250) }} </p>
+                                    <p class="read-more"><a href="{{ route('blog_single', $post->slug) }}" class="btn btn-template-main" rel="follow">@lang('app.continue_reading')</a></p>
                                     <p></p>
                                 </div>
 

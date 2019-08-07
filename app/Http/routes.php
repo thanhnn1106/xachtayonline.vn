@@ -19,9 +19,9 @@ Route::post('contact-us', ['uses'=>'HomeController@contactUsPost']);
 
 Route::get('page/{slug}', ['as' => 'single_page', 'uses'=>'PostController@showPage']);
 
-Route::get('blog', ['as' => 'blog', 'uses'=>'PostController@blogIndex']);
-Route::get('blog/{slug}', ['as' => 'blog_single', 'uses'=>'PostController@blogSingle']);
-Route::get('blog/author/{id}', ['as' => 'author_blog_posts', 'uses'=>'PostController@authorPosts']);
+Route::get('xu-huong', ['as' => 'blog', 'uses'=>'PostController@blogIndex']);
+Route::get('xu-huong/{slug}', ['as' => 'blog_single', 'uses'=>'PostController@blogSingle']);
+Route::get('xu-huong/nguoi-viet/{id}', ['as' => 'author_blog_posts', 'uses'=>'PostController@authorPosts']);
 
 
 Route::get('danh-sach', ['as' => 'listing', 'uses'=>'AdsController@listing']);
