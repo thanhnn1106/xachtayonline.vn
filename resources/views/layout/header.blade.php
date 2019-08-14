@@ -92,7 +92,7 @@
                             <li>
                                 <a href="tel:{{get_option('site_phone_number')}}">
                                     <i class="fa fa-phone"></i>
-                                    +{{ get_option('site_phone_number') }}
+                                    {{ get_option('site_phone_number') }}
                                 </a>
                             </li>
                         @endif

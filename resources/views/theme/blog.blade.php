@@ -51,7 +51,7 @@
                                             <i class="fa fa-calendar"></i>   {{ $post->created_at_datetime() }}
                                         </p>
                                     </div>
-                                    <p class="intro" itemprop="description"> {{ words_limit(strip_tags($post->post_content), 250) }} </p>
+                                    <p class="intro" itemprop="description"> {!! words_limit(strip_tags($post->post_content), 50) !!} </p>
                                     <p class="read-more"><a href="{{ route('blog_single', $post->slug) }}" class="btn btn-template-main" rel="follow">@lang('app.continue_reading')</a></p>
                                     <p></p>
                                 </div>
