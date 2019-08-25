@@ -118,7 +118,7 @@
                         </span>
 
                         @if ($ad->discount_price > 0)
-                            <h3 class="modern-single-ad-price text-danger">Giá gốc: {{ themeqx_price_ng(number_format($ad->discount_price)) }}</h3>
+                            <h3 class="modern-single-ad-price text-danger">{{ trans('app.store_price') }}: {{ themeqx_price_ng(number_format($ad->discount_price)) }}</h3>
                             <h3  style="color: #00505F;" class="d-inline-block modern-single-ad-price">
                                 {{ trans('app.ship_to_vn_price') }}: {{ themeqx_price_ng(number_format($ad->discount_price + $ad->shipping_fee)) }}
                             </h3>
