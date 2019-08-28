@@ -19,7 +19,7 @@
     </div>
 
     <div class="container">
-        <h2>{{ $title }}</h2>
+        <h1>{{ $title }}</h1>
         <div class="row">
             <div id="blog-listing" class="col-md-10 col-sm-12">
                 @foreach($posts as $post)
@@ -29,7 +29,7 @@
 
                             <div itemscope itemtype="http://schema.org/NewsArticle">
                                 <div class="col-md-4">
-                                    <div class="image" style="height: 196px;">
+                                    <div class="image">
                                         <a href="{{ route('blog_single', $post->slug) }}" rel="follow">
                                             @if($post->feature_img)
                                                 <img class="img-responsive" alt="{{ $post->title }}" src="{{ media_url($post->feature_img, false, 'blog-images') }}">
@@ -40,7 +40,11 @@
                                     </div>
                                 </div>
                                 <div class="col-md-8">
-                                    <h2 itemprop="headline"><a href="{{ route('blog_single', $post->slug) }}" class="blog-title" rel="follow">{{ $post->title }}</a></h2>
+                                    <h1 itemprop="headline">
+                                        <a href="{{ route('blog_single', $post->slug) }}" class="blog-title" rel="follow">
+                                            {{ $post->title }}
+                                        </a>
+                                    </h1>
                                     <div class="clearfix">
                                         @if($post->author)
                                             <p class="author-category"  itemprop="author" itemscope itemtype="https://schema.org/Person">By <a href="{{ route('author_blog_posts', $post->author->id) }}"  itemprop="name" rel="follow">{{ $post->author->name }}</a>

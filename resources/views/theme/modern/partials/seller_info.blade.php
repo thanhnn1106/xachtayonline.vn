@@ -4,7 +4,7 @@
             {!! get_option('monetize_code_above_seller_info') !!}
         @endif
 
-        <h3>@lang('app.seller_info')</h3>
+        <h3><strong>@lang('app.seller_info')</strong></h3>
         <div class="sidebar-user-info">
             <div class="row">
                 <div class="col-xs-3">
@@ -52,7 +52,7 @@
 </div>
 <div class="col-sm-4 col-xs-12">
     <div class="sidebar-widget">
-        <h3>THÔNG TIN CHUYỂN KHOẢN</h3>
+       <h3><strong>THÔNG TIN CHUYỂN KHOẢN</strong></h3>
         <div class="sidebar-user-info">
             <div class="row">
                 <div class="col-xs-12">

@@ -9,32 +9,13 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-md-5">
-
-                    <div class="mdern-top-introduce-left">
-                        <div class="alert alert-warning">
-                            <h2>{{ get_option('modern_home_left_title') }} </h2>
-                            <?php
-                                $modern_home_left_content = get_option('modern_home_left_content');
-                            if ($modern_home_left_content){
-                                $modern_home_left_content = explode("\n", $modern_home_left_content);
-                                foreach ($modern_home_left_content as $mhlc_value){
-                                    echo "<p><i class='fa fa-check'></i> {$mhlc_value} </p>";
-                                }
-                            }
-                            ?>
-                        </div>
-                    </div>
-
-                    </div>
-
-                <div class="col-md-7">
+                <div class="col-md-12">
 
                     <div class="mdern-top-introduce-left">
                         <h1>{{ get_option('modern_home_right_title') }}</h1>
 
                         <p>{{ get_option('modern_home_right_content') }}</p>
-                        <a href="{{route('contact_us_page')}}" class="btn btn-info btn-lg theme-btn"> @lang('app.contact_us') </a>
+                        <a href="{{url('page/ve-chung-toi')}}" class="btn btn-info btn-lg theme-btn"> TÌM HIỂU THÊM </a>
                     </div>
 
                 </div>

@@ -116,7 +116,7 @@
                             @endif
 
                             @if(get_option('show_blog_in_footer'))
-                                <li><a href="{{ route('blog') }}">@lang('app.blog')</a></li>
+                                <li><a href="{{ route('blog') }}">@lang('app.trend')</a></li>
                             @endif
                             <li><a href="{{ route('contact_us_page') }}">@lang('app.contact_us')</a></li>
                         </ul>

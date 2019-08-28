@@ -167,3 +167,26 @@
 .loginBar a {
     color: #fff
 }
+
+.form-control {
+    border-radius: 10px;
+    box-shadow: none;
+    color: #555;
+    padding: 6px 12px;
+}
+h1 {
+    font-size: 1.8rem;
+    line-height: 2.6rem;
+}
+h2 {
+    font-size: 1.6rem;
+    line-height: 2.2rem;
+}
+h3 {
+    font-size: 1.4rem;
+    line-height: 0.5rem;
+}
+
+.modern-single-ad-top-description-wrap {
+    padding: 0px;
+}

@@ -22,11 +22,15 @@ class PostController extends Controller
     public function index()
     {
         $title = trans('app.pages');
-        return view('admin.pages', compact('title'));
+        return view('admin.pages_management.pages', compact('title'));
     }
 
-    public function pagesData(){
-        $pages = Post::select('id', 'title', 'slug', 'created_at')->whereType('page')->orderBy('id', 'desc')->get();
+    public function pagesData()
+    {
+        $pages = Post::select('id', 'title', 'slug', 'created_at')
+            ->where('type', 'page')
+            ->orderBy('id', 'desc')
+            ->get();
 
         return  Datatables::of($pages)
             ->editColumn('created_at',function($page){
@@ -35,11 +39,12 @@ class PostController extends Controller
             ->addColumn('actions', function($page){
 
                 $button = '';
-                $button .= '<a href="'.route('edit_page',$page->slug).'" class="btn btn-primary"><i class="fa fa-edit"></i> </a><a href="javascript:;" class="btn btn-danger deletePage" data-slug="'.$page->slug.'"><i class="fa fa-trash"></i> </a>';
+                $button .= '<a href="'.route('edit_page',$page->slug).'" class="btn btn-primary"><i class="fa fa-edit"></i> </a>  <a href="javascript:;" class="btn btn-danger deletePage" data-slug="'.$page->slug.'"><i class="fa fa-trash"></i> </a>';
                 return $button;
             })
             ->removeColumn('id', 'slug')
-            ->make();
+            ->escapeColumns(['*'])
+            ->make(false);
     }
 
 
@@ -49,7 +54,8 @@ class PostController extends Controller
         return view('admin.posts_management.posts', compact('title'));
     }
 
-    public function postsData(){
+    public function postsData()
+    {
         $posts = Post::select('id', 'title', 'slug', 'created_at')->whereType('post')->orderBy('id', 'desc')->get();
 
         return  Datatables::of($posts)

@@ -45,6 +45,7 @@ class HomeController extends Controller
 
         $posts = Post::where('type', 'post')->where('status', '1')
             ->limit(get_option('blog_post_amount_in_homepage'))
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return view($this->theme.'index', compact('top_categories', 'premium_ads', 'regular_ads','urgent_ads', 'countries', 'sliders', 'posts'));

@@ -38,135 +38,128 @@
                             <li><a href="{{ route('listing', ['category' => $ad->category->category_slug]) }}">  {{ $ad->category->category_name }} </a></li>
                             <li>{{ $ad->title }}</li>
                         </ol><!-- breadcrumb -->
-                        <h1 class="modern-single-ad-top-title h1-custom">{{ $ad->title }}</h1>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="container">
-            <div class="row">
-                <div class="modern-single-ad-top-description">
+            <div class="modern-single-ad-top-description">
 
-                    <div class="col-sm-7 col-xs-12">
-                        @if ( ! $ad->is_published())
-                            <div class="alert alert-warning"> <i class="fa fa-warning"></i> @lang('app.ad_not_published_warning')</div>
-                        @endif
+                <div class="col-sm-7 col-xs-12">
+                    @if ( ! $ad->is_published())
+                        <div class="alert alert-warning"> <i class="fa fa-warning"></i> @lang('app.ad_not_published_warning')</div>
+                    @endif
 
 
-                            @if( ! empty($ad->video_url))
-                                <?php
-                                $video_url = $ad->video_url;
-                                if (strpos($video_url, 'youtube') > 0) {
-                                    preg_match("/^(?:http(?:s)?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user)\/))([^\?&\"'>]+)/", $video_url, $matches);
-                                    if ( ! empty($matches[1])){
-                                        echo '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/'.$matches[1].'" frameborder="0" allowfullscreen></iframe></div>';
-                                    }
+                    @if( ! empty($ad->video_url))
+                        <?php
+                        $video_url = $ad->video_url;
+                        if (strpos($video_url, 'youtube') > 0) {
+                            preg_match("/^(?:http(?:s)?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user)\/))([^\?&\"'>]+)/", $video_url, $matches);
+                            if ( ! empty($matches[1])){
+                                echo '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/'.$matches[1].'" frameborder="0" allowfullscreen></iframe></div>';
+                            }
 
-                                } elseif (strpos($video_url, 'vimeo') > 0) {
-                                    if (preg_match('%^https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)(?:[?]?.*)$%im', $video_url, $regs)) {
-                                       if (!empty($regs[3])){
-                                           echo '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://player.vimeo.com/video/'.$regs[3].'" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>';
-                                       }
-                                    }
+                        } elseif (strpos($video_url, 'vimeo') > 0) {
+                            if (preg_match('%^https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)(?:[?]?.*)$%im', $video_url, $regs)) {
+                                if (!empty($regs[3])){
+                                    echo '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://player.vimeo.com/video/'.$regs[3].'" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>';
                                 }
-                                ?>
+                            }
+                        }
+                        ?>
 
-                            @else
+                    @else
 
-                                <div class="ads-gallery">
-                                    <div class="fotorama" data-nav="thumbs">
-                                    @foreach($ad->media_img as $img)
-                                        <img class="img-responsive" src="{{ media_url($img, true) }}" alt="{{ $ad->title }}">
-                                    @endforeach
-                                    </div>
-                                </div>
-
-                            @endif
-
-                        @if($enable_monetize)
-                            {!! get_option('monetize_code_below_ad_image') !!}
-                        @endif
-                    </div>
-
-                    <div class="col-sm-5 col-xs-12">
-                        <h1 class="h1-custom">
-                            <strong>{{ $ad->title }}</strong>
-                        </h1>
-                        <div class="ads-detail-meta">
-                            <p class="text-muted">
-                                <i class="fa fa-folder-o"></i><a href="{{ route('listing', ['category' => $ad->category->category_slug]) }}">  {{ $ad->category->category_name }} </a> |
-
-                                @if($ad->brand)
-                                    <i class="fa fa-industry"></i><a href="{{ route('listing', ['brand' => $ad->brand->brand_slug]) }}">  {{ $ad->brand->brand_name }} </a> |
-                                @endif
-
-                                <i class="fa fa-eye"></i> Đã xem: {{ $ad->view }}
-                                @if ($ad->sku) | SKU: {{ $ad->sku }} @endif
-                            </p>
-                        </div>
-                        <div class="ads-detail-meta">
-                            <span class="modern-single-ad-price text-danger">Thời gian giao hàng dự kiến: {{ $ad->shipping_days }} ngày</span>
-                        </div>
-                        <span class="d-inline-block">
-                            <h3 class="d-inline-block modern-single-ad-price @if ($ad->discount_price > 0) text-decorate-line-thought text-info @endif">
-                                {{ trans('app.store_price') }}: {{ themeqx_price_ng(number_format($ad->price)) }}
-                            </h3>
-                            @if ($ad->discount_price > 0)
-                                <h3 class="d-inline-block text-danger">-{{ number_format(100 - ($ad->discount_price / $ad->price * 100)) }}%</h3>
-                            @endif
-                        </span>
-
-                        @if ($ad->discount_price > 0)
-                            <h3 class="modern-single-ad-price text-danger">{{ trans('app.store_price') }}: {{ themeqx_price_ng(number_format($ad->discount_price)) }}</h3>
-                            <h3  style="color: #00505F;" class="d-inline-block modern-single-ad-price">
-                                {{ trans('app.ship_to_vn_price') }}: {{ themeqx_price_ng(number_format($ad->discount_price + $ad->shipping_fee)) }}
-                            </h3>
-                        @else
-                            <h3 style="color: #00505F;" class="d-inline-block modern-single-ad-price @if ($ad->discount_price > 0) text-decorate-line-thought text-info @endif">
-                                {{ trans('app.ship_to_vn_price') }}: {{ themeqx_price_ng(number_format($ad->price + $ad->shipping_fee)) }}
-                            </h3>
-                        @endif
-                        <h5 class="text-danger">Giá trên có thể giảm vì những chương trình SALE LIÊN TỤC VÀ BẤT NGỜ mỗi ngày mà shop chưa kịp cập nhật. Các bạn vui lòng nhấn vào nút "Đặt hàng" hoặc theo dõi FANPAGE trên facebook để nhân viên shop mình báo giá tốt nhất nhé. </h5>
-
-
-                        @if($enable_monetize)
-                            {!! get_option('monetize_code_below_ad_title') !!}
-                        @endif
-
-
-                        @if($enable_monetize)
-                            {!! get_option('monetize_code_above_general_info') !!}
-                        @endif
-
-                        {{--<h3>@lang('app.general_info')</h3>--}}
-                        {{--<p><strong><i class="fa fa-money"></i> @lang('app.price')</strong> {{ themeqx_price_ng($ad->price) }} </p>--}}
-                        {{--<p><strong><i class="fa fa-map-marker"></i>  @lang('app.location') </strong> {!! $ad->full_address() !!} </p>--}}
-                        {{--<p><strong><i class="fa fa-check-circle-o"></i> @lang('app.condition')</strong> {{ $ad->ad_condition }} </p>--}}
-
-                        @if($enable_monetize)
-                            {!! get_option('monetize_code_below_general_info') !!}
-                        @endif
-
-                        <div class="modern-social-share-btn-group">
-                            <h4>@lang('app.share_this_ad')</h4>
-                            <a href="#" class="btn btn-default share s_facebook"><i class="fa fa-facebook"></i> </a>
-                            <a href="#" class="btn btn-default share s_plus"><i class="fa fa-google-plus"></i> </a>
-                            <a href="#" class="btn btn-default share s_twitter"><i class="fa fa-twitter"></i> </a>
-                            <a href="#" class="btn btn-default share s_linkedin"><i class="fa fa-linkedin"></i> </a>
-                        </div>
-                        <br>
-                        <div class="row t-5">
-                            <div class="t-5 col-sm-8 col-xs-12">
-                                {{--<a type="button" href="{{ route('order', [$ad->id]) }}" class="btn btn-info btn-lg theme-btn">{{ trans('app.order') }}</a>--}}
-                                <a type="button" target="_blank" href="https://m.me/xachtayonline.vn.Store/" class="btn btn-info btn-lg theme-btn">{{ trans('app.order') }}</a>
+                        <div class="ads-gallery">
+                            <div class="fotorama" data-nav="thumbs">
+                                @foreach($ad->media_img as $img)
+                                    <img class="img-responsive" src="{{ media_url($img, true) }}" alt="{{ $ad->title }}">
+                                @endforeach
                             </div>
                         </div>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-            </div>
 
+                    @endif
+
+                    @if($enable_monetize)
+                        {!! get_option('monetize_code_below_ad_image') !!}
+                    @endif
+                </div>
+
+                <div class="col-sm-5 col-xs-12">
+                    <h1 class="h1-custom">
+                        <strong>{{ $ad->title }}</strong>
+                    </h1>
+                    <div class="ads-detail-meta">
+                        <p class="text-muted">
+                            <i class="fa fa-folder-o"></i><a href="{{ route('listing', ['category' => $ad->category->category_slug]) }}">  {{ $ad->category->category_name }} </a> |
+
+                            @if($ad->brand)
+                                <i class="fa fa-industry"></i><a href="{{ route('listing', ['brand' => $ad->brand->brand_slug]) }}">  {{ $ad->brand->brand_name }} </a> |
+                            @endif
+
+                            <i class="fa fa-eye"></i> Đã xem: {{ $ad->view }}
+                            @if ($ad->sku) | SKU: {{ $ad->sku }} @endif
+                        </p>
+                    </div>
+                    <div class="ads-detail-meta">
+                        <span class="modern-single-ad-price text-danger">Thời gian giao hàng dự kiến: {{ $ad->shipping_days }} ngày</span>
+                    </div>
+                    <h3 class="d-inline-block modern-single-ad-price @if ($ad->discount_price > 0) text-decorate-line-thought text-info @endif">
+                        {{ trans('app.store_price') }}: {{ themeqx_price_ng(number_format($ad->price)) }}
+                    </h3>
+                    @if ($ad->discount_price > 0)
+                        <h3 class="d-inline-block text-danger">-{{ number_format(100 - ($ad->discount_price / $ad->price * 100)) }}%</h3>
+                    @endif
+                    @if ($ad->discount_price > 0)
+                        <h3 class="modern-single-ad-price text-danger">{{ trans('app.store_price') }}: {{ themeqx_price_ng(number_format($ad->discount_price)) }}</h3>
+                        <h3  style="color: #00505F;" class="modern-single-ad-price">
+                            {{ trans('app.ship_to_vn_price') }}: {{ themeqx_price_ng(number_format($ad->discount_price + $ad->shipping_fee)) }}
+                        </h3>
+                    @else
+                        <h3 style="color: #00505F;" class="modern-single-ad-price @if ($ad->discount_price > 0) text-decorate-line-thought text-info @endif">
+                            {{ trans('app.ship_to_vn_price') }}: {{ themeqx_price_ng(number_format($ad->price + $ad->shipping_fee)) }}
+                        </h3>
+                    @endif
+                    <h5 class="text-danger">Giá trên có thể giảm vì những chương trình SALE LIÊN TỤC VÀ BẤT NGỜ mỗi ngày mà shop chưa kịp cập nhật. Các bạn vui lòng nhấn vào nút "Đặt hàng" hoặc theo dõi FANPAGE trên facebook để nhân viên shop mình báo giá tốt nhất nhé. </h5>
+
+
+                    @if($enable_monetize)
+                        {!! get_option('monetize_code_below_ad_title') !!}
+                    @endif
+
+
+                    @if($enable_monetize)
+                        {!! get_option('monetize_code_above_general_info') !!}
+                    @endif
+
+                    {{--<h3>@lang('app.general_info')</h3>--}}
+                    {{--<p><strong><i class="fa fa-money"></i> @lang('app.price')</strong> {{ themeqx_price_ng($ad->price) }} </p>--}}
+                    {{--<p><strong><i class="fa fa-map-marker"></i>  @lang('app.location') </strong> {!! $ad->full_address() !!} </p>--}}
+                    {{--<p><strong><i class="fa fa-check-circle-o"></i> @lang('app.condition')</strong> {{ $ad->ad_condition }} </p>--}}
+
+                    @if($enable_monetize)
+                        {!! get_option('monetize_code_below_general_info') !!}
+                    @endif
+
+                    <div class="modern-social-share-btn-group">
+                        <h4>@lang('app.share_this_ad')</h4>
+                        <a href="#" class="btn btn-default share s_facebook"><i class="fa fa-facebook"></i> </a>
+                        <a href="#" class="btn btn-default share s_plus"><i class="fa fa-google-plus"></i> </a>
+                        <a href="#" class="btn btn-default share s_twitter"><i class="fa fa-twitter"></i> </a>
+                        <a href="#" class="btn btn-default share s_linkedin"><i class="fa fa-linkedin"></i> </a>
+                    </div>
+                    <br>
+                    <div class="row t-5">
+                        <div class="t-5 col-sm-8 col-xs-12">
+                            {{--<a type="button" href="{{ route('order', [$ad->id]) }}" class="btn btn-info btn-lg theme-btn">{{ trans('app.order') }}</a>--}}
+                            <a type="button" target="_blank" href="https://m.me/xachtayonline.vn.Store/" class="btn btn-info btn-lg theme-btn">{{ trans('app.order') }}</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
         </div>
     </div>
 
