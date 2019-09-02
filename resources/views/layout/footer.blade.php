@@ -64,6 +64,9 @@
         color: #96a2a7;
     }
 </style>
+
+@include('theme.modern.partials.contact_us_section')
+
 <!-- Back to top button -->
 <a id="button"></a>
 <div class="footer">

@@ -5,81 +5,10 @@
 @endsection
 
 @section('main')
-    <div class="modern-top-intoduce-section">
-
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-
-                    <div class="mdern-top-introduce-left">
-                        <h1>{{ get_option('modern_home_right_title') }}</h1>
-
-                        <p>{{ get_option('modern_home_right_content') }}</p>
-                        <a href="{{url('page/ve-chung-toi')}}" class="btn btn-info btn-lg theme-btn"> TÌM HIỂU THÊM </a>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
     {{--Main menu--}}
     @include('theme.modern.partials.main_menu')
-
-    {{--<div class="modern-top-hom-cat-section">--}}
-        {{--<div class="container">--}}
-            {{--<div class="row">--}}
-                {{--<div class="col-md-12">--}}
-                    {{--<div class="modern-home-search-bar-wrap">--}}
-                        {{--<div class="search-wrapper">--}}
-                            {{--<form class="form-inline" action="{{ route('listing') }}" method="get">--}}
-                                {{--<div class="form-group">--}}
-                                    {{--<input type="text" class="form-control" id="searchTerms" name="q" value="{{ request('q') }}" placeholder="@lang('app.search___')" />--}}
-                                {{--</div>--}}
-
-                                {{--<div class="form-group">--}}
-                                    {{--<select class="form-control" name="sub_category">--}}
-                                        {{--<option value="">@lang('app.select_a_category')</option>--}}
-                                        {{--@foreach($top_categories as $category)--}}
-                                            {{--@if($category->sub_categories->count() > 0)--}}
-                                                {{--<optgroup label="{{ $category->category_name }}">--}}
-                                                    {{--@foreach($category->sub_categories as $sub_category)--}}
-                                                        {{--<option value="{{ $sub_category->category_slug }}" {{ old('category') == $sub_category->id ? 'selected': '' }}>{{ $sub_category->category_name }}</option>--}}
-                                                    {{--@endforeach--}}
-                                                {{--</optgroup>--}}
-                                            {{--@endif--}}
-                                        {{--@endforeach--}}
-                                    {{--</select>--}}
-                                {{--</div>--}}
-
-                                {{--<div class="form-group">--}}
-                                    {{--<select class="form-control" name="country">--}}
-                                        {{--<option value="">@lang('app.select_a_country')</option>--}}
-                                        {{--@foreach($countries as $country)--}}
-                                            {{--<option value="{{ $country->id }}" {{ request('country') == $country->id ? 'selected' :'' }}>{{ $country->country_name }}</option>--}}
-                                        {{--@endforeach--}}
-                                    {{--</select>--}}
-                                {{--</div>--}}
-
-                                {{--<div class="form-group">--}}
-                                    {{--<select class="form-control select2" id="state_select" name="state">--}}
-                                        {{--<option value=""> @lang('app.select_state') </option>--}}
-                                    {{--</select>--}}
-                                {{--</div>--}}
-
-                                {{--<button type="submit" class="btn theme-btn"> <i class="fa fa-search"></i> @lang('app.search_product')</button>--}}
-                            {{--</form>--}}
-                        {{--</div>--}}
-
-                    {{--</div>--}}
-                    {{--<div class="clearfix"></div>--}}
-                {{--</div>--}}
-            {{--</div>--}}
-        {{--</div>--}}
-
-    {{--</div>--}}
     <br />
-
+    @include('theme.modern.partials.homepage_image_carousel')
 
     @if($enable_monetize)
         <div class="container">
@@ -249,13 +178,36 @@
         </div>
     @endif
 
-    @include('theme.modern.partials.contact_us_section')
-
 @endsection
 
 @section('page-js')
     <script src="{{ asset('assets/plugins/owl.carousel/owl.carousel.min.js') }}"></script>
     <script>
+        $(".owl-demo").owlCarousel({
+            items: 1,
+            loop:true,
+            margin:10,
+            responsiveClass:true,
+            responsive:{
+                0:{
+                    items:1,
+                    nav:true,
+                    loop:true
+                },
+                600:{
+                    items:1,
+                    nav:true,
+                    loop:true
+                },
+                1000:{
+                    items:1,
+                    nav:true,
+                    loop:true
+                }
+            },
+            navText : ['<i class="fa fa-arrow-circle-o-left"></i>','<i class="fa fa-arrow-circle-o-right"></i>']
+        });
+
         $(document).ready(function(){
             $(".themeqx_new_premium_ads_wrap").owlCarousel({
                 loop:true,

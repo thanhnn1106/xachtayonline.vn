@@ -190,3 +190,14 @@ h3 {
 .modern-single-ad-top-description-wrap {
     padding: 0px;
 }
+
+.nav-pills li a:hover {
+    background-color: #01505E;
+}
+.footer{
+    border-top: none;
+}
+.owl-demo .owl-item img {
+    width: 100%;
+    height: auto;
+}

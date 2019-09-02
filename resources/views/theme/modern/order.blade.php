@@ -217,7 +217,6 @@
     </div>
 
     @include('theme.modern.partials.related_ads')
-    @include('theme.modern.partials.contact_us_section')
 
     <div class="modal fade" id="reportAdModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">

@@ -14,10 +14,10 @@
 Route::get('/', ['as' => 'home', 'uses'=>'HomeController@index']);
 Route::get('LanguageSwitch/{lang}', ['as' => 'switch_language', 'uses'=>'HomeController@switchLang']);
 //Listing page
-Route::get('contact-us', ['as' => 'contact_us_page', 'uses'=>'HomeController@contactUs']);
-Route::post('contact-us', ['uses'=>'HomeController@contactUsPost']);
+Route::get('lien-lac', ['as' => 'contact_us_page', 'uses'=>'HomeController@contactUs']);
+Route::post('lien-lac', ['uses'=>'HomeController@contactUsPost']);
 
-Route::get('page/{slug}', ['as' => 'single_page', 'uses'=>'PostController@showPage']);
+Route::get('thong-tin/{slug}', ['as' => 'single_page', 'uses'=>'PostController@showPage']);
 
 Route::get('xu-huong', ['as' => 'blog', 'uses'=>'PostController@blogIndex']);
 Route::get('xu-huong/{slug}', ['as' => 'blog_single', 'uses'=>'PostController@blogSingle']);
