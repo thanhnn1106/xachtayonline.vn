@@ -150,13 +150,13 @@
                 <ul class="nav nav-pills pull-right loginBar">
                     @if($header_menu_pages->count() > 0)
                         @foreach($header_menu_pages as $page)
-                            <li><a class="text-white" href="{{ route('single_page', $page->slug) }}">{{ $page->title }} </a></li>
+                        <li><a class="text-white" href="{{ route('single_page', $page->slug) }}">{{ $page->title }} </a></li>
                         @endforeach
                     @endif
 
                     @if( ! Auth::check())
-                        <li><a href="{{ route('login') }}"> <i class="fa fa-lock"></i>  {{ trans('app.login') }}  </a>  </li>
-                        <li><a href="{{ route('user.create') }}"> <i class="fa fa-save"></i>  {{ trans('app.register') }}</a></li>
+                        {{--<li><a href="{{ route('login') }}"> <i class="fa fa-lock"></i>  {{ trans('app.login') }}  </a>  </li>--}}
+                        {{--<li><a href="{{ route('user.create') }}"> <i class="fa fa-save"></i>  {{ trans('app.register') }}</a></li>--}}
                     @endif
                     @if(Auth::check() && $lUser->is_admin())
                         <li><a href="{{ route('create_ad') }}"> <i class="fa fa-tag"></i> @lang('app.post_an_ad')</a></li>
@@ -164,7 +164,7 @@
                     @if(get_option('show_blog_in_header'))
                         <li><a href="{{ route('blog') }}"> <i class="fa fa-rss"></i> @lang('app.blog')</a></li>
                     @endif
-                    <li><a href="{{ route('contact_us_page') }}"> <i class="fa fa-mail-forward"></i>@lang('app.contact_us')</a></li>
+                    {{--<li><a href="{{ route('contact_us_page') }}"> <i class="fa fa-mail-forward"></i>@lang('app.contact_us')</a></li>--}}
                 </ul>
             </div>
         </div>

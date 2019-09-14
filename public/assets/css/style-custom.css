@@ -201,3 +201,14 @@ h3 {
     width: 100%;
     height: auto;
 }
+/* PDP */
+
+.ad-title {
+    margin-top: -30px;
+}
+
+@media screen and (max-width: 600px) {
+    .fotorama__nav, .fotorama__nav--thumbs {
+        display: none;
+    }
+}

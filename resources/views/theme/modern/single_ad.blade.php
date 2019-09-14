@@ -36,7 +36,7 @@
                         <ol class="breadcrumb">
                             <li><a href="{{ route('home') }}">@lang('app.home')</a></li>
                             <li><a href="{{ route('listing', ['category' => $ad->category->category_slug]) }}">  {{ $ad->category->category_name }} </a></li>
-                            <li>{{ $ad->title }}</li>
+                            {{--<li>{{ $ad->title }}</li>--}}
                         </ol><!-- breadcrumb -->
                     </div>
                 </div>
@@ -45,7 +45,11 @@
 
         <div class="container">
             <div class="modern-single-ad-top-description">
-
+                <div class="ad-title col-sm-5 col-xs-12 visible-xs">
+                    <h1 class="h1-custom">
+                        <strong>{{ $ad->title }}</strong>
+                    </h1>
+                </div>
                 <div class="col-sm-7 col-xs-12">
                     @if ( ! $ad->is_published())
                         <div class="alert alert-warning"> <i class="fa fa-warning"></i> @lang('app.ad_not_published_warning')</div>
@@ -87,10 +91,12 @@
                     @endif
                 </div>
 
-                <div class="col-sm-5 col-xs-12">
+                <div class="col-sm-5 col-xs-12 hidden-xs">
                     <h1 class="h1-custom">
                         <strong>{{ $ad->title }}</strong>
                     </h1>
+                </div>
+                <div class="col-sm-5 col-xs-12">
                     <div class="ads-detail-meta">
                         <p class="text-muted">
                             <i class="fa fa-folder-o"></i><a href="{{ route('listing', ['category' => $ad->category->category_slug]) }}">  {{ $ad->category->category_name }} </a> |
@@ -122,7 +128,6 @@
                             {{ trans('app.ship_to_vn_price') }}: {{ themeqx_price_ng(number_format($ad->price + $ad->shipping_fee)) }}
                         </h3>
                     @endif
-                    <h5 class="text-danger">Giá trên có thể giảm vì những chương trình SALE LIÊN TỤC VÀ BẤT NGỜ mỗi ngày mà shop chưa kịp cập nhật. Các bạn vui lòng nhấn vào nút "Đặt hàng" hoặc theo dõi FANPAGE trên facebook để nhân viên shop mình báo giá tốt nhất nhé. </h5>
 
 
                     @if($enable_monetize)
@@ -143,7 +148,14 @@
                         {!! get_option('monetize_code_below_general_info') !!}
                     @endif
 
-                    <div class="modern-social-share-btn-group">
+                    <div class="row t-5">
+                        <div class="t-5 col-sm-8 col-xs-12">
+                            {{--<a type="button" href="{{ route('order', [$ad->id]) }}" class="btn btn-info btn-lg theme-btn">{{ trans('app.order') }}</a>--}}
+                            <a type="button" target="_blank" href="https://m.me/xachtayonline.vn.Store/" class="btn btn-info btn-lg theme-btn">{{ trans('app.order') }}</a>
+                        </div>
+                    </div>
+                    <h5 class="text-danger">Giá trên có thể giảm vì những chương trình SALE LIÊN TỤC VÀ BẤT NGỜ mỗi ngày mà shop chưa kịp cập nhật. Các bạn vui lòng nhấn vào nút "Đặt hàng" hoặc theo dõi FANPAGE trên facebook để nhân viên shop mình báo giá tốt nhất nhé. <<h5>
+                    <div>
                         <h4>@lang('app.share_this_ad')</h4>
                         <a href="#" class="btn btn-default share s_facebook"><i class="fa fa-facebook"></i> </a>
                         <a href="#" class="btn btn-default share s_plus"><i class="fa fa-google-plus"></i> </a>
@@ -151,12 +163,6 @@
                         <a href="#" class="btn btn-default share s_linkedin"><i class="fa fa-linkedin"></i> </a>
                     </div>
                     <br>
-                    <div class="row t-5">
-                        <div class="t-5 col-sm-8 col-xs-12">
-                            {{--<a type="button" href="{{ route('order', [$ad->id]) }}" class="btn btn-info btn-lg theme-btn">{{ trans('app.order') }}</a>--}}
-                            <a type="button" target="_blank" href="https://m.me/xachtayonline.vn.Store/" class="btn btn-info btn-lg theme-btn">{{ trans('app.order') }}</a>
-                        </div>
-                    </div>
                 </div>
                 <div class="clearfix"></div>
             </div>
