@@ -154,7 +154,7 @@
                             <a type="button" target="_blank" href="https://m.me/xachtayonline.vn.Store/" class="btn btn-info btn-lg theme-btn">{{ trans('app.order') }}</a>
                         </div>
                     </div>
-                    <h5 class="text-danger">Giá trên có thể giảm vì những chương trình SALE LIÊN TỤC VÀ BẤT NGỜ mỗi ngày mà shop chưa kịp cập nhật. Các bạn vui lòng nhấn vào nút "Đặt hàng" hoặc theo dõi FANPAGE trên facebook để nhân viên shop mình báo giá tốt nhất nhé. <<h5>
+                    <h5 class="text-danger">Giá về VN có thể thay đổi vì những chương trình SALE LIÊN TỤC VÀ BẤT NGỜ mỗi ngày mà shop chưa kịp cập nhật. Các bạn vui lòng nhấn vào nút "Đặt hàng" hoặc theo dõi FANPAGE trên facebook để nhân viên shop mình báo giá tốt nhất nhé. <h5>
                     <div>
                         <h4>@lang('app.share_this_ad')</h4>
                         <a href="#" class="btn btn-default share s_facebook"><i class="fa fa-facebook"></i> </a>
