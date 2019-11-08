@@ -39,7 +39,8 @@
     <link href="{{ asset('assets/select2-3.5.3/select2-bootstrap.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('assets/plugins/toastr/toastr.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/nprogress/nprogress.css') }}">
-
+    <script async src="https://cdn.ampproject.org/v0.js"></script>
+    <script async custom-element="amp-carousel" src="https://cdn.ampproject.org/v0/amp-carousel-0.1.js"></script>
     <!-- Conditional page load script -->
 @if(request()->segment(1) === 'dashboard')
         <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">

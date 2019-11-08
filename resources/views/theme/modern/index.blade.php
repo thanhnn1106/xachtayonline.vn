@@ -183,31 +183,6 @@
 @section('page-js')
     <script src="{{ asset('assets/plugins/owl.carousel/owl.carousel.min.js') }}"></script>
     <script>
-        $(".owl-demo").owlCarousel({
-            items: 1,
-            loop:true,
-            margin:10,
-            responsiveClass:true,
-            responsive:{
-                0:{
-                    items:1,
-                    nav:true,
-                    loop:true
-                },
-                600:{
-                    items:1,
-                    nav:true,
-                    loop:true
-                },
-                1000:{
-                    items:1,
-                    nav:true,
-                    loop:true
-                }
-            },
-            navText : ['<i class="fa fa-arrow-circle-o-left"></i>','<i class="fa fa-arrow-circle-o-right"></i>']
-        });
-
         $(document).ready(function(){
             $(".themeqx_new_premium_ads_wrap").owlCarousel({
                 loop:true,
