@@ -146,6 +146,15 @@ Route::group(['prefix'=>'dashboard', 'middleware' => 'dashboard'], function(){
             Route::post('edit/{slug}', ['uses' => 'PostController@updatePost']);
         });
 
+        Route::group(['prefix'=>'shipping_fee'], function(){
+            Route::get('/shipping_fee', ['as'=>'shipping_fee', 'uses' => 'ShippingFeeController@index']);
+            Route::get('/shipping_fee/data', ['as'=>'shipping_fee_data', 'uses' => 'ShippingFeeController@list']);
+
+            Route::match(['GET', 'POST'], '/shipping_fee/create', ['as'=>'create_shipping_fee', 'uses' => 'ShippingFeeController@create']);
+            Route::match(['GET', 'POST'], '/shipping_fee/edit', ['as'=>'edit_shipping_fee', 'uses' => 'ShippingFeeController@edit']);
+            Route::post('/shipping_fee/delete', ['as'=>'delete_shipping_fee','uses' => 'ShippingFeeController@delete']);
+        });
+
         Route::group(['prefix'=>'pages'], function(){
             Route::get('/', ['as'=>'pages', 'uses' => 'PostController@index']);
             Route::get('data', ['as'=>'pages_data', 'uses' => 'PostController@pagesData']);

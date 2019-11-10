@@ -20,15 +20,15 @@
             <li class="parent-menu">
                 <a class="text-center">QUẢN LÝ SẢN PHẨM</a>
             </li>
-            <li>
-                <a href="#"><i class="fa fa-bullhorn"></i> @lang('app.my_ads')<span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li>  <a href="{{ route('my_ads') }}">@lang('app.my_ads')</a> </li>
-                    <li>  <a href="{{ route('create_ad') }}">@lang('app.post_an_ad')</a> </li>
-                    <li>  <a href="{{ route('pending_ads') }}">@lang('app.pending_for_approval')</a> </li>
-                    <li>  <a href="{{ route('favorite_ads') }}">@lang('app.favourite_ads')</a> </li>
-                </ul>
-            </li>
+{{--            <li>--}}
+{{--                <a href="#"><i class="fa fa-bullhorn"></i> @lang('app.my_ads')<span class="fa arrow"></span></a>--}}
+{{--                <ul class="nav nav-second-level">--}}
+{{--                    <li>  <a href="{{ route('my_ads') }}">@lang('app.my_ads')</a> </li>--}}
+{{--                    <li>  <a href="{{ route('create_ad') }}">@lang('app.post_an_ad')</a> </li>--}}
+{{--                    <li>  <a href="{{ route('pending_ads') }}">@lang('app.pending_for_approval')</a> </li>--}}
+{{--                    <li>  <a href="{{ route('favorite_ads') }}">@lang('app.favourite_ads')</a> </li>--}}
+{{--                </ul>--}}
+{{--            </li>--}}
             <li>
                 <a href="#"><i class="fa fa-list"></i> Quản lý danh mục<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
@@ -50,6 +50,12 @@
                     <li>  <a href="{{ route('admin_pending_ads') }}">@lang('app.pending_for_approval')</a> </li>
                     <li>  <a href="{{ route('admin_blocked_ads') }}">@lang('app.blocked_ads')</a> </li>
                     <li> <a href="{{ route('ad_reports') }}"><i class="fa fa-exclamation"></i> Sản phẩm bị report</a>  </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#"><i class="fa fa-bullhorn"></i> Quản lý phí ship<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>  <a href="{{ route('shipping_fee') }}">Thông tin phí ship</a> </li>
                 </ul>
             </li>
 

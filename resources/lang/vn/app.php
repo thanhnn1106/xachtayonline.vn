@@ -555,4 +555,10 @@ return [
     'ship_to_vn_price' => 'Giá về VN',
     'new_trend' => 'XU HƯỚNG MỚI NHẤT',
     'trend' => 'Xu hướng',
+    // 10/11/2019
+    'shipping_fee_discount' => 'Giám giá phí ship',
+    'shipping_fee_name' => 'Loại phí ship',
+    'save' => 'Lưu',
+    'edit_new_shipping_fee' => 'Sửa phí ship',
+    'create_new_shipping_fee' => 'Tạo phí ship mới'
 ];
