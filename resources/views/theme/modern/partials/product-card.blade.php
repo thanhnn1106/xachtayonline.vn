@@ -5,7 +5,7 @@
         <meta itemprop="description" content="{{strip_tags($ad->description)}}" />
 
         <div class="ads-thumbnail @if ($pageType !== 'home') owl-item @endif">
-            <a href="{{ route('single_ad', $ad->slug) }}">
+            <a href="{{ route('single_ad', $ad->slug) }}" rel="follow">
                 <img itemprop="image" src="{{ media_url($ad->feature_img) }}" class="img-responsive"
                      alt="{{ $ad->title }}">
 
@@ -35,7 +35,7 @@
                 </a>
             </h4>
             <p>
-                <a class="price text-muted" href="{{ route('listing', ['category' => $ad->category->category_slug]) }}" >
+                <a class="price text-muted" href="{{ route('listing', ['category' => $ad->category->category_slug]) }}" rel="follow">
                     <i class="fa fa-folder-o"></i>
                     {{ $ad->category->category_name }}
                 </a>

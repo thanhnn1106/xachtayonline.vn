@@ -122,7 +122,6 @@
                                 <li><a href="{{ route('blog') }}">@lang('app.trend')</a></li>
                             @endif
                             <li><a href="{{ route('contact_us_page') }}">@lang('app.contact_us')</a></li>
-                            <li><a href="https://tapchibosat.com" rel="nofollow">Bò Sát Cảnh</a></li>
                         </ul>
 
                         <div class="social-icons col-md-12">
