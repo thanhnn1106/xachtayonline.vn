@@ -766,14 +766,15 @@ class AdsController extends Controller
 //        $selected_states = State::find($request->state);
         //dd($selected_countries->states);
 
-        return view($this->theme.'listing', compact('top_categories', 'ads', 'title', 'categories', 'countries', 'selected_categories', 'selected_sub_categories', 'selected_countries', 'selected_states', 'personal_ads_count', 'business_ads_count', 'premium_ads'));
+        return view($this->theme.'listing', compact( 'ads', 'title', 'categories', 'countries', 'selected_categories', 'selected_sub_categories', 'selected_countries', 'personal_ads_count', 'business_ads_count', 'premium_ads'));
     }
 
     /**
      * @param $slug
      * @return mixed
      */
-    public function singleAd($slug){
+    public function singleAd($slug)
+    {
         $limit_regular_ads = get_option('number_of_free_ads_in_home');
         $ad = Ad::where('slug', $slug)->first();
 
@@ -817,7 +818,8 @@ class AdsController extends Controller
      * @param Request $request
      * @return array
      */
-    public function reportAds(Request $request){
+    public function reportAds(Request $request)
+    {
         $ad = Ad::where('slug', $request->slug)->first();
         if ($ad) {
             $data = [
@@ -862,7 +864,6 @@ class AdsController extends Controller
 
         $title = trans('app.ad_reports');
         return view('admin.reports_by_ads', compact('title', 'ad', 'reports'));
-
     }
 
 

@@ -1,14 +1,6 @@
 @extends('layout.main')
 @section('title') @if( ! empty($title)) {{ $title }} | @endif @parent @endsection
 
-<style>
-    /*div.sticky {*/
-        /*position: -webkit-sticky;*/
-        /*position: sticky;*/
-        /*top: 0;*/
-    /*}*/
-</style>
-
 @section('main')
     <div class="container">
         <div class="row">
@@ -417,15 +409,6 @@
                     data : { grid_list_view : 'grid',  _token : '{{ csrf_token() }}' },
                 });
             });
-            {{--$('#showListView').click(function(){--}}
-                {{--$('.ad-box-grid-view').hide();--}}
-                {{--$('.ad-box-list-view').show();--}}
-                {{--$.ajax({--}}
-                    {{--type : 'POST',--}}
-                    {{--url : '{{ route('switch_grid_list_view') }}',--}}
-                    {{--data : { grid_list_view : 'list',  _token : '{{ csrf_token() }}' },--}}
-                {{--});--}}
-            {{--});--}}
         });
     </script>
 

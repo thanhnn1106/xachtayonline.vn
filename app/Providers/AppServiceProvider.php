@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Category;
 use App\Post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
@@ -53,13 +54,17 @@ class AppServiceProvider extends ServiceProvider
         {
             $header_menu_pages = Post::where('status', '1')->where('show_in_header_menu', 10)->get();
             $show_in_footer_menu = Post::where('status', '1')->where('show_in_footer_menu', 1)->get();
+            $top_categories = Category::where('category_id', 0)
+                ->orderBy('ordering')
+                ->where('is_active', '1')
+                ->get();
             
             $enable_monetize = get_option('enable_monetize');
             $loggedUser = null;
             if(Auth::check()) {
                 $loggedUser = Auth::user();
             }
-            $view->with(['lUser' => $loggedUser, 'enable_monetize'=>$enable_monetize , 'header_menu_pages' => $header_menu_pages, 'show_in_footer_menu' => $show_in_footer_menu]);
+            $view->with(['lUser' => $loggedUser, 'enable_monetize'=>$enable_monetize , 'header_menu_pages' => $header_menu_pages, 'show_in_footer_menu' => $show_in_footer_menu, 'top_categories' => $top_categories]);
         });
     }
 

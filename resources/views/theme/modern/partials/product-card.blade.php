@@ -5,7 +5,7 @@
         <meta itemprop="description" content="{{strip_tags($ad->description)}}" />
 
         <div class="ads-thumbnail @if ($pageType !== 'home') owl-item @endif">
-            <a href="{{ route('single_ad', $ad->slug) }}" rel="follow">
+            <a href="{{ route('single_ad', $ad->slug) }}">
                 <img itemprop="image" src="{{ media_url($ad->feature_img) }}" class="img-responsive"
                      alt="{{ $ad->title }}">
 
@@ -35,20 +35,20 @@
                 </a>
             </h4>
             <p>
-                <a class="price text-muted" href="{{ route('listing', ['category' => $ad->category->category_slug]) }}" rel="follow">
+                <a class="price text-muted" href="{{ route('listing', ['category' => $ad->category->category_slug]) }}" >
                     <i class="fa fa-folder-o"></i>
                     {{ $ad->category->category_name }}
                 </a>
 
                 @if($ad->country)
-                    <a class="location text-muted" href="{{ route('listing', ['country' => $ad->country->country_name]) }}" rel="follow">
+                    <a class="location text-muted" href="{{ route('listing', ['country' => $ad->country->country_name]) }}">
                         <i class="fa fa-location-arrow"></i>
                         {{ $ad->country->country_name }}
                     </a>
                 @endif
             </p>
             <p class="text-muted">
-                <a href="{{ route('listing', ['user_id' => $ad->user_id]) }}" rel="follow">{{ $ad->seller_name }}</a>
+                {{ $ad->seller_name }}
             </p>
             <p class="date-posted text-muted hidden">
                 <i class="fa fa-clock-o"></i>
