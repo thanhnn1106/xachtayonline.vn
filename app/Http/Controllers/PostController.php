@@ -348,13 +348,15 @@ class PostController extends Controller
     }
 
 
-    public function blogIndex(){
-        $posts = Post::where('type', 'post')->where('status', '1')->orderBy('created_at', 'desc')->paginate(20);
+    public function blogIndex()
+    {
+        $posts = Post::where('type', 'post')->where('status', '1')->orderBy('created_at', 'desc')->paginate(10);
         $title = trans('app.trend');
         return view('theme.blog', compact('title', 'posts'));
     }
 
-    public function blogSingle($slug){
+    public function blogSingle($slug)
+    {
         $post = Post::where('slug', $slug)->first();
         $post->viewed = $post->viewed + 1;
         $post->save();

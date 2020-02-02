@@ -68,6 +68,11 @@
 
             </div>
         </div>
+        <div class="row">
+            <div class="col-xs-12">
+                {{ $posts->appends(request()->input())->links() }}
+            </div>
+        </div>
     </div>
 
 @endsection
