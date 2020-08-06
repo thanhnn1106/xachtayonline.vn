@@ -155,7 +155,7 @@
                             <a type="button" target="_blank" href="https://m.me/xachtayonline.vn.Store/" class="btn btn-info btn-lg theme-btn">{{ trans('app.order') }}</a>
                         </div>
                     </div>
-                    <h5 class="text-danger">Giá về VN có thể thay đổi vì những chương trình SALE LIÊN TỤC VÀ BẤT NGỜ mỗi ngày mà shop chưa kịp cập nhật. Các bạn vui lòng nhấn vào nút "Đặt hàng" hoặc theo dõi FANPAGE trên facebook để nhân viên shop mình báo giá tốt nhất nhé. <h5>
+                    <h5 class="text-danger">Giá về VN có thể thay đổi vì những chương trình SALE LIÊN TỤC VÀ BẤT NGỜ mỗi ngày mà shop chưa kịp cập nhật. Các bạn vui lòng nhấn vào nút "Đặt hàng" hoặc theo dõi FANPAGE trên facebook để nhân viên shop mình báo giá tốt nhất nhé. </h5>
                     <div>
                         <h4>@lang('app.share_this_ad')</h4>
                         <a href="#" class="btn btn-default share s_facebook"><i class="fa fa-facebook"></i> </a>
@@ -164,6 +164,20 @@
                         <a href="#" class="btn btn-default share s_linkedin"><i class="fa fa-linkedin"></i> </a>
                     </div>
                     <br>
+                    <h3><strong>THÔNG TIN CHUYỂN KHOẢN</strong></h3>
+                    <div class="sidebar-user-info">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="col-sm-12 col-xs-12">
+                                    <img src="{{ asset('uploads/logo/Techcombank_logo.png') }}" class=" img-responsive">
+                                </div>
+                                <p><strong>NGÂN HÀNG</strong>: Techcombank</p>
+                                <p><strong>SỐ TÀI KHOẢN</strong>: 19036134400019</p>
+                                <p><strong>CHỦ TÀI KHOẢN</strong>: NGUYEN NGOC THANH</p>
+                                <p><strong>NỘI DUNG</strong>: [TÊN] - [SỐ ĐIỆN THOẠI]</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="clearfix"></div>
             </div>

@@ -50,35 +50,36 @@
     </div>
 
 </div>
-<div class="col-sm-4 col-xs-12">
-    <div class="sidebar-widget">
-        <h3><strong>THÔNG TIN CHUYỂN KHOẢN</strong></h3>
-        <div class="sidebar-user-info">
-            <div class="row">`
-                <div class="col-xs-12">
-                    <div class="col-sm-12 col-xs-12">
-                        <img src="{{ asset('uploads/logo/dongabank.jpeg') }}" class="img-circle img-responsive">
-                    </div>
-                    <p><strong>NGÂN HÀNG</strong>: DONG A BANK</p>
-                    <p><strong>SỐ TÀI KHOẢN</strong>: 0108419464</p>
-                    <p><strong>CHỦ TÀI KHOẢN</strong>: NGUYEN NGOC THANH</p>
-                    <p><strong>NỘI DUNG</strong>: [TÊN] - [SỐ ĐIỆN THOẠI]</p>
-                </div>
-            </div>
-        </div>
-        <h3><strong></strong></h3>
-        <div class="sidebar-user-info">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="col-sm-12 col-xs-12">
-                        <img src="{{ asset('uploads/logo/vpbank.jpg') }}" class=" img-responsive">
-                    </div>
-                    <p><strong>NGÂN HÀNG</strong>: VPBank</p>
-                    <p><strong>SỐ TÀI KHOẢN</strong>: 200823777</p>
-                    <p><strong>CHỦ TÀI KHOẢN</strong>: TRAN THI NGOC NGA</p>
-                    <p><strong>NỘI DUNG</strong>: [TÊN] - [SỐ ĐIỆN THOẠI]</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+{{--<div class="col-sm-4 col-xs-12">--}}
+{{--    <div class="sidebar-widget">--}}
+{{--        <h3><strong>THÔNG TIN CHUYỂN KHOẢN</strong></h3>--}}
+{{--        <div class="sidebar-user-info">--}}
+{{--            <div class="row">--}}
+{{--                <div class="col-xs-12">--}}
+{{--                    <div class="col-sm-12 col-xs-12">--}}
+{{--                        <img src="{{ asset('uploads/logo/Techcombank_logo.png') }}" class=" img-responsive">--}}
+{{--                    </div>--}}
+{{--                    <p><strong>NGÂN HÀNG</strong>: Techcombank</p>--}}
+{{--                    <p><strong>SỐ TÀI KHOẢN</strong>: 19036134400019</p>--}}
+{{--                    <p><strong>CHỦ TÀI KHOẢN</strong>: NGUYEN NGOC THANH</p>--}}
+{{--                    <p><strong>NỘI DUNG</strong>: [TÊN] - [SỐ ĐIỆN THOẠI]</p>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--        <h3><strong></strong></h3>--}}
+{{--        <div class="sidebar-user-info">--}}
+{{--            <div class="row">`--}}
+{{--                <div class="col-xs-12">--}}
+{{--                    <div class="col-sm-12 col-xs-12">--}}
+{{--                        <img src="{{ asset('uploads/logo/dongabank.jpeg') }}" class="img-circle img-responsive">--}}
+{{--                    </div>--}}
+{{--                    <p><strong>NGÂN HÀNG</strong>: DONG A BANK</p>--}}
+{{--                    <p><strong>SỐ TÀI KHOẢN</strong>: 0108419464</p>--}}
+{{--                    <p><strong>CHỦ TÀI KHOẢN</strong>: NGUYEN NGOC THANH</p>--}}
+{{--                    <p><strong>NỘI DUNG</strong>: [TÊN] - [SỐ ĐIỆN THOẠI]</p>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+
+{{--    </div>--}}
+{{--</div>--}}
