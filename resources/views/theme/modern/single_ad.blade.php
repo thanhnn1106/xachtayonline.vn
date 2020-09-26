@@ -152,7 +152,7 @@
                     <div class="row t-5">
                         <div class="t-5 col-sm-8 col-xs-12">
                             {{--<a type="button" href="{{ route('order', [$ad->id]) }}" class="btn btn-info btn-lg theme-btn">{{ trans('app.order') }}</a>--}}
-                            <a type="button" target="_blank" href="https://m.me/xachtayonline.vn.Store/" class="btn btn-info btn-lg theme-btn">{{ trans('app.order') }}</a>
+                            <a type="button" target="_blank" href="https://m.me/iXachtayStore/" class="btn btn-info btn-lg theme-btn">{{ trans('app.order') }}</a>
                         </div>
                     </div>
                     <h5 class="text-danger">Giá về VN có thể thay đổi vì những chương trình SALE LIÊN TỤC VÀ BẤT NGỜ mỗi ngày mà shop chưa kịp cập nhật. Các bạn vui lòng nhấn vào nút "Đặt hàng" hoặc theo dõi FANPAGE trên facebook để nhân viên shop mình báo giá tốt nhất nhé. </h5>

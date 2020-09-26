@@ -57,7 +57,7 @@
             {{--<a type="button" href="{{ route('order', [$ad->id]) }}" class="btn btn-info theme-btn btn-xl font-weight-bold text-capitalize">--}}
                 {{--<span>{{ trans('app.order_quickly') }}</span>--}}
             {{--</a>--}}
-            <a type="button" target="_blank" @if($ad->is_out_of_stock) disabled='disabled' @endif href="https://m.me/xachtayonlinevn.vn/" class="btn btn-info theme-btn btn-xl font-weight-bold text-capitalize">
+            <a type="button" target="_blank" @if($ad->is_out_of_stock) disabled='disabled' @endif href="https://m.me/iXachtayStore/" class="btn btn-info theme-btn btn-xl font-weight-bold text-capitalize">
                 <span>{{ trans('app.order_quickly') }}</span>
             </a>
         </div>
